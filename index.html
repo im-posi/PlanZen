@@ -1,0 +1,946 @@
+
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#10111a">
+<title>PlanZen | Çalışma Alanın</title>
+<style>
+:root {
+  color-scheme: dark;
+  --bg:#10111a; --panel:#191b28; --panel2:#202336;
+  --text:#f4f5ff; --muted:#969bb5; --line:#2c3046;
+  --accent:#a78bfa; --green:#69e0b2; --blue:#7eb7ff;
+  --orange:#ffbd80; --danger:#ff7d98;
+}
+body.light {
+  color-scheme:light;
+  --bg:#f4f5fb; --panel:#fff; --panel2:#eceef8;
+  --text:#24263a; --muted:#72768e; --line:#e0e2ef;
+  --accent:#7654dc; --green:#188b68; --blue:#337dd0;
+  --orange:#c77829; --danger:#d94d70;
+}
+* {box-sizing:border-box}
+body {
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:Inter,Segoe UI,Arial,sans-serif;transition:.2s;
+}
+button,input,select {font:inherit}
+button {cursor:pointer}
+.app {display:flex;min-height:100vh}
+.sidebar {
+  width:235px;padding:26px 17px;border-right:1px solid var(--line);
+  position:fixed;inset:0 auto 0 0;background:var(--bg);
+  display:flex;flex-direction:column;z-index:5;
+}
+.logo {display:flex;align-items:center;gap:10px;font-size:22px;font-weight:800;padding:5px 10px 32px}
+.logo-icon {
+  display:grid;place-items:center;width:37px;height:37px;border-radius:13px;
+  background:var(--accent);color:#171321;font-size:21px;
+}
+.nav-label {font-size:10px;letter-spacing:1.6px;color:var(--muted);padding:12px 12px}
+.nav {
+  border:0;background:transparent;color:var(--muted);text-align:left;
+  padding:12px;border-radius:10px;margin:2px 0;display:flex;gap:12px;
+  align-items:center;font-size:13px;
+}
+.nav:hover,.nav.active {background:var(--panel2);color:var(--text)}
+.nav.active {box-shadow:inset 3px 0 var(--accent)}
+.nav .ico {width:20px;text-align:center;font-size:17px}
+.sidebar-bottom {margin-top:auto}
+.profile-mini {display:flex;align-items:center;gap:10px;padding:14px 8px;border-top:1px solid var(--line)}
+.avatar {width:38px;height:38px;border-radius:13px;display:grid;place-items:center;background:#393052;color:#d7c6ff;font-weight:800}
+.small {font-size:11px;color:var(--muted);margin-top:4px}
+main {margin-left:235px;width:calc(100% - 235px);padding:30px 34px 55px;max-width:1600px}
+.topbar {display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:30px}
+.eyebrow {font-size:11px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase}
+h1 {font-size:28px;margin:8px 0 0;letter-spacing:-.8px}
+h2 {font-size:16px;margin:0}
+h3 {font-size:13px;margin:0}
+p {color:var(--muted);font-size:13px;line-height:1.6}
+.top-actions {display:flex;gap:9px;align-items:center}
+.btn {
+  background:var(--panel2);color:var(--text);border:1px solid var(--line);
+  border-radius:10px;padding:10px 13px;font-size:12px;
+}
+.btn.primary {background:var(--accent);border-color:var(--accent);color:#171321;font-weight:750}
+.btn:hover {filter:brightness(1.08)}
+.grid {display:grid;gap:16px}
+.stats {grid-template-columns:repeat(4,minmax(0,1fr));margin-bottom:18px}
+.card {background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:20px;min-width:0}
+.stat-head {display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px}
+.stat-icon {width:34px;height:34px;display:grid;place-items:center;background:var(--panel2);border-radius:11px;font-size:17px}
+.stat-number {font-size:28px;font-weight:750;letter-spacing:-1px;margin:16px 0 6px}
+.stat-foot {font-size:11px;color:var(--muted)}
+.purple {color:var(--accent)} .green {color:var(--green)} .blue {color:var(--blue)} .orange {color:var(--orange)}
+.middle {grid-template-columns:minmax(0,1.65fr) minmax(280px,1fr);margin-bottom:18px}
+.card-head {display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:20px}
+.card-sub {font-size:11px;color:var(--muted);margin-top:6px}
+.chart {height:190px;display:flex;align-items:stretch;gap:12px;padding-top:10px}
+.day {flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:9px;min-width:0}
+.bar-wrap {height:145px;width:100%;display:flex;align-items:flex-end;justify-content:center;gap:4px}
+.bar {width:42%;max-width:24px;border-radius:6px 6px 3px 3px;background:var(--accent);min-height:3px;transition:height .3s}
+.bar.second {background:var(--panel2);border:1px solid var(--line)}
+.day-label {font-size:10px;color:var(--muted)}
+.legend {display:flex;gap:15px;font-size:11px;color:var(--muted)}
+.dot {display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px}
+.ring-area {display:flex;align-items:center;justify-content:center;padding:5px 0 17px}
+.ring {
+  width:150px;height:150px;border-radius:50%;
+  background:conic-gradient(var(--accent) 0deg, var(--accent) var(--progress,220deg), var(--panel2) var(--progress,220deg), var(--panel2) 360deg);
+  display:grid;place-items:center;position:relative;
+}
+.ring::before {content:"";position:absolute;inset:11px;border-radius:50%;background:var(--panel)}
+.ring-content {position:relative;text-align:center}
+.ring-number {font-size:28px;font-weight:800}
+.ring-caption {font-size:11px;color:var(--muted);margin-top:5px}
+.goal-row {display:flex;justify-content:space-between;font-size:12px;margin:9px 0}
+.progress {height:6px;background:var(--panel2);border-radius:20px;overflow:hidden}
+.progress span {display:block;height:100%;background:var(--green);border-radius:20px}
+.bottom {grid-template-columns:minmax(0,1.25fr) minmax(280px,1fr)}
+.task-list {display:grid;gap:10px}
+.task {
+  display:flex;align-items:center;gap:12px;padding:12px;
+  border:1px solid var(--line);border-radius:12px;background:var(--bg);
+}
+.task-check {
+  width:20px;height:20px;accent-color:var(--accent);flex-shrink:0;cursor:pointer;
+}
+.task-main {flex:1;min-width:0}
+.task-title {font-size:12px;font-weight:650}
+.task.done .task-title {text-decoration:line-through;color:var(--muted)}
+.task-meta {font-size:10px;color:var(--muted);margin-top:5px}
+.tag {font-size:10px;border-radius:7px;padding:5px 7px;background:var(--panel2);color:var(--muted);white-space:nowrap}
+.task.done .tag {color:var(--green)}
+.add-row {display:flex;gap:8px;margin-top:13px}
+input,select {
+  min-width:0;background:var(--bg);border:1px solid var(--line);
+  color:var(--text);padding:11px;border-radius:9px;outline:none;
+}
+input:focus,select:focus {border-color:var(--accent)}
+.add-row input {flex:1;width:100%}
+.exam-tabs {display:flex;gap:7px;margin-bottom:16px}
+.exam-tab {flex:1;border:1px solid var(--line);border-radius:9px;padding:9px;background:var(--bg);color:var(--muted);font-size:12px}
+.exam-tab.active {background:var(--panel2);color:var(--accent);border-color:var(--accent)}
+.exam-total {font-size:30px;font-weight:800;margin:10px 0 5px}
+.subject {margin-top:17px}
+.subject-head {display:flex;justify-content:space-between;font-size:12px;margin-bottom:8px}
+.subject-head span:last-child {color:var(--muted)}
+.section {display:none}
+.section.active {display:block}
+.section-placeholder {padding:28px 0}
+.section-placeholder .card {margin-bottom:16px}
+.friend-row {display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}
+.friend-row:last-child {border:0}
+.friend-info {flex:1}
+.reaction {border:1px solid var(--line);background:var(--panel2);color:var(--text);padding:8px;border-radius:9px}
+.notice {border:1px solid #8f79d455;background:#a78bfa0d;color:var(--muted);padding:13px;border-radius:11px;font-size:12px;line-height:1.6;margin-top:16px}
+.mobile-nav {display:none}
+.empty {font-size:12px;color:var(--muted);text-align:center;padding:24px 5px}
+footer {text-align:center;color:var(--muted);font-size:10px;margin-top:25px}
+@media(max-width:1100px) {
+  main {padding:24px 20px}
+  .stats {grid-template-columns:repeat(2,minmax(0,1fr))}
+  .middle,.bottom {grid-template-columns:1fr}
+}
+@media(max-width:650px) {
+  .sidebar {display:none}
+  main {margin:0;width:100%;padding:23px 14px 90px}
+  h1 {font-size:24px}
+  .topbar {align-items:flex-start}
+  .top-actions .btn-label {display:none}
+  .stats {gap:10px}
+  .card {padding:16px}
+  .stat-number {font-size:25px}
+  .mobile-nav {
+    position:fixed;display:flex;bottom:0;left:0;right:0;z-index:10;
+    background:var(--panel);border-top:1px solid var(--line);
+    justify-content:space-around;padding:9px 3px calc(9px + env(safe-area-inset-bottom));
+  }
+  .mobile-nav button {background:none;border:0;color:var(--muted);font-size:10px;display:grid;gap:4px;justify-items:center}
+  .mobile-nav button.active {color:var(--accent)}
+  .mobile-nav span {font-size:18px}
+  .chart {gap:6px}
+  .bar-wrap {gap:3px}
+}
+
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.timer{display:flex;align-items:center;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:18px}
+.timer-time{font-size:44px;font-weight:800;letter-spacing:-2px;font-variant-numeric:tabular-nums}
+.timer-ctrl{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.del{border:0;background:transparent;color:var(--muted);padding:6px;border-radius:8px;font-size:13px}
+.del:hover{color:var(--danger);background:var(--panel2)}
+.trend{margin:14px 0 6px}
+
+/* ---- Liquid glass ---- */
+:root{--glass-hi:rgba(255,255,255,.22);--glass-lo:rgba(255,255,255,.05);--glass-edge:rgba(255,255,255,.2);--glass-sh:rgba(0,0,0,.35);--pbtn:#8b6cf0;--p1:92%;--p2:62%}
+body.light{--glass-hi:rgba(255,255,255,.9);--glass-lo:rgba(255,255,255,.4);--glass-edge:rgba(255,255,255,.95);--glass-sh:rgba(60,50,120,.16);--pbtn:#5a3fc0;--p1:96%;--p2:82%}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:
+  radial-gradient(520px 380px at 12% 8%,color-mix(in srgb,var(--accent) 34%,transparent),transparent 70%),
+  radial-gradient(480px 360px at 88% 22%,color-mix(in srgb,var(--blue) 26%,transparent),transparent 70%),
+  radial-gradient(520px 400px at 70% 95%,color-mix(in srgb,var(--green) 22%,transparent),transparent 70%)}
+.nav{border:1px solid transparent}
+.btn,.exam-tab,.reaction,.tag,.nav:hover,.nav.active{
+  background:linear-gradient(145deg,var(--glass-hi),var(--glass-lo));
+  border:1px solid var(--glass-edge);
+  -webkit-backdrop-filter:blur(14px) saturate(170%);backdrop-filter:blur(14px) saturate(170%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.45),inset 0 -1px 1px rgba(255,255,255,.08),0 6px 18px var(--glass-sh)}
+.btn,.exam-tab,.reaction{transition:transform .15s,filter .15s}
+.btn:active,.exam-tab:active,.reaction:active{transform:scale(.96)}
+.tag{box-shadow:inset 0 1px 0 rgba(255,255,255,.35)}
+.nav.active{box-shadow:inset 3px 0 var(--accent),inset 0 1px 0 rgba(255,255,255,.45),0 6px 18px var(--glass-sh)}
+.btn.primary{background:linear-gradient(145deg,color-mix(in srgb,var(--pbtn) var(--p1),transparent),color-mix(in srgb,var(--pbtn) var(--p2),transparent));border-color:rgba(255,255,255,.35);color:#fff;text-shadow:0 1px 1px rgba(0,0,0,.25)}
+.exam-tab.active{background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 38%,transparent),color-mix(in srgb,var(--accent) 12%,transparent))}
+.card{background:linear-gradient(160deg,color-mix(in srgb,var(--panel) 78%,transparent),color-mix(in srgb,var(--panel) 62%,transparent));
+  -webkit-backdrop-filter:blur(18px) saturate(150%);backdrop-filter:blur(18px) saturate(150%);
+  border-color:color-mix(in srgb,var(--glass-edge) 55%,transparent);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 10px 30px var(--glass-sh)}
+.sidebar{background:color-mix(in srgb,var(--bg) 55%,transparent);-webkit-backdrop-filter:blur(22px) saturate(160%);backdrop-filter:blur(22px) saturate(160%)}
+.mobile-nav{background:color-mix(in srgb,var(--panel) 60%,transparent);-webkit-backdrop-filter:blur(22px) saturate(170%);backdrop-filter:blur(22px) saturate(170%);border-top-color:var(--glass-edge)}
+@media(prefers-reduced-transparency:reduce){.card,.sidebar,.mobile-nav,.btn,.exam-tab,.reaction,.tag,.nav{-webkit-backdrop-filter:none;backdrop-filter:none}.card{background:var(--panel)}.sidebar{background:var(--bg)}.mobile-nav{background:var(--panel)}}
+/* ---- Pasta grafik ---- */
+.pie-wrap{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.pie{width:170px;height:170px;flex-shrink:0;overflow:visible;touch-action:manipulation}
+.slice{cursor:pointer;stroke:var(--panel);stroke-width:2;transition:opacity .18s,stroke .18s;outline:none}
+.pie.has-active .slice:not(.on){opacity:.45}
+.slice.on,.slice:focus-visible{stroke:var(--text);stroke-width:3}
+.pie-info{flex:1;min-width:150px;font-size:12px;line-height:1.7;color:var(--muted)}
+.pie-info strong{display:block;font-size:16px;color:var(--text)}
+.pie-legend{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.chip{display:inline-flex;align-items:center;gap:6px;color:var(--text);cursor:pointer}
+/* ---- Haftalık plan ---- */
+.week{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:10px}
+.wday{padding:14px}
+.wday.today{border-color:var(--accent)}
+.wslot{display:flex;gap:8px;align-items:flex-start;padding:8px;border-radius:10px;background:var(--bg);border:1px solid var(--line);margin-top:8px;font-size:12px}
+.wtime{font-variant-numeric:tabular-nums;color:var(--accent);font-weight:700;font-size:11px;flex-shrink:0;padding-top:1px}
+.wtitle{flex:1;min-width:0;overflow-wrap:anywhere}
+.week-form{display:grid;grid-template-columns:150px 110px 1fr auto;gap:8px}
+.friend-row .btn{padding:7px 10px}
+@media(max-width:1100px){.week{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:650px){.week{grid-template-columns:1fr}.week-form{grid-template-columns:1fr 1fr}.week-form #weekTitle,.week-form #weekAdd{grid-column:1/-1}}
+@media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="logo"><div class="logo-icon">✳</div>PlanZen</div>
+  <div class="nav-label">ÇALIŞMA ALANI</div>
+  <button class="nav active" data-section="dashboard"><span class="ico">⌂</span> Genel Bakış</button>
+  <button class="nav" data-section="schedule"><span class="ico">▦</span> Programım</button>
+  <button class="nav" data-section="week"><span class="ico">▤</span> Haftalık Plan</button>
+  <button class="nav" data-section="exams"><span class="ico">◷</span> Deneme Analizi</button>
+  <button class="nav" data-section="friends"><span class="ico">♧</span> Arkadaşlar</button>
+  <div class="nav-label" style="margin-top:20px">KİŞİSEL</div>
+  <button class="nav" data-section="goals"><span class="ico">◎</span> Hedeflerim</button>
+  <div class="sidebar-bottom">
+    <button class="nav" id="themeButton"><span class="ico">☼</span> Temayı Değiştir</button>
+    <div class="profile-mini"><div class="avatar">P</div><div><strong style="font-size:12px">PlanZen Kullanıcısı</strong><div class="small">Kendi çalışma alanın</div></div></div>
+  </div>
+</aside>
+
+<main>
+  <header class="topbar">
+    <div><div class="eyebrow" id="todayLabel">BUGÜNÜN PLANI</div><h1 id="pageTitle">Çalışma alanın. 🌱</h1><p style="margin:8px 0 0">Küçük adımlar, sağlam ilerleme.</p></div>
+    <div class="top-actions"><button class="btn" id="themeTop">☼ <span class="btn-label">Tema</span></button><button class="btn primary" id="focusButton">＋ <span class="btn-label">Görev ekle</span></button></div>
+  </header>
+
+  <section class="section active" id="dashboard">
+    <div class="grid stats">
+      <div class="card"><div class="stat-head">Bugünkü çalışma <span class="stat-icon">◷</span></div><div class="stat-number" id="studyStat">2 sa 15 dk</div><div class="stat-foot"><span class="green">●</span> Günlük hedefe doğru</div></div>
+      <div class="card"><div class="stat-head">Çözülen sorular <span class="stat-icon">✎</span></div><div class="stat-number" id="questionStat">85</div><div class="stat-foot">Bugünkü toplam soru</div></div>
+      <div class="card"><div class="stat-head">Tamamlanan görev <span class="stat-icon">✓</span></div><div class="stat-number" id="taskStat">2 / 5</div><div class="stat-foot">Adım adım ilerliyorsun</div></div>
+      <div class="card"><div class="stat-head">Seri <span class="stat-icon">♨</span></div><div class="stat-number" id="streakStat">0 gün</div><div class="stat-foot">Düzen, mükemmellikten iyidir</div></div>
+    </div>
+
+    <div class="grid middle">
+      <div class="card">
+        <div class="card-head"><div><h2>Haftalık çalışma</h2><div class="card-sub">Günlük süre dağılımın</div></div><span class="tag">Bu hafta</span></div>
+        <div class="legend"><span><i class="dot" style="background:var(--accent)"></i>Bu hafta</span><span><i class="dot" style="background:var(--panel2);border:1px solid var(--line)"></i>Önceki hafta</span></div>
+        <div class="chart" id="weeklyChart"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h2>Günlük hedef</h2><div class="card-sub">İstikrarlı ilerle, kendini tüketme.</div></div><span class="tag">Bugün</span></div>
+        <div class="ring-area"><div class="ring" id="goalRing"><div class="ring-content"><div class="ring-number" id="goalPercent">75%</div><div class="ring-caption">hedef tamamlandı</div></div></div></div>
+        <div class="goal-row"><span>Çalışma hedefi</span><strong id="goalTime">3 saat</strong></div>
+        <div class="progress"><span id="goalProgress" style="width:75%"></span></div>
+      </div>
+    </div>
+
+    <div class="card timer">
+      <div><h2>Odak sayacı</h2><div class="card-sub" id="timerMsg">Süre bitince çalışma süren otomatik eklenir.</div></div>
+      <div class="timer-time" id="timerText">25:00</div>
+      <div class="timer-ctrl">
+        <select id="timerLen" aria-label="Odak süresi"><option value="15">15 dk</option><option value="25" selected>25 dk</option><option value="45">45 dk</option></select>
+        <button class="btn primary" id="timerStart">Başlat</button>
+        <button class="btn" id="timerReset">Sıfırla</button>
+      </div>
+    </div>
+
+    <div class="grid bottom">
+      <div class="card">
+        <div class="card-head"><div><h2>Bugünkü görevler</h2><div class="card-sub">Birini bitir, sonra diğerine geç.</div></div><span class="tag" id="taskBadge">2 tamamlandı</span></div>
+        <div class="task-list" id="taskList"></div>
+        <div class="add-row"><input id="taskInput" placeholder="Yeni görev yaz..." maxlength="90"><button class="btn primary" id="addTask">Ekle +</button></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h2>Son deneme özeti</h2><div class="card-sub">Örnek verilerle önizleme</div></div><span class="tag">TYT</span></div>
+        <div class="eyebrow">TOPLAM NET</div><div class="exam-total">72,5 <span class="green" style="font-size:13px">↗</span></div>
+        <p style="margin:0">Son deneme sonuçların burada görünecek.</p>
+        <div class="subject"><div class="subject-head"><span>Türkçe</span><span>28 / 40</span></div><div class="progress"><span style="width:70%;background:var(--accent)"></span></div></div>
+        <div class="subject"><div class="subject-head"><span>Matematik</span><span>22 / 40</span></div><div class="progress"><span style="width:55%;background:var(--blue)"></span></div></div>
+        <div class="subject"><div class="subject-head"><span>Sosyal</span><span>14 / 20</span></div><div class="progress"><span style="width:70%;background:var(--green)"></span></div></div>
+        <div class="subject"><div class="subject-head"><span>Fen</span><span>8,5 / 20</span></div><div class="progress"><span style="width:42.5%;background:var(--orange)"></span></div></div>
+        <button class="btn" style="width:100%;margin-top:18px" data-goto="exams">Deneme analizine git ↗</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="schedule">
+    <div class="card">
+      <div class="card-head"><div><h2>Çalışma programım</h2><div class="card-sub">Görevlerini buradan takip et.</div></div><span class="tag">Günlük</span></div>
+      <p>Görev eklemek için aşağıdaki alanı kullan. Tamamladıkların genel bakışta da güncellenecek.</p>
+      <div id="scheduleTaskList" class="task-list"></div>
+      <div class="add-row"><input id="scheduleInput" placeholder="Örn. AYT matematik 25 soru" maxlength="90"><button class="btn primary" id="scheduleAdd">Görev ekle</button></div>
+    </div>
+  </section>
+
+  <section class="section" id="week">
+    <div class="card">
+      <div class="card-head"><div><h2>Haftalık ders programım</h2><div class="card-sub">Gün, saat ve dersi seç; her hafta aynı görünür.</div></div><span class="tag">Haftalık</span></div>
+      <div class="week-form">
+        <select id="weekDay" aria-label="Gün"><option value="0">Pazartesi</option><option value="1">Salı</option><option value="2">Çarşamba</option><option value="3">Perşembe</option><option value="4">Cuma</option><option value="5">Cumartesi</option><option value="6">Pazar</option></select>
+        <input id="weekTime" type="time" value="18:00" aria-label="Saat">
+        <input id="weekTitle" type="text" placeholder="Örn. AYT Matematik, 25 soru" maxlength="70">
+        <button class="btn primary" id="weekAdd">Ekle</button>
+      </div>
+    </div>
+    <div class="week" id="weekGrid" style="margin-top:16px"></div>
+  </section>
+
+  <section class="section" id="exams">
+    <div class="grid middle">
+      <div class="card">
+        <div class="card-head"><div><h2>Deneme analizi</h2><div class="card-sub">TYT ve AYT sonuçlarını ayrı takip et.</div></div></div>
+        <div class="exam-tabs"><button class="exam-tab active" data-exam="TYT">TYT</button><button class="exam-tab" data-exam="AYT">AYT</button></div>
+        <div class="eyebrow">TOPLAM NET</div><div class="exam-total" id="examTotal">72,5</div>
+        <div class="trend" id="examTrend"></div>
+        <div id="examSubjects"></div>
+      </div>
+      <div class="card">
+        <h2>Yeni deneme ekle</h2><p>Sonuçlarını kaydetmek için alanları doldur.</p>
+        <label class="small" for="examName">Deneme adı</label><input id="examName" placeholder="Örn. Genel deneme 4" style="width:100%;margin:7px 0 13px">
+        <label class="small" for="examDate">Tarih</label><input id="examDate" type="date" style="width:100%;margin:7px 0 13px">
+        <div class="grid" style="grid-template-columns:1fr 1fr">
+          <div><label class="small" for="examTurkce">Türkçe / Edebiyat</label><input id="examTurkce" type="number" min="0" max="40" step=".25" placeholder="Net" style="width:100%;margin-top:7px"></div>
+          <div><label class="small" for="examMat">Matematik</label><input id="examMat" type="number" min="0" max="40" step=".25" placeholder="Net" style="width:100%;margin-top:7px"></div>
+          <div><label class="small" for="examSosyal">Sosyal</label><input id="examSosyal" type="number" min="0" max="40" step=".25" placeholder="Net" style="width:100%;margin-top:7px"></div>
+          <div><label class="small" for="examFen">Fen</label><input id="examFen" type="number" min="0" max="40" step=".25" placeholder="Net" style="width:100%;margin-top:7px"></div>
+        </div>
+        <button class="btn primary" id="saveExam" style="width:100%;margin-top:16px">Denemeyi ekle</button>
+        <div class="notice">Denemelerin hesabına kaydedilir. Başka bir cihazdan girince de burada görünür.</div>
+      </div>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h2>Deneme geçmişim</h2><div class="card-sub">Eklediğin sonuçlar burada listelenir.</div>
+      <div id="examHistory"></div>
+    </div>
+  </section>
+
+  <section class="section" id="friends">
+    <div class="grid middle">
+      <div class="card">
+        <div class="card-head"><div><h2>Haftalık sıralama</h2><div class="card-sub">Bu haftaki çalışma süren, arkadaşlarınla birlikte (Pzt–Paz)</div></div><span class="tag" id="myUsername">Giriş yap</span></div>
+        <div id="friendBoard"><div class="empty">Giriş yapınca arkadaşların burada görünür.</div></div>
+      </div>
+      <div class="card">
+        <div id="usernameBox" style="display:none">
+          <h2>Kullanıcı adı seç</h2><p>Arkadaşların seni bu adla bulur. 3–20 karakter; küçük harf, rakam ve _ kullanabilirsin.</p>
+          <div class="add-row"><input id="usernameInput" placeholder="kullanici_adi" maxlength="20" autocapitalize="none" autocomplete="off"><button class="btn primary" id="usernameSave">Kaydet</button></div>
+          <div id="usernameMsg" class="small" style="line-height:1.6;margin-top:12px"></div>
+        </div>
+        <div id="friendAddBox">
+          <h2>Arkadaş ekle</h2><p>Kullanıcı adını yaz, istek gönder. Kabul edince birbirinizin haftalık süresini görürsünüz.</p>
+          <div class="add-row"><input id="friendInput" placeholder="Kullanıcı adı" autocapitalize="none" autocomplete="off"><button class="btn primary" id="friendAdd">İstek gönder</button></div>
+          <div id="friendMessage" class="small" style="line-height:1.6;margin-top:12px"></div>
+          <div id="friendRequests" style="margin-top:8px"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="goals">
+    <div class="grid middle">
+      <div class="card">
+        <h2>Hedeflerim</h2><p>Kendine ulaşılabilir hedefler koy, ilerlemeni düzenli takip et.</p>
+        <div class="goal-row"><span>Günlük çalışma</span><strong id="goalDisplay">3 saat</strong></div>
+        <div class="add-row"><input id="goalInput" type="number" min="1" max="12" value="3" placeholder="Saat"><button class="btn primary" id="saveGoal">Hedefi kaydet</button></div>
+        <div class="notice">İyi bir plan seni desteklemeli, cezalandırmamalı. Dinlenme de planın bir parçası.</div>
+      </div>
+      <div class="card">
+        <h2>Bugünkü notum</h2><p>Bugün ne öğrendin, yarın neye odaklanacaksın?</p>
+        <textarea id="dailyNote" rows="5" placeholder="Notunu buraya yaz..." style="width:100%;resize:vertical;background:var(--bg);border:1px solid var(--line);color:var(--text);border-radius:10px;padding:12px;font:inherit"></textarea>
+        <button class="btn primary" id="saveNote" style="margin-top:10px">Notu kaydet</button><div class="small" id="noteStatus"></div>
+      </div>
+    </div>
+  </section>
+  <footer>PLANZEN · Kendi hızında, sağlam adımlarla. <span id="footerDate"></span></footer>
+</main>
+</div>
+
+<nav class="mobile-nav">
+  <button class="active" data-section="dashboard"><span>⌂</span>Özet</button>
+  <button data-section="schedule"><span>▦</span>Program</button>
+  <button data-section="week"><span>▤</span>Hafta</button>
+  <button data-section="exams"><span>◷</span>Denemeler</button>
+  <button data-section="friends"><span>♧</span>Arkadaşlar</button>
+  <button data-section="goals"><span>◎</span>Hedefler</button>
+</nav>
+
+<script>
+const $ = id => document.getElementById(id);
+let storeKey = "planzen_guest";
+const initialTasks = [
+  {title:"AYT Matematik",meta:"Konu tekrarı · 40 dk",tag:"Matematik",done:true},
+  {title:"TYT Matematik",meta:"25 soru · 35 dk",tag:"Matematik",done:true},
+  {title:"Paragraf",meta:"20 soru · 20 dk",tag:"Türkçe",done:false},
+  {title:"AYT Fen",meta:"Konu çalışması · 30 dk",tag:"Fen",done:false},
+  {title:"Günün tekrarı",meta:"Yanlışları gözden geçir · 15 dk",tag:"Tekrar",done:false}
+];
+const makeState = () => ({tasks:initialTasks.map(t=>({...t})), goal:3, questions:0, exams:[], note:"", theme:"dark", log:{}, week:[]});
+let state = makeState();
+try {
+  const saved = JSON.parse(localStorage.getItem(storeKey) || "null");
+  if(saved && Array.isArray(saved.tasks)) state = {...makeState(),...saved};
+} catch(e) {}
+function persist(){try{localStorage.setItem(storeKey,JSON.stringify(state))}catch(e){} if(window.planZenSync)window.planZenSync()}
+const dayKey=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const todayMin=()=>state.log[dayKey(new Date())]||0;
+function addMinutes(m){const k=dayKey(new Date());state.log[k]=(state.log[k]||0)+m;persist()}
+function weekDates(off){const n=new Date();const m=new Date(n.getFullYear(),n.getMonth(),n.getDate()-((n.getDay()+6)%7)+off*7);return Array.from({length:7},(_,i)=>new Date(m.getFullYear(),m.getMonth(),m.getDate()+i))}
+const weekStartKey=()=>dayKey(weekDates(0)[0]);
+const weekMinutes=()=>weekDates(0).reduce((a,d)=>a+(state.log[dayKey(d)]||0),0);
+const fmtMin=m=>Math.floor(m/60)+" sa "+(m%60)+" dk";
+function safeText(value){
+  return String(value).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
+}
+function renderTasks(){
+  const html = state.tasks.map((task,i)=>`
+    <div class="task ${task.done?'done':''}">
+      <input class="task-check" type="checkbox" data-task="${i}" ${task.done?'checked':''} aria-label="Görevi tamamla">
+      <div class="task-main"><div class="task-title">${safeText(task.title)}</div><div class="task-meta">${safeText(task.meta||"Kişisel görev")}</div></div>
+      <span class="tag">${safeText(task.tag||"Görev")}</span>
+      <button class="del" data-del="${i}" aria-label="Görevi sil">✕</button>
+    </div>`).join("");
+  $("taskList").innerHTML = html || '<div class="empty">Henüz görev yok. Bir tane ekleyerek başla.</div>';
+  $("scheduleTaskList").innerHTML = html || '<div class="empty">Henüz görev yok. Bir tane ekleyerek başla.</div>';
+  const done = state.tasks.filter(t=>t.done).length;
+  $("taskStat").textContent = `${done} / ${state.tasks.length}`;
+  $("taskBadge").textContent = `${done} tamamlandı`;
+  document.querySelectorAll("[data-del]").forEach(el=>el.addEventListener("click",()=>{
+    state.tasks.splice(Number(el.dataset.del),1);persist();renderTasks();
+  }));
+  document.querySelectorAll("[data-task]").forEach(el=>el.addEventListener("change",()=>{
+    state.tasks[Number(el.dataset.task)].done=el.checked;persist();renderTasks();
+  }));
+}
+function renderChart(){
+  const cur=weekDates(0).map(d=>(state.log[dayKey(d)]||0)/60), prev=weekDates(-1).map(d=>(state.log[dayKey(d)]||0)/60);
+  const labels=["Pzt","Sal","Çar","Per","Cum","Cmt","Paz"], max=Math.max(4,...cur,...prev);
+  $("weeklyChart").innerHTML = labels.map((d,i)=>`
+    <div class="day"><div class="bar-wrap">
+      <div class="bar second" style="height:${prev[i]/max*100}%" title="Önceki hafta ${prev[i].toFixed(1)} saat"></div>
+      <div class="bar" style="height:${cur[i]/max*100}%" title="Bu hafta ${cur[i].toFixed(1)} saat"></div>
+    </div><div class="day-label">${d}</div></div>`).join("");
+}
+function renderStreak(){
+  let n=0;const d=new Date();
+  if(!(state.log[dayKey(d)]>0)) d.setDate(d.getDate()-1);
+  while(state.log[dayKey(d)]>0){n++;d.setDate(d.getDate()-1)}
+  $("streakStat").textContent=n+" gün";
+}
+function renderGoal(){
+  const percent = Math.min(100,Math.round(todayMin()/(state.goal*60)*100));
+  $("goalRing").style.setProperty("--progress",percent*3.6+"deg");
+  $("goalPercent").textContent=percent+"%";
+  $("goalProgress").style.width=percent+"%";
+  $("goalTime").textContent=state.goal+" saat";
+  $("goalDisplay").textContent=state.goal+" saat";
+  $("studyStat").textContent=fmtMin(todayMin());
+  $("questionStat").textContent=state.questions;renderStreak();
+}
+function addTask(inputId){
+  const input=$(inputId), title=input.value.trim();
+  if(!title){input.focus();return}
+  state.tasks.push({title,meta:"Kişisel görev",tag:"Yeni",done:false});
+  persist();renderTasks();input.value="";
+}
+function setSection(id){
+  document.querySelectorAll(".section").forEach(s=>s.classList.toggle("active",s.id===id));
+  document.querySelectorAll("[data-section]").forEach(b=>b.classList.toggle("active",b.dataset.section===id));
+  const titles={dashboard:"Çalışma alanın. 🌱",schedule:"Programın. 🗓️",week:"Haftalık plan. 📅",exams:"Deneme analizi. 📈",friends:"Birlikte daha iyi. 🤝",goals:"Hedeflerin. 🎯"};
+  $("pageTitle").textContent=titles[id]||titles.dashboard;
+  if(id==="friends"&&window.planZenFriends)window.planZenFriends();
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+document.querySelectorAll("[data-section]").forEach(b=>b.addEventListener("click",()=>setSection(b.dataset.section)));
+document.querySelectorAll("[data-goto]").forEach(b=>b.addEventListener("click",()=>setSection(b.dataset.goto)));
+$("addTask").addEventListener("click",()=>addTask("taskInput"));
+$("scheduleAdd").addEventListener("click",()=>addTask("scheduleInput"));
+["taskInput","scheduleInput"].forEach(id=>$(id).addEventListener("keydown",e=>{if(e.key==="Enter")addTask(id)}));
+$("focusButton").addEventListener("click",()=>{setSection("schedule");setTimeout(()=>$("scheduleInput").focus(),100)});
+function toggleTheme(){
+  state.theme=state.theme==="dark"?"light":"dark";
+  document.body.classList.toggle("light",state.theme==="light");persist();
+}
+$("themeButton").addEventListener("click",toggleTheme);
+$("themeTop").addEventListener("click",toggleTheme);
+document.querySelectorAll(".exam-tab").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll(".exam-tab").forEach(x=>x.classList.toggle("active",x===b));
+  renderExamSubjects(b.dataset.exam);
+}));
+function renderExamSubjects(type){
+  const subjects=type==="TYT"
+    ?[{name:"Türkçe",net:28,max:40},{name:"Matematik",net:22,max:40},{name:"Sosyal",net:14,max:20},{name:"Fen",net:8.5,max:20}]
+    :[{name:"Matematik",net:25,max:40},{name:"Fizik",net:6,max:14},{name:"Kimya",net:7,max:13},{name:"Biyoloji",net:8,max:13}];
+  $("examTotal").textContent=subjects.reduce((sum,s)=>sum+s.net,0).toLocaleString("tr-TR");
+  $("examSubjects").innerHTML=(pieFor(type,subjects),"")+subjects.map(s=>`<div class="subject"><div class="subject-head"><span>${s.name}</span><span>${String(s.net).replace(".",",")} / ${s.max}</span></div><div class="progress"><span style="width:${s.net/s.max*100}%;background:var(--accent)"></span></div></div>`).join("");
+}
+const PIE_COLORS=["var(--accent)","var(--blue)","var(--green)","var(--orange)"];
+function renderPie(subjects,label){
+  const box=$("examTrend"), fmt=n=>String(n).replace(".",",");
+  const total=subjects.reduce((a,x)=>a+Math.max(x.net,0),0);
+  if(!(total>0)){box.innerHTML='<div class="empty">Net girdiğinde dağılım burada görünür.</div>';return}
+  let a0=-Math.PI/2;
+  const parts=subjects.map((x,i)=>{
+    const frac=Math.max(x.net,0)/total,a1=a0+frac*2*Math.PI,R=80,c=100;
+    const d=frac>=.9999?`M${c-R} ${c}a${R} ${R} 0 1 0 ${2*R} 0a${R} ${R} 0 1 0 ${-2*R} 0Z`
+      :`M${c} ${c}L${c+R*Math.cos(a0)} ${c+R*Math.sin(a0)}A${R} ${R} 0 ${frac>.5?1:0} 1 ${c+R*Math.cos(a1)} ${c+R*Math.sin(a1)}Z`;
+    a0=a1;return {x,i,frac,d,col:PIE_COLORS[i%4]};
+  }).filter(p=>p.frac>0);
+  box.innerHTML=`<div class="pie-wrap"><svg class="pie" viewBox="0 0 200 200" role="group" aria-label="Net dağılımı">${
+    parts.map(p=>`<path class="slice" data-i="${p.i}" d="${p.d}" fill="${p.col}" tabindex="0" role="button" aria-label="${safeText(p.x.name)}: ${fmt(p.x.net)} net"/>`).join("")
+  }</svg><div class="pie-info" id="pieInfo" aria-live="polite"></div></div><div class="pie-legend">${
+    parts.map(p=>`<button class="tag chip" data-i="${p.i}"><i class="dot" style="background:${p.col};margin:0"></i>${safeText(p.x.name)}</button>`).join("")}</div>`;
+  const svg=box.querySelector(".pie"),info=$("pieInfo");
+  const show=i=>{
+    box.querySelectorAll("[data-i].slice").forEach(el=>el.classList.toggle("on",el.dataset.i===String(i)));
+    svg.classList.toggle("has-active",i!==null);
+    const p=parts.find(q=>String(q.i)===String(i));
+    info.innerHTML=p?`<strong>${safeText(p.x.name)}</strong>${fmt(p.x.net)} net · toplamın %${Math.round(p.frac*100)}'i${p.x.max?`<br>Başarı: %${Math.round(p.x.net/p.x.max*100)} (${fmt(p.x.net)} / ${p.x.max})`:""}`
+      :`<strong>${fmt(total)} net</strong>${safeText(label)}<br>Bir dilime dokun veya üzerine gel.`;
+  };
+  box.querySelectorAll("[data-i]").forEach(el=>{
+    el.addEventListener("pointerenter",()=>show(el.dataset.i));
+    el.addEventListener("click",()=>show(el.dataset.i));
+    el.addEventListener("focus",()=>show(el.dataset.i));
+    el.addEventListener("pointerleave",e=>{if(e.pointerType==="mouse")show(null)});
+  });
+  show(null);
+}
+function pieFor(type,demo){
+  const names=["Türkçe / Edebiyat","Matematik","Sosyal","Fen"];
+  const last=state.exams.filter(e=>e.type===type&&Array.isArray(e.values)).sort((a,b)=>a.date.localeCompare(b.date)).pop();
+  if(last) renderPie(last.values.map((n,i)=>({name:names[i],net:n})),last.name);
+  else renderPie(demo||[],"Örnek veri");
+}
+function renderHistory(){
+  $("examHistory").innerHTML=state.exams.length?state.exams.slice().reverse().map(ex=>`
+    <div class="friend-row"><div class="avatar">${safeText(ex.type)}</div><div class="friend-info"><strong style="font-size:12px">${safeText(ex.name)}</strong><div class="small">${safeText(ex.date)} · ${safeText(ex.type)}</div></div><strong>${ex.total.toLocaleString("tr-TR")} net</strong></div>`).join(""):'<div class="empty">Henüz deneme eklemedin.</div>';
+}
+$("saveExam").addEventListener("click",()=>{
+  const name=$("examName").value.trim();
+  if(!name){$("examName").focus();return}
+  const values=["examTurkce","examMat","examSosyal","examFen"].map(id=>Number($(id).value)||0);
+  if(values.some(v=>v<0)){alert("Netler negatif olamaz.");return}
+  const type=document.querySelector(".exam-tab.active").dataset.exam;
+  const total=values.reduce((a,b)=>a+b,0);
+  state.exams.push({name,date:$("examDate").value||new Date().toISOString().slice(0,10),type,total,values});
+  persist();renderHistory();pieFor(type,null);$("examName").value="";
+  ["examTurkce","examMat","examSosyal","examFen"].forEach(id=>$(id).value="");
+  alert("Deneme hesabına kaydedildi.");
+});
+$("saveGoal").addEventListener("click",()=>{
+  const val=Number($("goalInput").value);
+  if(!Number.isFinite(val)||val<1||val>12){alert("Hedef 1 ile 12 saat arasında olmalı.");return}
+  state.goal=val;persist();renderGoal();
+});
+$("saveNote").addEventListener("click",()=>{
+  state.note=$("dailyNote").value;persist();$("noteStatus").textContent="Not kaydedildi.";
+});
+$("dailyNote").value=state.note||"";
+let tLeft=25*60,tId=null;
+const tFmt=s=>String(Math.floor(s/60)).padStart(2,"0")+":"+String(s%60).padStart(2,"0");
+const tLen=()=>Number($("timerLen").value);
+function tDraw(){$("timerText").textContent=tFmt(tLeft);$("timerStart").textContent=tId?"Duraklat":"Başlat"}
+function tStop(){clearInterval(tId);tId=null}
+$("timerStart").addEventListener("click",()=>{
+  if(tId){tStop();tDraw();return}
+  tId=setInterval(()=>{
+    tLeft--;
+    if(tLeft<=0){const m=tLen();tStop();tLeft=m*60;addMinutes(m);renderGoal();renderChart();$("timerMsg").textContent=m+" dk çalışma eklendi. Kısa bir mola ver."}
+    tDraw();
+  },1000);
+  $("timerMsg").textContent="Odaklan, telefonu bırak.";tDraw();
+});
+$("timerReset").addEventListener("click",()=>{tStop();tLeft=tLen()*60;tDraw()});
+$("timerLen").addEventListener("change",()=>{tStop();tLeft=tLen()*60;tDraw()});
+const now=new Date();
+$("todayLabel").textContent=now.toLocaleDateString("tr-TR",{weekday:"long",day:"numeric",month:"long"}).toLocaleUpperCase("tr-TR");
+$("footerDate").textContent=" · "+now.getFullYear();
+document.body.classList.toggle("light",state.theme==="light");
+const DAYS=["Pazartesi","Salı","Çarşamba","Perşembe","Cuma","Cumartesi","Pazar"];
+function renderWeek(){
+  const today=(new Date().getDay()+6)%7;
+  $("weekGrid").innerHTML=DAYS.map((name,d)=>{
+    const slots=state.week.map((w,i)=>({...w,i})).filter(w=>w.day===d).sort((a,b)=>a.time.localeCompare(b.time));
+    return `<div class="card wday ${d===today?"today":""}"><h3>${name}${d===today?" · bugün":""}</h3>${
+      slots.map(w=>`<div class="wslot"><span class="wtime">${safeText(w.time)}</span><span class="wtitle">${safeText(w.title)}</span><button class="del" data-wdel="${w.i}" aria-label="Sil">✕</button></div>`).join("")
+      ||'<div class="empty">Boş gün</div>'}</div>`;
+  }).join("");
+  document.querySelectorAll("[data-wdel]").forEach(el=>el.addEventListener("click",()=>{
+    state.week.splice(Number(el.dataset.wdel),1);persist();renderWeek();
+  }));
+}
+function addWeekSlot(){
+  const title=$("weekTitle").value.trim();
+  if(!title){$("weekTitle").focus();return}
+  state.week.push({day:Number($("weekDay").value),time:$("weekTime").value||"00:00",title});
+  persist();renderWeek();$("weekTitle").value="";
+}
+$("weekAdd").addEventListener("click",addWeekSlot);
+$("weekTitle").addEventListener("keydown",e=>{if(e.key==="Enter")addWeekSlot()});
+function refreshAll(){
+  renderTasks();renderChart();renderGoal();renderHistory();renderWeek();
+  renderExamSubjects(document.querySelector(".exam-tab.active").dataset.exam);
+  $("dailyNote").value=state.note||"";$("goalInput").value=state.goal;
+  document.body.classList.toggle("light",state.theme==="light");
+}
+refreshAll();
+</script>
+
+<!-- PlanZen Supabase giriş sistemi -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+#pz-auth {
+  position: fixed; inset: 0; z-index: 99999;
+  display: flex; align-items: center; justify-content: center;
+  padding: 20px; background: rgba(15,15,25,.72);
+  backdrop-filter: blur(16px); font-family: inherit;
+}
+#pz-auth .pz-card {
+  width: 100%; max-width: 390px; padding: 28px;
+  border-radius: 24px; background: #fff; color: #24232a;
+  box-shadow: 0 20px 70px #0003;
+}
+#pz-auth h2 { margin: 0 0 8px; font-size: 27px; }
+#pz-auth p { color: #777; font-size: 14px; line-height: 1.5; }
+#pz-auth input {
+  width: 100%; box-sizing: border-box; padding: 13px;
+  margin: 7px 0; border: 1px solid #ddd;
+  border-radius: 12px; font-size: 15px;
+}
+#pz-auth button {
+  width: 100%; border: 0; padding: 13px; margin-top: 10px;
+  border-radius: 12px; cursor: pointer; font-weight: 700;
+}
+#pz-auth .pz-primary { background: #8066e9; color: white; }
+#pz-auth .pz-secondary { background: #f0edfa; color: #5745a5; }
+#pz-auth #pz-message,
+#pz-auth #pz-connection-status { overflow-wrap: anywhere; }
+#pz-userbar {
+  position: fixed; right: 12px; bottom: 12px; z-index: 999;
+  display: none; padding: 9px 12px; border-radius: 14px;
+  background: #8066e9; color: white; font: 13px Arial,sans-serif;
+}
+#pz-userbar button {
+  border: 0; border-radius: 8px; padding: 6px; margin-left: 8px;
+}
+#pz-userbar { max-width: min(320px, calc(100vw - 24px)); overflow-wrap: anywhere; }
+@media (max-width: 650px) { #pz-userbar { bottom: 78px; } }
+</style>
+
+<div id="pz-auth">
+  <div class="pz-card">
+    <h2>PlanZen ✨</h2>
+    <p>Çalışma alanına giriş yap veya yeni hesabını oluştur.</p>
+    <form id="pz-form">
+      <input id="pz-email" type="email" placeholder="E-posta adresin"
+        autocomplete="email" required>
+      <input id="pz-password" type="password" placeholder="Şifre (en az 6 karakter)"
+        autocomplete="current-password" minlength="6" required>
+      <button class="pz-primary" type="submit" id="pz-login">
+        Giriş yap
+      </button>
+      <button class="pz-secondary" type="button" id="pz-signup">
+        Yeni hesap oluştur
+      </button>
+    </form>
+    <p id="pz-message" role="status"></p>
+    <p id="pz-connection-status" role="status">Supabase bağlantısı kontrol ediliyor...</p>
+  </div>
+</div>
+
+<div id="pz-userbar">
+  <span id="pz-user-email"></span>
+  <small id="pz-sync" style="display:block;opacity:.9;margin-top:3px"></small>
+  <button id="pz-logout">Çıkış</button>
+</div>
+
+<script>
+(() => {
+  const SUPABASE_URL = "https://pdlgokdassgeknchxipe.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_0EMJqcehAX4vlFPs_RakfA_3aYJvHCW";
+
+  const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  const overlay = document.getElementById("pz-auth");
+  const message = document.getElementById("pz-message");
+  const connectionStatus = document.getElementById("pz-connection-status");
+  const form = document.getElementById("pz-form");
+  const loginButton = document.getElementById("pz-login");
+  const signupButton = document.getElementById("pz-signup");
+  let busy = false;
+
+  function showMessage(text) {
+    message.textContent = text;
+  }
+
+  function showUser(user) {
+    overlay.style.display = "none";
+    document.getElementById("pz-userbar").style.display = "block";
+    document.getElementById("pz-user-email").textContent = user.email || "Hesap";
+    window.dispatchEvent(new CustomEvent("pz-login", { detail: user }));
+  }
+
+  function showLogin() {
+    overlay.style.display = "flex";
+    document.getElementById("pz-userbar").style.display = "none";
+    window.dispatchEvent(new CustomEvent("pz-logout"));
+  }
+
+  async function authAction(mode) {
+    if (busy) return;
+    busy = true;
+    loginButton.disabled = signupButton.disabled = true;
+    showMessage("İşlem yapılıyor...");
+
+    try {
+      const email = document.getElementById("pz-email").value.trim();
+      const password = document.getElementById("pz-password").value;
+
+      const result = mode === "signup"
+        ? await client.auth.signUp({ email, password })
+        : await client.auth.signInWithPassword({ email, password });
+
+      if (result.error) throw result.error;
+
+      if (mode === "signup" && !result.data.session) {
+        showMessage("Hesabın oluşturuldu! E-posta doğrulaması isteniyorsa gelen kutunu kontrol et. Doğrulama bağlantısının yönlendirmesini uygulamayı yayımlarken ayarlayacağız.");
+      } else if (result.data.user) {
+        showUser(result.data.user);
+        showMessage("");
+      } else {
+        showMessage("İşlem tamamlandı. Giriş durumunu kontrol et.");
+      }
+    } catch (error) {
+      showMessage("İşlem başarısız: " + (error.message || "Bilinmeyen hata"));
+    } finally {
+      busy = false;
+      loginButton.disabled = signupButton.disabled = false;
+    }
+  }
+
+  form.addEventListener("submit", event => {
+    event.preventDefault();
+    authAction("login");
+  });
+
+  signupButton.addEventListener("click", () => {
+    if (form.reportValidity()) authAction("signup");
+  });
+
+  document.getElementById("pz-logout").addEventListener("click", async () => {
+    const { error } = await client.auth.signOut();
+    if (error) {
+      showMessage(error.message);
+      return;
+    }
+    showLogin();
+    showMessage("Çıkış yapıldı.");
+  });
+
+  client.auth.onAuthStateChange((_event, session) => {
+    if (session?.user) showUser(session.user);
+    else showLogin();
+  });
+
+  window.planZenSupabase = client;
+
+  // Bağlantı testinin mesajı, giriş mesajından ayrı tutulur.
+  (async () => {
+    try {
+      const timeout = new Promise((_, reject) => setTimeout(() => reject(new Error("zaman aşımı")), 8000));
+      const { error } = await Promise.race([client.from("user_data").select("user_id").limit(1), timeout]);
+
+      if (error) {
+        connectionStatus.textContent = /Could not find the table|does not exist/i.test(error.message || "")
+          ? "Veritabanı hazır değil. Kurulum SQL'ini Supabase'de çalıştır. (" + error.message + ")"
+          : "Bağlantı hatası: " + (error.message || "Bilinmeyen hata");
+        console.error("PlanZen bağlantı testi:", error);
+        return;
+      }
+
+      connectionStatus.textContent = "Veritabanı bağlantısı yanıt verdi.";
+      console.log("PlanZen veritabanı bağlantısı yanıt verdi.");
+    } catch (error) {
+      connectionStatus.textContent =
+        error.message === "zaman aşımı"
+          ? "Supabase 8 saniyede cevap vermedi. Bu sayfa dış sunucu isteklerini engelleyen bir önizlemede açılmış olabilir; dosyayı normal bir tarayıcıda ya da kendi sitende aç."
+          : "Bağlantı kurulamadı: " + (error.message || "Bilinmeyen hata");
+      console.error("PlanZen bağlantı hatası:", error);
+    }
+  })();
+
+})(); // Eksik olan kapanış düzeltildi.
+</script>
+
+<script>
+(() => {
+  const db = window.planZenSupabase;
+  let uid = null, loaded = false, saveTimer = null, profile = null;
+  const setSync = t => { const el = document.getElementById("pz-sync"); if (el) el.textContent = t; };
+  const msg = t => { $("friendMessage").textContent = t; $("usernameMsg").textContent = t; };
+  const localSave = () => { try { localStorage.setItem(storeKey, JSON.stringify(state)); } catch (e) {} };
+
+  async function pushWeek() {
+    if (!uid || !profile) return;
+    const wm = weekMinutes(), ws = weekStartKey();
+    if (profile.week_minutes === wm && profile.week_start === ws) return;
+    const { error } = await db.from("profiles").update({ week_minutes: wm, week_start: ws }).eq("id", uid);
+    if (!error) { profile.week_minutes = wm; profile.week_start = ws; }
+  }
+
+  async function saveNow() {
+    if (!uid || !loaded) return;
+    const { error } = await db.from("user_data").upsert({ user_id: uid, data: state, updated_at: new Date().toISOString() });
+    if (error) { setSync("Kaydedilemedi: " + error.message); return; }
+    setSync("Kaydedildi ✓");
+    pushWeek();
+  }
+  window.planZenSync = () => {
+    if (!uid || !loaded) return;
+    setSync("Kaydediliyor…");
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(saveNow, 800);
+  };
+
+  async function loadProfile() {
+    const { data, error } = await db.from("profiles").select("*").eq("id", uid).maybeSingle();
+    if (error) { msg("Arkadaş tabloları hazır değil: " + error.message); return false; }
+    profile = data || null;
+    $("usernameBox").style.display = profile ? "none" : "block";
+    $("friendAddBox").style.display = profile ? "block" : "none";
+    $("myUsername").textContent = profile ? "@" + profile.username : "Kullanıcı adı seç";
+    if (profile) pushWeek();
+    return true;
+  }
+
+  async function loadFriends() {
+    if (!uid) return;
+    if (!profile) { $("friendBoard").innerHTML = '<div class="empty">Önce bir kullanıcı adı seç.</div>'; $("friendRequests").innerHTML = ""; return; }
+    const { data: rows, error } = await db.from("friendships").select("*");
+    if (error) { msg(error.message); return; }
+    const ids = [...new Set(rows.flatMap(r => [r.requester, r.addressee]))].filter(i => i !== uid);
+    const people = {};
+    if (ids.length) {
+      const { data: ps } = await db.from("profiles").select("id,username,week_minutes,week_start").in("id", ids);
+      (ps || []).forEach(p => people[p.id] = p);
+    }
+    const ws = weekStartKey();
+    const other = r => people[r.requester === uid ? r.addressee : r.requester];
+    const board = [{ name: profile.username + " (sen)", m: weekMinutes() }]
+      .concat(rows.filter(r => r.status === "accepted").map(other).filter(Boolean).map(p => ({ name: p.username, m: p.week_start === ws ? p.week_minutes : 0 })))
+      .sort((a, b) => b.m - a.m);
+    const top = Math.max(...board.map(b => b.m), 1);
+    $("friendBoard").innerHTML = board.map(b => `<div class="friend-row"><div class="avatar">${safeText(b.name[0].toUpperCase())}</div><div class="friend-info"><strong style="font-size:12px">${safeText(b.name)}</strong><div class="progress" style="margin-top:8px"><span style="width:${b.m / top * 100}%;background:var(--accent)"></span></div></div><strong style="font-size:12px;white-space:nowrap">${fmtMin(b.m)}</strong></div>`).join("")
+      + (board.length === 1 ? '<div class="empty">Henüz arkadaşın yok. Sağdan kullanıcı adıyla istek gönder.</div>' : "");
+    const incoming = rows.filter(r => r.status === "pending" && r.addressee === uid && people[r.requester]);
+    const outgoing = rows.filter(r => r.status === "pending" && r.requester === uid && people[r.addressee]);
+    $("friendRequests").innerHTML =
+      incoming.map(r => `<div class="friend-row"><div class="friend-info"><strong style="font-size:12px">@${safeText(people[r.requester].username)}</strong><div class="small">Arkadaşlık isteği gönderdi</div></div><button class="btn primary" data-acc="${r.id}">Kabul et</button><button class="btn" data-rej="${r.id}">Reddet</button></div>`).join("")
+      + outgoing.map(r => `<div class="friend-row"><div class="friend-info"><strong style="font-size:12px">@${safeText(people[r.addressee].username)}</strong><div class="small">İstek bekliyor</div></div><button class="btn" data-rej="${r.id}">İptal</button></div>`).join("");
+  }
+  window.planZenFriends = loadFriends;
+
+  $("friendRequests").addEventListener("click", async e => {
+    const acc = e.target.closest("[data-acc]"), rej = e.target.closest("[data-rej]");
+    if (!acc && !rej) return;
+    const res = acc ? await db.from("friendships").update({ status: "accepted" }).eq("id", acc.dataset.acc)
+                    : await db.from("friendships").delete().eq("id", rej.dataset.rej);
+    if (res.error) msg(res.error.message);
+    loadFriends();
+  });
+
+  $("usernameSave").addEventListener("click", async () => {
+    if (!uid) return;
+    const name = $("usernameInput").value.trim().toLowerCase();
+    if (!/^[a-z0-9_]{3,20}$/.test(name)) { msg("3–20 karakter olmalı; sadece küçük harf, rakam ve _ kullan."); return; }
+    const { error } = await db.from("profiles").insert({ id: uid, username: name, week_minutes: weekMinutes(), week_start: weekStartKey() });
+    if (error) { msg(error.code === "23505" ? "Bu kullanıcı adı alınmış, başka bir tane dene." : error.message); return; }
+    msg("");
+    if (await loadProfile()) loadFriends();
+  });
+
+  $("friendAdd").addEventListener("click", async () => {
+    const name = $("friendInput").value.trim().toLowerCase().replace(/^@/, "");
+    if (!name) { msg("Önce bir kullanıcı adı yaz."); return; }
+    const { data, error } = await db.rpc("search_user", { uname: name });
+    if (error) { msg(error.message); return; }
+    const u = data && data[0];
+    if (!u) { msg("Bu kullanıcı adıyla kimse bulunamadı."); return; }
+    if (u.id === uid) { msg("Kendini ekleyemezsin."); return; }
+    const { data: ex } = await db.from("friendships").select("id,status")
+      .or(`and(requester.eq.${uid},addressee.eq.${u.id}),and(requester.eq.${u.id},addressee.eq.${uid})`);
+    if (ex && ex.length) { msg(ex[0].status === "accepted" ? "Zaten arkadaşsınız." : "Bu kişiyle bekleyen bir istek var."); return; }
+    const { error: e2 } = await db.from("friendships").insert({ requester: uid, addressee: u.id, status: "pending" });
+    if (e2) { msg(e2.message); return; }
+    $("friendInput").value = "";
+    msg("@" + name + " kişisine istek gönderildi.");
+    loadFriends();
+  });
+
+  window.addEventListener("pz-login", async e => {
+    const user = e.detail;
+    if (!user || uid === user.id) return;
+    uid = user.id; loaded = false; profile = null;
+    storeKey = "planzen_" + uid;
+    let local = null;
+    try { local = JSON.parse(localStorage.getItem(storeKey) || "null"); } catch (_) {}
+    state = { ...makeState(), ...(local || {}) };
+    refreshAll();
+    setSync("Senkronize ediliyor…");
+    const { data, error } = await db.from("user_data").select("data").eq("user_id", uid).maybeSingle();
+    if (error) { setSync("Bulut hatası: " + error.message); return; }
+    if (data && data.data && Array.isArray(data.data.tasks)) { state = { ...makeState(), ...data.data }; localSave(); refreshAll(); }
+    loaded = true;
+    if (!data) await saveNow(); else setSync("Kaydedildi ✓");
+    if (await loadProfile()) loadFriends();
+  });
+
+  window.addEventListener("pz-logout", () => {
+    uid = null; loaded = false; profile = null;
+    clearTimeout(saveTimer);
+    storeKey = "planzen_guest";
+    state = makeState();
+    refreshAll();
+    $("friendBoard").innerHTML = '<div class="empty">Giriş yapınca arkadaşların burada görünür.</div>';
+    $("friendRequests").innerHTML = ""; $("myUsername").textContent = "Giriş yap";
+    setSync("");
+  });
+})();
+</script>
+
+</body>
+</html>
