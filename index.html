@@ -219,6 +219,18 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 .friend-row .btn{padding:7px 10px}
 @media(max-width:1100px){.week{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.week{grid-template-columns:1fr}.week-form{grid-template-columns:1fr 1fr}.week-form #weekTitle,.week-form #weekAdd{grid-column:1/-1}}
+.week-tabs{display:flex;gap:8px;margin-top:14px}
+.week-tab.active{background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 38%,transparent),color-mix(in srgb,var(--accent) 12%,transparent));color:var(--accent);border-color:var(--accent)}
+.wday h3 small{color:var(--muted);font-weight:500;margin-left:4px}
+.wslot input[type=checkbox]{margin:1px 0 0;accent-color:var(--accent);flex-shrink:0}
+.wslot.done .wtitle{text-decoration:line-through;opacity:.55}
+.arch{border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-top:10px;background:var(--bg)}
+.arch summary{cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:10px;font-weight:700;font-size:14px;list-style:none}
+.arch summary::-webkit-details-marker{display:none}
+.arch-day{margin-top:12px;font-size:12px}
+.arch-slot{display:flex;gap:8px;padding:4px 0;color:var(--muted)}
+.arch-slot.ok{color:var(--text)}
+.arch-slot span:first-child{width:14px;flex-shrink:0}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -228,8 +240,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
   <div class="logo"><div class="logo-icon">✳</div>PlanZen</div>
   <div class="nav-label">ÇALIŞMA ALANI</div>
   <button class="nav active" data-section="dashboard"><span class="ico">⌂</span> Genel Bakış</button>
-  <button class="nav" data-section="schedule"><span class="ico">▦</span> Programım</button>
-  <button class="nav" data-section="week"><span class="ico">▤</span> Haftalık Plan</button>
+  <button class="nav" data-section="week"><span class="ico">▦</span> Program</button>
   <button class="nav" data-section="exams"><span class="ico">◷</span> Deneme Analizi</button>
   <button class="nav" data-section="friends"><span class="ico">♧</span> Arkadaşlar</button>
   <div class="nav-label" style="margin-top:20px">KİŞİSEL</div>
@@ -250,7 +261,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
     <div class="grid stats">
       <div class="card"><div class="stat-head">Bugünkü çalışma <span class="stat-icon">◷</span></div><div class="stat-number" id="studyStat">2 sa 15 dk</div><div class="stat-foot"><span class="green">●</span> Günlük hedefe doğru</div></div>
       <div class="card"><div class="stat-head">Çözülen sorular <span class="stat-icon">✎</span></div><div class="stat-number" id="questionStat">85</div><div class="stat-foot">Bugünkü toplam soru</div></div>
-      <div class="card"><div class="stat-head">Tamamlanan görev <span class="stat-icon">✓</span></div><div class="stat-number" id="taskStat">2 / 5</div><div class="stat-foot">Adım adım ilerliyorsun</div></div>
+      <div class="card"><div class="stat-head">Tamamlanan görev <span class="stat-icon">✓</span></div><div class="stat-number" id="taskStat">0 / 0</div><div class="stat-foot">Adım adım ilerliyorsun</div></div>
       <div class="card"><div class="stat-head">Seri <span class="stat-icon">♨</span></div><div class="stat-number" id="streakStat">0 gün</div><div class="stat-foot">Düzen, mükemmellikten iyidir</div></div>
     </div>
 
@@ -280,9 +291,10 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 
     <div class="grid bottom">
       <div class="card">
-        <div class="card-head"><div><h2>Bugünkü görevler</h2><div class="card-sub">Birini bitir, sonra diğerine geç.</div></div><span class="tag" id="taskBadge">2 tamamlandı</span></div>
+        <div class="card-head"><div><h2>Bugün yapman gerekenler</h2><div class="card-sub">Günlük programın. Haftanın tamamı Program sekmesinde.</div></div><span class="tag" id="taskBadge">0 tamamlandı</span></div>
         <div class="task-list" id="taskList"></div>
-        <div class="add-row"><input id="taskInput" placeholder="Yeni görev yaz..." maxlength="90"><button class="btn primary" id="addTask">Ekle +</button></div>
+        <div class="add-row"><input id="taskInput" placeholder="Bugüne bir şey ekle..." maxlength="90"><button class="btn primary" id="addTask">Ekle +</button></div>
+        <button class="btn" style="width:100%;margin-top:12px" data-goto="week">Haftalık programı gör ↗</button>
       </div>
       <div class="card">
         <div class="card-head"><div><h2>Son deneme özeti</h2><div class="card-sub">Örnek verilerle önizleme</div></div><span class="tag">TYT</span></div>
@@ -297,26 +309,22 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
     </div>
   </section>
 
-  <section class="section" id="schedule">
-    <div class="card">
-      <div class="card-head"><div><h2>Çalışma programım</h2><div class="card-sub">Görevlerini buradan takip et.</div></div><span class="tag">Günlük</span></div>
-      <p>Görev eklemek için aşağıdaki alanı kullan. Tamamladıkların genel bakışta da güncellenecek.</p>
-      <div id="scheduleTaskList" class="task-list"></div>
-      <div class="add-row"><input id="scheduleInput" placeholder="Örn. AYT matematik 25 soru" maxlength="90"><button class="btn primary" id="scheduleAdd">Görev ekle</button></div>
-    </div>
-  </section>
-
   <section class="section" id="week">
     <div class="card">
-      <div class="card-head"><div><h2>Haftalık ders programım</h2><div class="card-sub">Gün, saat ve dersi seç; her hafta aynı görünür.</div></div><span class="tag">Haftalık</span></div>
-      <div class="week-form">
+      <div class="card-head"><div><h2>Haftalık program</h2><div class="card-sub">Haftası dolunca otomatik olarak arşive girer.</div></div><span class="tag" id="weekRange"></span></div>
+      <div class="week-tabs"><button class="btn week-tab active" data-wk="0">Bu hafta</button><button class="btn week-tab" data-wk="1">Gelecek hafta</button></div>
+      <div class="week-form" style="margin-top:12px">
         <select id="weekDay" aria-label="Gün"><option value="0">Pazartesi</option><option value="1">Salı</option><option value="2">Çarşamba</option><option value="3">Perşembe</option><option value="4">Cuma</option><option value="5">Cumartesi</option><option value="6">Pazar</option></select>
-        <input id="weekTime" type="time" value="18:00" aria-label="Saat">
+        <input id="weekTime" type="time" aria-label="Saat (isteğe bağlı)">
         <input id="weekTitle" type="text" placeholder="Örn. AYT Matematik, 25 soru" maxlength="70">
         <button class="btn primary" id="weekAdd">Ekle</button>
       </div>
     </div>
     <div class="week" id="weekGrid" style="margin-top:16px"></div>
+    <div class="card" style="margin-top:16px">
+      <div class="card-head"><div><h2>Program arşivi</h2><div class="card-sub">Geçmiş haftalarda planladıkların</div></div><span class="tag" id="archiveCount">0 hafta</span></div>
+      <div id="weekArchive"></div>
+    </div>
   </section>
 
   <section class="section" id="exams">
@@ -391,8 +399,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 
 <nav class="mobile-nav">
   <button class="active" data-section="dashboard"><span>⌂</span>Özet</button>
-  <button data-section="schedule"><span>▦</span>Program</button>
-  <button data-section="week"><span>▤</span>Hafta</button>
+  <button data-section="week"><span>▦</span>Program</button>
   <button data-section="exams"><span>◷</span>Denemeler</button>
   <button data-section="friends"><span>♧</span>Arkadaşlar</button>
   <button data-section="goals"><span>◎</span>Hedefler</button>
@@ -408,7 +415,7 @@ const initialTasks = [
   {title:"AYT Fen",meta:"Konu çalışması · 30 dk",tag:"Fen",done:false},
   {title:"Günün tekrarı",meta:"Yanlışları gözden geçir · 15 dk",tag:"Tekrar",done:false}
 ];
-const makeState = () => ({tasks:initialTasks.map(t=>({...t})), goal:3, questions:0, exams:[], note:"", theme:"dark", log:{}, week:[]});
+const makeState = () => ({tasks:[], goal:3, questions:0, exams:[], note:"", theme:"dark", log:{}, week:[]});
 let state = makeState();
 try {
   const saved = JSON.parse(localStorage.getItem(storeKey) || "null");
@@ -425,25 +432,20 @@ const fmtMin=m=>Math.floor(m/60)+" sa "+(m%60)+" dk";
 function safeText(value){
   return String(value).replace(/[&<>"']/g, ch => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[ch]));
 }
+const byTime=(a,b)=>(a.time||"99:99").localeCompare(b.time||"99:99");
+const todayIdx=()=>(new Date().getDay()+6)%7;
 function renderTasks(){
-  const html = state.tasks.map((task,i)=>`
-    <div class="task ${task.done?'done':''}">
-      <input class="task-check" type="checkbox" data-task="${i}" ${task.done?'checked':''} aria-label="Görevi tamamla">
-      <div class="task-main"><div class="task-title">${safeText(task.title)}</div><div class="task-meta">${safeText(task.meta||"Kişisel görev")}</div></div>
-      <span class="tag">${safeText(task.tag||"Görev")}</span>
-      <button class="del" data-del="${i}" aria-label="Görevi sil">✕</button>
-    </div>`).join("");
-  $("taskList").innerHTML = html || '<div class="empty">Henüz görev yok. Bir tane ekleyerek başla.</div>';
-  $("scheduleTaskList").innerHTML = html || '<div class="empty">Henüz görev yok. Bir tane ekleyerek başla.</div>';
-  const done = state.tasks.filter(t=>t.done).length;
-  $("taskStat").textContent = `${done} / ${state.tasks.length}`;
-  $("taskBadge").textContent = `${done} tamamlandı`;
-  document.querySelectorAll("[data-del]").forEach(el=>el.addEventListener("click",()=>{
-    state.tasks.splice(Number(el.dataset.del),1);persist();renderTasks();
-  }));
-  document.querySelectorAll("[data-task]").forEach(el=>el.addEventListener("change",()=>{
-    state.tasks[Number(el.dataset.task)].done=el.checked;persist();renderTasks();
-  }));
+  const wk=weekStartKey(), t=todayIdx();
+  const items=state.week.map((w,i)=>({...w,i})).filter(w=>w.week===wk&&w.day===t).sort(byTime);
+  $("taskList").innerHTML=items.map(w=>`
+    <div class="task ${w.done?'done':''}">
+      <input class="task-check" type="checkbox" data-wdone="${w.i}" ${w.done?'checked':''} aria-label="Tamamlandı">
+      <div class="task-main"><div class="task-title">${safeText(w.title)}</div><div class="task-meta">${w.time?safeText(w.time):"Saatsiz"}</div></div>
+      <button class="del" data-wdel="${w.i}" aria-label="Sil">✕</button>
+    </div>`).join("")||'<div class="empty">Bugün için plan yok. Aşağıdan ekle ya da Program sekmesinden haftanı planla.</div>';
+  const done=items.filter(w=>w.done).length;
+  $("taskStat").textContent=`${done} / ${items.length}`;
+  $("taskBadge").textContent=`${done} tamamlandı`;
 }
 function renderChart(){
   const cur=weekDates(0).map(d=>(state.log[dayKey(d)]||0)/60), prev=weekDates(-1).map(d=>(state.log[dayKey(d)]||0)/60);
@@ -473,13 +475,13 @@ function renderGoal(){
 function addTask(inputId){
   const input=$(inputId), title=input.value.trim();
   if(!title){input.focus();return}
-  state.tasks.push({title,meta:"Kişisel görev",tag:"Yeni",done:false});
-  persist();renderTasks();input.value="";
+  state.week.push({day:todayIdx(),time:"",title,week:weekStartKey(),done:false});
+  persist();renderTasks();renderWeek();input.value="";
 }
 function setSection(id){
   document.querySelectorAll(".section").forEach(s=>s.classList.toggle("active",s.id===id));
   document.querySelectorAll("[data-section]").forEach(b=>b.classList.toggle("active",b.dataset.section===id));
-  const titles={dashboard:"Çalışma alanın. 🌱",schedule:"Programın. 🗓️",week:"Haftalık plan. 📅",exams:"Deneme analizi. 📈",friends:"Birlikte daha iyi. 🤝",goals:"Hedeflerin. 🎯"};
+  const titles={dashboard:"Çalışma alanın. 🌱",week:"Programın. 🗓️",exams:"Deneme analizi. 📈",friends:"Birlikte daha iyi. 🤝",goals:"Hedeflerin. 🎯"};
   $("pageTitle").textContent=titles[id]||titles.dashboard;
   if(id==="friends"&&window.planZenFriends)window.planZenFriends();
   window.scrollTo({top:0,behavior:"smooth"});
@@ -487,9 +489,8 @@ function setSection(id){
 document.querySelectorAll("[data-section]").forEach(b=>b.addEventListener("click",()=>setSection(b.dataset.section)));
 document.querySelectorAll("[data-goto]").forEach(b=>b.addEventListener("click",()=>setSection(b.dataset.goto)));
 $("addTask").addEventListener("click",()=>addTask("taskInput"));
-$("scheduleAdd").addEventListener("click",()=>addTask("scheduleInput"));
-["taskInput","scheduleInput"].forEach(id=>$(id).addEventListener("keydown",e=>{if(e.key==="Enter")addTask(id)}));
-$("focusButton").addEventListener("click",()=>{setSection("schedule");setTimeout(()=>$("scheduleInput").focus(),100)});
+$("taskInput").addEventListener("keydown",e=>{if(e.key==="Enter")addTask("taskInput")});
+$("focusButton").addEventListener("click",()=>{setSection("dashboard");setTimeout(()=>$("taskInput").focus(),100)});
 function toggleTheme(){
   state.theme=state.theme==="dark"?"light":"dark";
   document.body.classList.toggle("light",state.theme==="light");persist();
@@ -591,33 +592,78 @@ $("todayLabel").textContent=now.toLocaleDateString("tr-TR",{weekday:"long",day:"
 $("footerDate").textContent=" · "+now.getFullYear();
 document.body.classList.toggle("light",state.theme==="light");
 const DAYS=["Pazartesi","Salı","Çarşamba","Perşembe","Cuma","Cumartesi","Pazar"];
+let viewWeek=0;
+const fmtShort=d=>d.toLocaleDateString("tr-TR",{day:"numeric",month:"short"});
+function fixState(st){
+  let ch=false;const wk=weekStartKey(),t=todayIdx();
+  if(!Array.isArray(st.week)){st.week=[];ch=true}
+  st.week.forEach(w=>{
+    if(!w.week){w.week=wk;ch=true}
+    if(typeof w.done!=="boolean"){w.done=false;ch=true}
+    if(typeof w.time!=="string"){w.time="";ch=true}
+  });
+  if(Array.isArray(st.tasks)&&st.tasks.length){
+    st.tasks.forEach(k=>st.week.push({day:t,time:"",title:k.title,week:wk,done:!!k.done}));
+    st.tasks=[];ch=true;
+  }
+  return ch;
+}
 function renderWeek(){
-  const today=(new Date().getDay()+6)%7;
+  const dates=weekDates(viewWeek),wk=dayKey(dates[0]),today=todayIdx();
+  $("weekRange").textContent=fmtShort(dates[0])+" – "+fmtShort(dates[6]);
+  document.querySelectorAll(".week-tab").forEach(b=>b.classList.toggle("active",Number(b.dataset.wk)===viewWeek));
   $("weekGrid").innerHTML=DAYS.map((name,d)=>{
-    const slots=state.week.map((w,i)=>({...w,i})).filter(w=>w.day===d).sort((a,b)=>a.time.localeCompare(b.time));
-    return `<div class="card wday ${d===today?"today":""}"><h3>${name}${d===today?" · bugün":""}</h3>${
-      slots.map(w=>`<div class="wslot"><span class="wtime">${safeText(w.time)}</span><span class="wtitle">${safeText(w.title)}</span><button class="del" data-wdel="${w.i}" aria-label="Sil">✕</button></div>`).join("")
+    const slots=state.week.map((w,i)=>({...w,i})).filter(w=>w.week===wk&&w.day===d).sort(byTime);
+    const isToday=viewWeek===0&&d===today;
+    return `<div class="card wday ${isToday?"today":""}"><h3>${name}<small>${dates[d].getDate()}</small>${isToday?" · bugün":""}</h3>${
+      slots.map(w=>`<div class="wslot ${w.done?"done":""}"><input type="checkbox" data-wdone="${w.i}" ${w.done?"checked":""} aria-label="Tamamlandı"><span class="wtime">${safeText(w.time)}</span><span class="wtitle">${safeText(w.title)}</span><button class="del" data-wdel="${w.i}" aria-label="Sil">✕</button></div>`).join("")
       ||'<div class="empty">Boş gün</div>'}</div>`;
   }).join("");
-  document.querySelectorAll("[data-wdel]").forEach(el=>el.addEventListener("click",()=>{
-    state.week.splice(Number(el.dataset.wdel),1);persist();renderWeek();
-  }));
+  renderArchive();
 }
+function renderArchive(){
+  const cur=weekStartKey(),groups={};
+  state.week.forEach(w=>{if(w.week<cur)(groups[w.week]=groups[w.week]||[]).push(w)});
+  const keys=Object.keys(groups).sort().reverse();
+  $("archiveCount").textContent=keys.length+" hafta";
+  $("weekArchive").innerHTML=keys.map(k=>{
+    const [y,m,d]=k.split("-").map(Number),list=groups[k],done=list.filter(w=>w.done).length;
+    const days=DAYS.map((name,di)=>{
+      const sl=list.filter(w=>w.day===di).sort(byTime);
+      return sl.length?`<div class="arch-day"><strong>${name}</strong>${sl.map(w=>`<div class="arch-slot ${w.done?"ok":""}"><span>${w.done?"✓":"○"}</span><span class="wtime">${safeText(w.time)}</span><span>${safeText(w.title)}</span></div>`).join("")}</div>`:"";
+    }).join("");
+    return `<details class="arch"><summary><span>${fmtShort(new Date(y,m-1,d))} – ${fmtShort(new Date(y,m-1,d+6))} ${y}</span><span class="tag">${done}/${list.length} tamamlandı</span></summary>${days}</details>`;
+  }).join("")||'<div class="empty">Henüz arşivlenmiş program yok. Haftası dolan programlar burada görünür.</div>';
+}
+function weekChanged(){persist();renderWeek();renderTasks()}
+["weekGrid","taskList"].forEach(id=>{
+  $(id).addEventListener("click",e=>{
+    const del=e.target.closest("[data-wdel]");
+    if(del){state.week.splice(Number(del.dataset.wdel),1);weekChanged()}
+  });
+  $(id).addEventListener("change",e=>{
+    const c=e.target.closest("[data-wdone]");
+    if(c){state.week[Number(c.dataset.wdone)].done=c.checked;weekChanged()}
+  });
+});
+document.querySelectorAll(".week-tab").forEach(b=>b.addEventListener("click",()=>{viewWeek=Number(b.dataset.wk);renderWeek()}));
 function addWeekSlot(){
   const title=$("weekTitle").value.trim();
   if(!title){$("weekTitle").focus();return}
-  state.week.push({day:Number($("weekDay").value),time:$("weekTime").value||"00:00",title});
-  persist();renderWeek();$("weekTitle").value="";
+  state.week.push({day:Number($("weekDay").value),time:$("weekTime").value||"",title,week:dayKey(weekDates(viewWeek)[0]),done:false});
+  persist();renderWeek();renderTasks();$("weekTitle").value="";
 }
 $("weekAdd").addEventListener("click",addWeekSlot);
 $("weekTitle").addEventListener("keydown",e=>{if(e.key==="Enter")addWeekSlot()});
 function refreshAll(){
+  if(fixState(state))persist();
   renderTasks();renderChart();renderGoal();renderHistory();renderWeek();
   renderExamSubjects(document.querySelector(".exam-tab.active").dataset.exam);
   $("dailyNote").value=state.note||"";$("goalInput").value=state.goal;
   document.body.classList.toggle("light",state.theme==="light");
 }
 refreshAll();
+$("weekDay").value=String(todayIdx());
 </script>
 
 <!-- PlanZen Supabase giriş sistemi -->
