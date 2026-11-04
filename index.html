@@ -312,8 +312,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
   <section class="section" id="week">
     <div class="card">
       <div class="card-head"><div><h2>Haftalık program</h2><div class="card-sub">Haftası dolunca otomatik olarak arşive girer.</div></div><span class="tag" id="weekRange"></span></div>
-      <div class="week-tabs"><button class="btn week-tab active" data-wk="0">Bu hafta</button><button class="btn week-tab" data-wk="1">Gelecek hafta</button></div>
-      <div class="week-form" style="margin-top:12px">
+      <div class="week-form" style="margin-top:14px">
         <select id="weekDay" aria-label="Gün"><option value="0">Pazartesi</option><option value="1">Salı</option><option value="2">Çarşamba</option><option value="3">Perşembe</option><option value="4">Cuma</option><option value="5">Cumartesi</option><option value="6">Pazar</option></select>
         <input id="weekTime" type="time" aria-label="Saat (isteğe bağlı)">
         <input id="weekTitle" type="text" placeholder="Örn. AYT Matematik, 25 soru" maxlength="70">
@@ -592,7 +591,7 @@ $("todayLabel").textContent=now.toLocaleDateString("tr-TR",{weekday:"long",day:"
 $("footerDate").textContent=" · "+now.getFullYear();
 document.body.classList.toggle("light",state.theme==="light");
 const DAYS=["Pazartesi","Salı","Çarşamba","Perşembe","Cuma","Cumartesi","Pazar"];
-let viewWeek=0;
+const viewWeek=0;
 const fmtShort=d=>d.toLocaleDateString("tr-TR",{day:"numeric",month:"short"});
 function fixState(st){
   let ch=false;const wk=weekStartKey(),t=todayIdx();
@@ -611,7 +610,6 @@ function fixState(st){
 function renderWeek(){
   const dates=weekDates(viewWeek),wk=dayKey(dates[0]),today=todayIdx();
   $("weekRange").textContent=fmtShort(dates[0])+" – "+fmtShort(dates[6]);
-  document.querySelectorAll(".week-tab").forEach(b=>b.classList.toggle("active",Number(b.dataset.wk)===viewWeek));
   $("weekGrid").innerHTML=DAYS.map((name,d)=>{
     const slots=state.week.map((w,i)=>({...w,i})).filter(w=>w.week===wk&&w.day===d).sort(byTime);
     const isToday=viewWeek===0&&d===today;
@@ -646,7 +644,6 @@ function weekChanged(){persist();renderWeek();renderTasks()}
     if(c){state.week[Number(c.dataset.wdone)].done=c.checked;weekChanged()}
   });
 });
-document.querySelectorAll(".week-tab").forEach(b=>b.addEventListener("click",()=>{viewWeek=Number(b.dataset.wk);renderWeek()}));
 function addWeekSlot(){
   const title=$("weekTitle").value.trim();
   if(!title){$("weekTitle").focus();return}
