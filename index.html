@@ -276,6 +276,19 @@ button.profile-mini{background:none;border:0;color:inherit;text-align:left;width
 .mobile-nav{overflow:visible}
 .mobile-nav button.plus span{display:grid;place-items:center;width:46px;height:46px;margin-top:-22px;border-radius:50%;font-size:26px;color:#fff;background:linear-gradient(145deg,#b7a2fd,#7c5ce0);box-shadow:0 8px 20px rgba(124,92,224,.5),inset 0 1px 0 rgba(255,255,255,.4)}
 @media(max-width:650px){.top-actions .btn-label{display:none}.pmenu{top:64px;right:12px}}
+.sync-dot.busy{color:#facc15}
+.sync-pop{position:fixed;top:68px;right:60px;z-index:1001;max-width:min(300px,calc(100vw - 24px));padding:9px 12px;border-radius:12px;font-size:12px;line-height:1.5;background:color-mix(in srgb,var(--panel) 92%,transparent);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border:1px solid var(--glass-edge);box-shadow:0 10px 28px var(--glass-sh)}
+.wslot{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.wslot input,.wslot .wres input{-webkit-user-select:text;user-select:text}
+.wslot.dragging{opacity:.3}
+.wslot.ghost{position:fixed;z-index:3000;pointer-events:none;opacity:.94;margin:0;transform:scale(1.03);box-shadow:0 14px 34px rgba(0,0,0,.45)}
+.wday.drop{outline:2px dashed var(--accent);outline-offset:-2px}
+.arch.hist summary strong{display:block}
+.friend-row.clickable{cursor:pointer}.friend-row.sel{outline:1px solid var(--accent);outline-offset:4px;border-radius:12px}
+.vs{margin:12px 0}.vs-title{font-size:12px;font-weight:700;margin-bottom:4px}
+.vs-line{display:flex;align-items:center;gap:8px;margin:4px 0}
+.vs-bar{height:10px;border-radius:99px;flex:0 0 auto}.vs-bar.me{background:var(--accent)}.vs-bar.o{background:var(--orange)}
+.vs-end{font-size:12px;white-space:nowrap}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -301,8 +314,9 @@ button.profile-mini{background:none;border:0;color:inherit;text-align:left;width
 <main>
   <header class="topbar">
     <div><div class="eyebrow" id="todayLabel">BUGÜNÜN PLANI</div><h1 id="pageTitle">Çalışma alanın. 🌱</h1><p style="margin:8px 0 0">Küçük adımlar, sağlam ilerleme.</p></div>
-    <div class="top-actions"><button class="sync-dot" id="syncDot" hidden aria-label="Kaydetme durumu"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10a6 6 0 0 0-11.6-1.5A4.5 4.5 0 0 0 7 18h11a4 4 0 0 0 0-8z"/></svg></button><button class="btn" id="themeTop">☼ <span class="btn-label">Tema</span></button><button class="btn primary" id="focusButton">＋ <span class="btn-label">Görev ekle</span></button><button class="avatar-btn" id="profileTop" aria-label="Profil menüsü" aria-haspopup="menu" aria-expanded="false"><div class="avatar" id="topAvatar">?</div></button></div>
+    <div class="top-actions"><button class="sync-dot" id="syncDot" hidden aria-label="Kaydetme durumu"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10a6 6 0 0 0-11.6-1.5A4.5 4.5 0 0 0 7 18h11a4 4 0 0 0 0-8z"/></svg></button><button class="avatar-btn" id="profileTop" aria-label="Profil menüsü" aria-haspopup="menu" aria-expanded="false"><div class="avatar" id="topAvatar">?</div></button></div>
   </header>
+  <div class="sync-pop" id="syncPop" hidden></div>
   <div class="pmenu" id="pmenu" hidden role="menu">
     <div class="pm-head"><div class="avatar" id="pmAvatar">?</div><div><strong id="pmName">Adını gir</strong><div class="small" id="pmSub">Profilini düzenle</div></div></div>
     <button class="pm-item" data-section="profile" role="menuitem"><span>☺</span> Profil</button>
@@ -414,7 +428,7 @@ button.profile-mini{background:none;border:0;color:inherit;text-align:left;width
 
   <section class="section" id="week">
     <div class="card">
-      <div class="card-head"><div><h2>Haftalık program</h2><div class="card-sub">Haftası dolunca otomatik olarak arşive girer.</div></div><span class="tag" id="weekRange"></span></div>
+      <div class="card-head"><div><h2>Haftalık program</h2><div class="card-sub">Haftası dolunca otomatik olarak arşive girer. Bir bloğu basılı tutup başka güne sürükleyebilirsin.</div></div><span class="tag" id="weekRange"></span></div>
       <div class="week-form" style="margin-top:14px">
         <select id="weekDay" aria-label="Gün"><option value="0">Pazartesi</option><option value="1">Salı</option><option value="2">Çarşamba</option><option value="3">Perşembe</option><option value="4">Cuma</option><option value="5">Cumartesi</option><option value="6">Pazar</option></select>
         <input id="weekStart" type="time" aria-label="Başlangıç saati" title="Başlangıç">
@@ -445,7 +459,7 @@ button.profile-mini{background:none;border:0;color:inherit;text-align:left;width
       <div class="card">
         <h2>Yeni deneme ekle</h2><p>Çözdüğün derslerin doğru ve yanlış sayısını gir, neti sistem hesaplar (doğru eksi yanlışın dörtte biri). Çözmediğin dersleri boş bırak.</p>
         <label class="small" for="examName">Deneme adı</label><input id="examName" placeholder="Örn. Genel deneme 4" style="width:100%;margin:7px 0 13px">
-        <label class="small" for="examDate">Tarih</label><input id="examDate" type="date" style="width:100%;margin:7px 0 13px">
+        <label class="small" for="examDate">Tarih</label><input id="examDate" type="text" inputmode="numeric" placeholder="gg/aa/yyyy" maxlength="10" autocomplete="off" style="width:100%;margin:7px 0 13px">
         <div id="examForm"></div>
         <button class="btn primary" id="saveExam" style="width:100%;margin-top:16px">Denemeyi ekle</button>
         <div class="notice">Denemelerin hesabına kaydedilir. Başka bir cihazdan girince de burada görünür.</div>
@@ -480,6 +494,10 @@ button.profile-mini{background:none;border:0;color:inherit;text-align:left;width
           <div id="friendRequests" style="margin-top:8px"></div>
         </div>
       </div>
+    </div>
+    <div class="card" id="friendDetail" style="margin-top:16px" hidden>
+      <div class="card-head"><div><h2 id="fdTitle">Karşılaştırma</h2><div class="card-sub">Bu haftanın ve son denemelerin üzerinden. Altındaki çubuklarda "Sen" ve "O" yazar, önde olan 🏆 veya 👑 alır.</div></div></div>
+      <div id="fdBody"></div>
     </div>
   </section>
 
@@ -562,17 +580,19 @@ const byTime=(a,b)=>(a.start||"99:99").localeCompare(b.start||"99:99");
 const hm=t=>{const p=(t||"").split(":");return p.length===2?Number(p[0])*60+Number(p[1]):NaN};
 const slotMin=w=>{const a=hm(w.start),b=hm(w.end);return b>a?b-a:0};
 const slotNet=w=>w.correct!=null?netOf(w.correct,w.wrong||0):null;
+const solvedOf=w=>w.solved!=null?w.solved:(w.correct||0)+(w.wrong||0);
 let resOpen=null;
 function slotHtml(w){
   const range=w.start?(w.end?w.start+"–"+w.end:w.start):"Saatsiz";
   const detail=[w.topic,w.questions?w.questions+" soru":""].filter(Boolean).map(safeText).join(" · ");
   let res="";
   if(w.questions>0||w.correct!=null){
-    if(resOpen===w.i)res=`<div class="wres"><input type="number" min="0" max="999" placeholder="Doğru" data-rd value="${w.correct??""}" aria-label="Doğru"><input type="number" min="0" max="999" placeholder="Yanlış" data-ry value="${w.wrong??""}" aria-label="Yanlış"><button class="btn" data-rsave="${w.i}">Kaydet</button><button class="wlink" data-rcancel="1">vazgeç</button></div>`;
-    else if(w.correct!=null)res=`<div class="small" style="margin-top:4px">D ${w.correct} · Y ${w.wrong||0}${w.questions?" · Boş "+Math.max(0,w.questions-w.correct-(w.wrong||0)):""} · Net ${fmtNet(slotNet(w))} · <button class="wlink" data-ropen="${w.i}">düzenle</button></div>`;
-    else res=`<button class="wlink" data-ropen="${w.i}">Sonuç gir (doğru / yanlış)</button>`;
+    const c=w.correct||0,y=w.wrong||0,sv=solvedOf(w),bos=Math.max(0,sv-c-y);
+    if(resOpen===w.i)res=`<div class="wres"><input type="number" min="0" max="999" placeholder="Çözülen" data-rs value="${w.solved??""}" aria-label="Çözülen toplam soru"><input type="number" min="0" max="999" placeholder="Doğru" data-rd value="${w.correct??""}" aria-label="Doğru"><input type="number" min="0" max="999" placeholder="Yanlış" data-ry value="${w.wrong??""}" aria-label="Yanlış"><button class="btn" data-rsave="${w.i}">Kaydet</button><button class="wlink" data-rcancel="1">vazgeç</button></div>`;
+    else if(w.correct!=null)res=`<div class="small" style="margin-top:4px">Çözülen ${sv}${w.questions?" / "+w.questions+" ("+fmtPct(sv/w.questions*100)+")":""} · D ${c} · Y ${y}${bos>0?" · Boş "+bos:""} · Net ${fmtNet(slotNet(w))} · <button class="wlink" data-ropen="${w.i}">düzenle</button></div>`+(w.questions>0&&sv<w.questions?'<div class="small" style="opacity:.7;font-size:10px">Hedef tamamlanmadı</div>':"");
+    else res=`<button class="wlink" data-ropen="${w.i}">Sonuç gir (çözülen / doğru / yanlış)</button>`;
   }
-  return `<div class="wslot ${w.done?"done":""}"><input type="checkbox" data-wdone="${w.i}" ${w.done?"checked":""} aria-label="Tamamlandı"><div class="wbody"><div class="wtop"><span class="wtime">${safeText(range)}</span>${w.subject?`<b>${safeText(w.subject)}</b>`:""}</div>${detail?`<div class="wtitle">${detail}</div>`:""}${res}</div><button class="del" data-wdel="${w.i}" aria-label="Sil">✕</button></div>`;
+  return `<div class="wslot ${w.done?"done":""}" data-slot="${w.i}"><input type="checkbox" data-wdone="${w.i}" ${w.done?"checked":""} aria-label="Tamamlandı"><div class="wbody"><div class="wtop"><span class="wtime">${safeText(range)}</span>${w.subject?`<b>${safeText(w.subject)}</b>`:""}</div>${detail?`<div class="wtitle">${detail}</div>`:""}${res}</div><button class="del" data-wdel="${w.i}" aria-label="Sil">✕</button></div>`;
 }
 function renderTasks(){
   const wk=weekStartKey(),t=todayIdx();
@@ -633,7 +653,7 @@ function renderSubjectStats(){
   state.week.forEach(w=>{
     if(w.correct==null||!w.subject)return;const [y,m,d]=w.week.split("-").map(Number);
     if(!inP(dayKey(new Date(y,m-1,d+w.day))))return;
-    add(w.subject,w.topic,(w.correct||0)+(w.wrong||0),w.correct||0,w.wrong||0);
+    add(w.subject,w.topic,solvedOf(w),w.correct||0,w.wrong||0);
   });
   (state.qlog||[]).forEach(e=>{if(inP(e.date))add(e.subject,e.topic,e.n,e.d||0,e.y||0)});
   const rate=v=>v.d+v.y>0?v.d/(v.d+v.y)*100:null;
@@ -693,13 +713,11 @@ document.querySelectorAll("[data-section]").forEach(b=>b.addEventListener("click
 document.querySelectorAll("[data-goto]").forEach(b=>b.addEventListener("click",()=>setSection(b.dataset.goto)));
 $("addTask").addEventListener("click",()=>addTask("taskInput"));
 $("taskInput").addEventListener("keydown",e=>{if(e.key==="Enter")addTask("taskInput")});
-$("focusButton").addEventListener("click",()=>{setSection("dashboard");setTimeout(()=>$("taskInput").focus(),100)});
 function toggleTheme(){
   state.theme=state.theme==="dark"?"light":"dark";
   document.body.classList.toggle("light",state.theme==="light");persist();
 }
 $("themeButton").addEventListener("click",toggleTheme);
-$("themeTop").addEventListener("click",toggleTheme);
 document.querySelectorAll(".exam-tab").forEach(b=>b.addEventListener("click",()=>{
   document.querySelectorAll(".exam-tab").forEach(x=>x.classList.toggle("active",x===b));
   renderExamSubjects(b.dataset.exam);
@@ -709,6 +727,9 @@ const EXAM={
   AYT:[["Matematik",40],["Fizik",14],["Kimya",13],["Biyoloji",13],["Edebiyat",24],["Tarih-1",10],["Coğrafya-1",6],["Tarih-2",11],["Coğrafya-2",11],["Felsefe Grubu",12],["Din Kültürü / Ek Felsefe",6],["Yabancı Dil (YDT)",80]]};
 const OLD_EXAM={TYT:[["Türkçe",40],["Matematik",40],["Sosyal Bilimler",20],["Fen Bilimleri",20]],AYT:[["Matematik",40],["Fizik",14],["Kimya",13],["Biyoloji",13]]};
 const fmtNet=n=>(Math.round(n*100)/100).toLocaleString("tr-TR");
+const fmtDate=iso=>{const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(iso||"");return m?m[3]+"/"+m[2]+"/"+m[1]:(iso||"")};
+function parseTrDate(v){const m=/^(\d{2})\/(\d{2})\/(\d{4})$/.exec((v||"").trim());if(!m)return null;const d=+m[1],mo=+m[2],y=+m[3],dt=new Date(y,mo-1,d);return dt.getFullYear()===y&&dt.getMonth()===mo-1&&dt.getDate()===d?y+"-"+m[2]+"-"+m[1]:null}
+$("examDate").addEventListener("input",e=>{const d=e.target.value.replace(/\D/g,"").slice(0,8);e.target.value=d.length>4?d.slice(0,2)+"/"+d.slice(2,4)+"/"+d.slice(4):d.length>2?d.slice(0,2)+"/"+d.slice(2):d});
 const fmtPct=v=>"%"+(Math.round(v*10)/10).toLocaleString("tr-TR");
 const netOf=(d,y)=>Math.round((d-y/4)*100)/100;
 const activeExam=()=>document.querySelector(".exam-tab.active").dataset.exam;
@@ -772,7 +793,7 @@ function renderLastExam(){
   const ex=lastExam();
   if(!ex){$("lastExamTag").textContent="–";$("lastExamBox").innerHTML='<div class="empty">Henüz deneme eklemedin. İlk denemeni Deneme Analizi sayfasından ekle.</div>';return}
   $("lastExamTag").textContent=ex.type;
-  $("lastExamBox").innerHTML=`<div class="eyebrow">TOPLAM NET</div><div class="exam-total">${fmtNet(ex.total)}</div><p style="margin:0">${safeText(ex.name)} · ${safeText(ex.date)}</p><div class="small" style="margin:6px 0 10px">${goalLeftText(ex.type,ex)}</div>`+itemBars(solvedItems(ex));
+  $("lastExamBox").innerHTML=`<div class="eyebrow">TOPLAM NET</div><div class="exam-total">${fmtNet(ex.total)}</div><p style="margin:0">${safeText(ex.name)} · ${fmtDate(ex.date)}</p><div class="small" style="margin:6px 0 10px">${goalLeftText(ex.type,ex)}</div>`+itemBars(solvedItems(ex));
 }
 const PIE_COLORS=["var(--accent)","var(--blue)","var(--green)","var(--orange)","#f472b6","#22d3ee","#facc15","#fb7185","#a3e635","#c084fc","#38bdf8","#fdba74"];
 function renderPie(subjects,label){
@@ -807,17 +828,23 @@ function renderPie(subjects,label){
   show(null);
 }
 function renderHistory(){
-  $("examHistory").innerHTML=state.exams.length?state.exams.map((ex,i)=>({ex,i})).reverse().map(({ex,i})=>`
-    <div class="friend-row"><div class="avatar">${safeText(ex.type)}</div><div class="friend-info"><strong style="font-size:12px">${safeText(ex.name)}</strong><div class="small">${safeText(ex.date)} · ${safeText(ex.type)}</div></div><strong>${fmtNet(ex.total)} net</strong><button class="del" data-exdel="${i}" aria-label="Denemeyi sil">✕</button></div>`).join(""):'<div class="empty">Henüz deneme eklemedin.</div>';
+  $("examHistory").innerHTML=state.exams.length?state.exams.map((ex,i)=>({ex,i})).reverse().map(({ex,i})=>{
+    const items=solvedItems(ex);
+    return `<details class="arch hist"><summary><span style="min-width:0"><strong style="font-size:13px">${safeText(ex.name)}</strong><span class="small">${fmtDate(ex.date)} · ${safeText(ex.type)}</span></span><span style="display:flex;align-items:center;gap:8px"><strong>${fmtNet(ex.total)} net</strong><button class="del" data-exdel="${i}" aria-label="Denemeyi sil">✕</button></span></summary><div style="margin-top:10px">${
+      items.map((x,k)=>{const bos=x.d!=null?Math.max(0,x.max-x.d-x.y):0;return barRow(safeText(x.n),x.net/x.max*100,fmtNet(x.net)+" / "+x.max+(x.d!=null?" · D"+x.d+" Y"+x.y+(bos>0?" Boş "+bos:""):""),PIE_COLORS[k%PIE_COLORS.length])}).join("")||'<div class="empty">Ders detayı yok.</div>'}</div></details>`;
+  }).join(""):'<div class="empty">Henüz deneme eklemedin.</div>';
 }
 $("examHistory").addEventListener("click",e=>{
   const b=e.target.closest("[data-exdel]");if(!b)return;
+  e.preventDefault();if(!confirm("Bu denemeyi silmek istiyor musun?"))return;
   state.exams.splice(Number(b.dataset.exdel),1);persist();renderHistory();
   renderExamSubjects(document.querySelector(".exam-tab.active").dataset.exam);renderLastExam();
 });
 $("saveExam").addEventListener("click",()=>{
   const name=$("examName").value.trim();
   if(!name){$("examName").focus();return}
+  const dv=$("examDate").value.trim(),iso=dv?parseTrDate(dv):dayKey(new Date());
+  if(!iso){alert("Tarihi gg/aa/yyyy biçiminde yaz (örnek: 05/11/2026).");return}
   const type=activeExam(),items=[];
   for(let i=0;i<EXAM[type].length;i++){
     const [n,max]=EXAM[type][i],dv=$("exd"+i).value,yv=$("exy"+i).value;
@@ -829,8 +856,8 @@ $("saveExam").addEventListener("click",()=>{
   }
   if(!items.length){alert("En az bir dersin doğru veya yanlış sayısını gir.");return}
   const total=Math.round(items.reduce((a,x)=>a+x.net,0)*100)/100;
-  state.exams.push({name,date:$("examDate").value||dayKey(new Date()),type,total,items});
-  persist();renderHistory();buildExamForm(type);renderExamSubjects(type);renderLastExam();$("examName").value="";
+  state.exams.push({name,date:iso,type,total,items});
+  persist();renderHistory();buildExamForm(type);renderExamSubjects(type);renderLastExam();$("examName").value="";$("examDate").value=fmtDate(dayKey(new Date()));
   alert("Deneme hesabına kaydedildi.");
 });
 $("saveGoal").addEventListener("click",()=>{
@@ -942,7 +969,7 @@ function renderWeek(){
   $("weekGrid").innerHTML=DAYS.map((name,d)=>{
     const slots=state.week.map((w,i)=>({...w,i})).filter(w=>w.week===wk&&w.day===d).sort(byTime);
     const isToday=viewWeek===0&&d===today;
-    return `<div class="card wday ${isToday?"today":""}"><h3>${name}<small>${dates[d].getDate()}</small>${isToday?" · bugün":""}</h3>${slots.map(slotHtml).join("")||'<div class="empty">Boş gün</div>'}</div>`;
+    return `<div class="card wday ${isToday?"today":""}" data-day="${d}"><h3>${name}<small>${dates[d].getDate()}</small>${isToday?" · bugün":""}</h3>${slots.map(slotHtml).join("")||'<div class="empty">Boş gün</div>'}</div>`;
   }).join("");
   renderArchive();
 }
@@ -971,15 +998,54 @@ function weekClick(e){
   if(t.closest("[data-rcancel]")){resOpen=null;renderWeek();renderTasks();return}
   const sv=t.closest("[data-rsave]");
   if(sv){
-    const box=sv.closest(".wres"),w=state.week[Number(sv.dataset.rsave)];
-    const d=Math.max(0,Math.floor(Number(box.querySelector("[data-rd]").value)||0)),y=Math.max(0,Math.floor(Number(box.querySelector("[data-ry]").value)||0));
-    if(w.questions>0&&d+y>w.questions){alert("Doğru + yanlış, planladığın soru sayısını ("+w.questions+") geçemez.");return}
-    w.correct=d;w.wrong=y;w.done=true;resOpen=null;weekChanged();
+    const box=sv.closest(".wres"),w=state.week[Number(sv.dataset.rsave)],g=q=>box.querySelector(q).value,n=v=>Math.max(0,Math.floor(Number(v)||0));
+    const d=n(g("[data-rd]")),y=n(g("[data-ry]")),sol=g("[data-rs]")===""?d+y:n(g("[data-rs]"));
+    if(d+y>sol){alert("Doğru + yanlış, çözdüğün soru sayısını ("+sol+") geçemez.");return}
+    w.solved=sol;w.correct=d;w.wrong=y;w.done=true;resOpen=null;weekChanged();
   }
 }
 ["weekGrid","taskList"].forEach(id=>{
   $(id).addEventListener("click",weekClick);
   $(id).addEventListener("change",e=>{const c=e.target.closest("[data-wdone]");if(c){state.week[Number(c.dataset.wdone)].done=c.checked;weekChanged()}});
+});
+let dnd=null,lp=null,tpt=null;
+const NOT_DRAG="input,button,select,textarea,a,.wres,.wlink";
+function dndMove(x,y){
+  dnd.g.style.left=(x-dnd.ox)+"px";dnd.g.style.top=(y-dnd.oy)+"px";
+  const el=document.elementFromPoint(x,y),c=el&&el.closest(".wday"),d=c?Number(c.dataset.day):null;
+  if(d!==dnd.over){document.querySelectorAll(".wday.drop").forEach(n=>n.classList.remove("drop"));dnd.over=d;if(c)c.classList.add("drop")}
+  if(y<90)window.scrollBy(0,-14);else if(y>window.innerHeight-90)window.scrollBy(0,14);
+}
+function dndStart(slot,x,y){
+  const r=slot.getBoundingClientRect(),g=slot.cloneNode(true);
+  g.classList.add("ghost");g.style.width=r.width+"px";document.body.appendChild(g);
+  dnd={i:Number(slot.dataset.slot),slot,g,ox:x-r.left,oy:y-r.top,over:null};slot.classList.add("dragging");dndMove(x,y);
+  if(navigator.vibrate)navigator.vibrate(12);
+}
+function dndEnd(){
+  if(!dnd)return;const {i,over,g,slot}=dnd;dnd=null;g.remove();slot.classList.remove("dragging");
+  document.querySelectorAll(".wday.drop").forEach(n=>n.classList.remove("drop"));
+  if(over!=null&&state.week[i]&&state.week[i].day!==over){state.week[i].day=over;weekChanged()}
+}
+const wg=$("weekGrid");
+wg.addEventListener("touchstart",e=>{
+  const slot=e.target.closest(".wslot");if(!slot||e.target.closest(NOT_DRAG)||dnd)return;
+  const t=e.touches[0];tpt={x:t.clientX,y:t.clientY};clearTimeout(lp);
+  lp=setTimeout(()=>{lp=null;dndStart(slot,tpt.x,tpt.y)},380);
+},{passive:true});
+wg.addEventListener("touchmove",e=>{
+  const t=e.touches[0];
+  if(dnd){e.preventDefault();dndMove(t.clientX,t.clientY);return}
+  if(lp&&tpt&&Math.hypot(t.clientX-tpt.x,t.clientY-tpt.y)>10){clearTimeout(lp);lp=null}
+},{passive:false});
+["touchend","touchcancel"].forEach(ev=>wg.addEventListener(ev,()=>{clearTimeout(lp);lp=null;dndEnd()}));
+wg.addEventListener("contextmenu",e=>{if(e.target.closest(".wslot")&&!e.target.closest(NOT_DRAG))e.preventDefault()});
+wg.addEventListener("mousedown",e=>{
+  const slot=e.target.closest(".wslot");if(!slot||e.target.closest(NOT_DRAG)||e.button!==0)return;
+  const p={x:e.clientX,y:e.clientY};
+  const mv=ev=>{if(!dnd&&Math.hypot(ev.clientX-p.x,ev.clientY-p.y)>6)dndStart(slot,p.x,p.y);if(dnd)dndMove(ev.clientX,ev.clientY)};
+  const up=()=>{document.removeEventListener("mousemove",mv);document.removeEventListener("mouseup",up);dndEnd()};
+  document.addEventListener("mousemove",mv);document.addEventListener("mouseup",up);
 });
 function addWeekSlot(){
   const subject=$("weekSubject").value,topic=$("weekTopic").value.trim(),start=$("weekStart").value,end=$("weekEnd").value;
@@ -993,7 +1059,7 @@ $("weekAdd").addEventListener("click",addWeekSlot);
 $("weekTopic").addEventListener("keydown",e=>{if(e.key==="Enter")addWeekSlot()});
 function solvedOn(k){
   let n=0;(state.qlog||[]).forEach(e=>{if(e.date===k)n+=e.n});
-  state.week.forEach(w=>{if(w.correct!=null){const [y,m,d]=w.week.split("-").map(Number);if(dayKey(new Date(y,m-1,d+w.day))===k)n+=w.correct+(w.wrong||0)}});
+  state.week.forEach(w=>{if(w.correct!=null){const [y,m,d]=w.week.split("-").map(Number);if(dayKey(new Date(y,m-1,d+w.day))===k)n+=solvedOf(w)}});
   return n;
 }
 function canonTopic(subject,t){
@@ -1008,7 +1074,7 @@ function topicsFor(subject){
 }
 function fillTopics(){$("qTopics").innerHTML=topicsFor($("qSubject").value).map(t=>`<option value="${safeText(t)}">`).join("")}
 $("qSubject").addEventListener("change",fillTopics);
-const qEntryHtml=e=>`<div class="wslot"><div class="wbody"><div class="wtop"><b>${safeText(e.subject)}</b>${e.topic?`<span class="small">${safeText(e.topic)}</span>`:""}</div><div class="small">${e.n} soru${e.d!=null?` · D ${e.d} · Y ${e.y} · Boş ${Math.max(0,e.n-e.d-e.y)} · Net ${fmtNet(netOf(e.d,e.y))}${e.d+e.y>0?" · "+fmtPct(e.d/(e.d+e.y)*100):""}`:""}</div></div></div>`;
+const qEntryHtml=e=>`<div class="wslot"><div class="wbody"><div class="wtop"><b>${safeText(e.subject)}</b>${e.topic?`<span class="small">${safeText(e.topic)}</span>`:""}</div><div class="small">${e.n} soru${e.d!=null?` · D ${e.d} · Y ${e.y}${e.n-e.d-e.y>0?" · Boş "+(e.n-e.d-e.y):""} · Net ${fmtNet(netOf(e.d,e.y))}${e.d+e.y>0?" · "+fmtPct(e.d/(e.d+e.y)*100):""}`:""}</div></div></div>`;
 function renderQToday(){
   const k=dayKey(new Date()),list=(state.qlog||[]).filter(e=>e.date===k).reverse(),tot=list.reduce((a,e)=>a+e.n,0);
   $("qToday").innerHTML=list.length?`<div class="small" style="margin:12px 0 4px">Bugün eklediklerin · toplam <b>${tot}</b> soru</div>`+list.map(qEntryHtml).join(""):'<div class="empty">Bugün henüz soru eklemedin.</div>';
@@ -1029,9 +1095,17 @@ $("qAddBtn").addEventListener("click",()=>{
   msg(subject+" için "+n+" soru eklendi.");qChanged();
 });
 $("qUndo").addEventListener("click",()=>{if((state.qlog||[]).length){state.qlog.pop();$("qMsg").textContent="Son ekleme geri alındı.";qChanged()}});
+function examSnap(type){const e=lastExam(type);if(!e)return null;return {n:e.name,date:e.date,total:e.total,items:examItems(e).filter(x=>x.d!=null||x.net>0).map(x=>({n:x.n,max:x.max,d:x.d??null,y:x.y??null,net:x.net}))}}
+function totalSolved(){let n=0;(state.qlog||[]).forEach(e=>n+=e.n);state.week.forEach(w=>{if(w.correct!=null)n+=solvedOf(w)});return n}
+function buildStats(){
+  const lo=loyalty(),wk=weekStartKey();
+  return {v:1,wk,weekMin:weekMinutes(),totalMin:Math.round(Object.values(state.log).reduce((a,v)=>a+v,0)),solved:totalSolved(),
+    loyalty:lo.score==null?null:Math.round(lo.score*10)/10,tyt:examSnap("TYT"),ayt:examSnap("AYT"),
+    prog:state.week.filter(w=>w.week===wk).map(w=>({d:w.day,s:w.start,e:w.end,u:w.subject,t:w.topic,q:w.questions,x:w.done?1:0}))};
+}
 function renderProfileSummary(){
   const p=state.profile||{},all=Object.values(state.log).reduce((a,v)=>a+v,0);
-  let qs=0;(state.qlog||[]).forEach(e=>qs+=e.n);state.week.forEach(w=>{if(w.correct!=null)qs+=(w.correct||0)+(w.wrong||0)});
+  let qs=0;(state.qlog||[]).forEach(e=>qs+=e.n);state.week.forEach(w=>{if(w.correct!=null)qs+=solvedOf(w)});
   const row=(l,v)=>`<div class="goal-row"><span>${l}</span><strong>${v}</strong></div>`;
   const ex=(type,key)=>{const e=lastExam(type),t=p[key];return e?"Son "+fmtNet(e.total)+(t?" / hedef "+fmtNet(t):""):(t?"Hedef "+fmtNet(t):"–")};
   $("profSummaryBox").innerHTML=row("Hedef",safeText([p.university,p.department].filter(Boolean).join(" · ")||"Henüz girmedin"))+row("TYT",ex("TYT","targetTYT"))+row("AYT",ex("AYT","targetAYT"))+row("Toplam çalışma",fmtMin(all))+row("Çözülen soru",qs);
@@ -1040,8 +1114,9 @@ const pmenu=$("pmenu");
 function closeMenu(){pmenu.hidden=true;$("profileTop").setAttribute("aria-expanded","false")}
 function toggleMenu(){const h=pmenu.hidden;pmenu.hidden=!h;$("profileTop").setAttribute("aria-expanded",String(h))}
 $("profileTop").addEventListener("click",e=>{e.stopPropagation();toggleMenu()});
-$("syncDot").addEventListener("click",e=>{e.stopPropagation();toggleMenu()});
-document.addEventListener("click",e=>{if(!pmenu.hidden&&!pmenu.contains(e.target))closeMenu()});
+let syncT=null;
+$("syncDot").addEventListener("click",e=>{e.stopPropagation();closeMenu();const p=$("syncPop");p.textContent=$("syncDot").title||"Henüz kayıt yok";p.hidden=false;clearTimeout(syncT);syncT=setTimeout(()=>{p.hidden=true},4000)});
+document.addEventListener("click",e=>{if(!pmenu.hidden&&!pmenu.contains(e.target))closeMenu();$("syncPop").hidden=true});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeMenu()});
 pmenu.addEventListener("click",e=>{if(e.target.closest("[data-section]"))closeMenu()});
 $("themeSet").addEventListener("click",toggleTheme);
@@ -1060,6 +1135,7 @@ function refreshAll(){
 }
 refreshAll();
 $("weekDay").value=String(todayIdx());
+$("examDate").value=fmtDate(dayKey(new Date()));
 </script>
 
 <!-- PlanZen Supabase giriş sistemi -->
@@ -1265,12 +1341,23 @@ $("weekDay").value=String(todayIdx());
     if (!error) { profile.week_minutes = wm; profile.week_start = ws; }
   }
 
+  let lastStats = "", statsWarned = false;
+  async function pushStats() {
+    if (!uid || !profile) return;
+    const st = buildStats(), js = JSON.stringify(st);
+    if (js === lastStats) return;
+    const { error } = await db.from("profiles").update({ stats: st }).eq("id", uid);
+    if (error) { if (!statsWarned) { statsWarned = true; msg("Arkadaşların detaylarını görebilmesi için yeni güncelleme SQL'ini çalıştırman gerekiyor."); } return; }
+    lastStats = js;
+  }
   async function saveNow() {
     if (!uid || !loaded) return;
-    const { error } = await db.from("user_data").upsert({ user_id: uid, data: state, updated_at: new Date().toISOString() });
-    if (error) { setSync("Kaydedilemedi: " + error.message); return; }
-    setSync("Kaydedildi ✓");
-    pushWeek();
+    try {
+      const { error } = await db.from("user_data").upsert({ user_id: uid, data: state, updated_at: new Date().toISOString() });
+      if (error) { setSync("Kaydedilemedi: " + error.message); return; }
+      setSync("Kaydedildi ✓");
+      pushWeek(); pushStats();
+    } catch (e) { setSync("Kaydedilemedi: bağlantı hatası"); }
   }
   window.planZenSync = () => {
     if (!uid || !loaded) return;
@@ -1298,9 +1385,50 @@ $("weekDay").value=String(todayIdx());
     $("friendAddBox").style.display = profile ? "block" : "none";
     $("myUsername").textContent = profile ? "@" + profile.username : "Kullanıcı adı seç";
     $("profHandle").textContent = profile ? "@" + profile.username : "Kullanıcı adı yok";
-    if (profile) { pushWeek(); pushProfileFields(); }
+    if (profile) { pushWeek(); pushProfileFields(); pushStats(); }
     return true;
   }
+
+  let friendsCache = {}, selFriend = null;
+  const numOrNull = v => (typeof v === "number" && isFinite(v)) ? v : null;
+  function vsRow(title, a, b, fmt, icon) {
+    a = numOrNull(a); b = numOrNull(b);
+    const max = Math.max(a || 0, b || 0, 1), win = a != null && b != null && a !== b ? (a > b ? "me" : "o") : "";
+    const line = (lb, v, who) => `<div class="vs-line"><div class="vs-bar ${who}" style="width:${v == null ? 0 : Math.max(v > 0 ? 2 : 0, v / max * 66)}%"></div><span class="vs-end">${lb} · ${v == null ? "–" : fmt(v)}${win === who ? " " + icon : ""}</span></div>`;
+    return `<div class="vs"><div class="vs-title">${safeText(title)}</div>${line("Sen", a, "me")}${line("O", b, "o")}</div>`;
+  }
+  function examBlock(label, mine, theirs) {
+    const ok = e => e && Array.isArray(e.items) ? e : null;
+    mine = ok(mine); theirs = ok(theirs);
+    if (!mine && !theirs) return "";
+    let h = `<h3 style="margin:18px 0 4px">${label}</h3>` + vsRow("Toplam net (son deneme)", mine ? mine.total : null, theirs ? theirs.total : null, fmtNet, "🏆");
+    const names = [...new Set([...(mine ? mine.items : []), ...(theirs ? theirs.items : [])].map(x => String(x.n)))];
+    const get = (ex, n) => { const it = ex && ex.items.find(x => String(x.n) === n); return it ? it.net : null; };
+    names.forEach(n => { h += vsRow(n, get(mine, n), get(theirs, n), fmtNet, "👑"); });
+    return h;
+  }
+  function renderFriendDetail() {
+    const box = $("friendDetail"), f = friendsCache[selFriend];
+    if (!f) { box.hidden = true; return; }
+    box.hidden = false;
+    $("fdTitle").textContent = "Sen ve " + f.name;
+    const me = buildStats(), th = f.stats && typeof f.stats === "object" && f.stats.v ? f.stats : null;
+    if (!th) { $("fdBody").innerHTML = '<div class="empty">' + safeText(f.name) + " henüz detaylarını paylaşmadı. Uygulamayı açıp bir şey kaydedince burada görünür.</div>"; return; }
+    const same = th.wk === me.wk;
+    let h = vsRow("Bu hafta çalışma", me.weekMin, same ? th.weekMin : 0, fmtMin, "🏆")
+      + vsRow("Toplam çalışma", me.totalMin, th.totalMin, fmtMin, "🏆")
+      + vsRow("Çözülen soru (toplam)", me.solved, th.solved, n => String(n), "🏆")
+      + vsRow("Program sadakati (bu hafta)", me.loyalty, same ? th.loyalty : null, fmtPct, "🏆");
+    h += examBlock("TYT netleri", me.tyt, th.tyt) + examBlock("AYT netleri", me.ayt, th.ayt);
+    if (same && Array.isArray(th.prog) && th.prog.length) {
+      h += `<h3 style="margin:18px 0 6px">${safeText(f.name)} bu hafta ne planlamış</h3>` + DAYS.map((nm, di) => {
+        const sl = th.prog.filter(x => x && x.d === di).sort((a, b) => String(a.s || "99").localeCompare(String(b.s || "99")));
+        return sl.length ? `<div class="arch-day"><strong>${nm}</strong>${sl.map(x => `<div class="arch-slot ${x.x ? "ok" : ""}"><span>${x.x ? "✓" : "○"}</span><span class="wtime">${safeText(String(x.s || "") + (x.e ? "–" + x.e : ""))}</span><span>${[x.u && "<b>" + safeText(String(x.u)) + "</b>", x.t && safeText(String(x.t)), x.q ? safeText(String(x.q)) + " soru" : ""].filter(Boolean).join(" · ")}</span></div>`).join("")}</div>` : "";
+      }).join("");
+    }
+    $("fdBody").innerHTML = h;
+  }
+  $("friendBoard").addEventListener("click", e => { const r = e.target.closest("[data-fid]"); if (r) { selFriend = r.dataset.fid; loadFriends(); } });
 
   async function loadFriends() {
     if (!uid) return;
@@ -1310,20 +1438,25 @@ $("weekDay").value=String(todayIdx());
     const ids = [...new Set(rows.flatMap(r => [r.requester, r.addressee]))].filter(i => i !== uid);
     const people = {};
     if (ids.length) {
-      let ps;
-      { const r = await db.from("profiles").select("id,username,display_name,avatar,week_minutes,week_start").in("id", ids);
-        ps = r.error ? (await db.from("profiles").select("id,username,week_minutes,week_start").in("id", ids)).data : r.data; }
+      let ps = null;
+      for (const cols of ["id,username,display_name,avatar,week_minutes,week_start,stats", "id,username,display_name,avatar,week_minutes,week_start", "id,username,week_minutes,week_start"]) {
+        const r = await db.from("profiles").select(cols).in("id", ids);
+        if (!r.error) { ps = r.data; break; }
+      }
       (ps || []).forEach(p => people[p.id] = p);
     }
     const ws = weekStartKey();
     const other = r => people[r.requester === uid ? r.addressee : r.requester];
     const me = state.profile || {};
     const board = [{ name: (me.name || profile.username) + " (sen)", handle: "@" + profile.username, av: me.avatar, m: weekMinutes() }]
-      .concat(rows.filter(r => r.status === "accepted").map(other).filter(Boolean).map(p => ({ name: (p.display_name && p.display_name !== "PlanZen Kullanıcısı") ? p.display_name : p.username, handle: "@" + p.username, av: p.avatar, m: p.week_start === ws ? p.week_minutes : 0 })))
+      .concat(rows.filter(r => r.status === "accepted").map(other).filter(Boolean).map(p => ({ name: (p.display_name && p.display_name !== "PlanZen Kullanıcısı") ? p.display_name : p.username, handle: "@" + p.username, id: p.id, stats: p.stats, av: p.avatar, m: p.week_start === ws ? p.week_minutes : 0 })))
       .sort((a, b) => b.m - a.m);
     const top = Math.max(...board.map(b => b.m), 1);
-    $("friendBoard").innerHTML = board.map(b => `<div class="friend-row">${avatarHtml(b.name, b.av)}<div class="friend-info"><strong style="font-size:12px">${safeText(b.name)}</strong><div class="small">${safeText(b.handle)}</div><div class="progress" style="margin-top:8px"><span style="width:${b.m / top * 100}%;background:var(--accent)"></span></div></div><strong style="font-size:12px;white-space:nowrap">${fmtMin(b.m)}</strong></div>`).join("")
+    friendsCache = {}; board.forEach(b => { if (b.id) friendsCache[b.id] = b; });
+    if (!selFriend || !friendsCache[selFriend]) selFriend = (board.find(b => b.id) || {}).id || null;
+    $("friendBoard").innerHTML = board.map(b => `<div class="friend-row${b.id ? " clickable" : ""}${b.id && b.id === selFriend ? " sel" : ""}"${b.id ? ' data-fid="' + b.id + '"' : ""}>${avatarHtml(b.name, b.av)}<div class="friend-info"><strong style="font-size:12px">${safeText(b.name)}</strong><div class="small">${safeText(b.handle)}</div><div class="progress" style="margin-top:8px"><span style="width:${b.m / top * 100}%;background:var(--accent)"></span></div></div><strong style="font-size:12px;white-space:nowrap">${fmtMin(b.m)}</strong></div>`).join("")
       + (board.length === 1 ? '<div class="empty">Henüz arkadaşın yok. Sağdan kullanıcı adıyla istek gönder.</div>' : "");
+    renderFriendDetail();
     const incoming = rows.filter(r => r.status === "pending" && r.addressee === uid && people[r.requester]);
     const outgoing = rows.filter(r => r.status === "pending" && r.requester === uid && people[r.addressee]);
     $("friendRequests").innerHTML =
