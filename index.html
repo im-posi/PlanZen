@@ -227,7 +227,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 @media(max-width:1100px){.week{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.week{grid-template-columns:1fr}.week-form #weekTopic{flex-basis:100%}.week-form #weekAdd{flex:1 1 100%}}
 .week-tabs{display:flex;gap:8px;margin-top:14px}
-.week-tab.active,.st-tab.active,.wk-tab.active{background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 38%,transparent),color-mix(in srgb,var(--accent) 12%,transparent));color:var(--accent);border-color:var(--accent)}
+.week-tab.active,.st-tab.active,.wk-tab.active,.theme-tab.active{background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 38%,transparent),color-mix(in srgb,var(--accent) 12%,transparent));color:var(--accent);border-color:var(--accent)}
 .wday h3 small{color:var(--muted);font-weight:500;margin-left:4px}
 .wslot input[type=checkbox]{margin:1px 0 0;accent-color:var(--accent);flex-shrink:0}
 .wslot.done .wtitle{text-decoration:line-through;opacity:.55}
@@ -425,7 +425,17 @@ button.profile-mini{background:none;border:0;color:inherit;text-align:left;width
   </section>
 
   <section class="section" id="settings">
-    <div class="card" style="margin-bottom:16px"><h2>Görünüm</h2><p>Koyu ve açık tema arasında geçiş yap.</p><button class="btn" id="themeSet">Temayı değiştir</button></div>
+    <div class="card" style="margin-bottom:16px">
+      <h2>Görünüm</h2><p>Tema: hep koyu, hep açık ya da saate göre kendiliğinden değişen dinamik.</p>
+      <div class="week-tabs"><button class="btn theme-tab" data-m="dark">Koyu</button><button class="btn theme-tab" data-m="light">Açık</button><button class="btn theme-tab" data-m="auto">Dinamik</button></div>
+      <div id="themeAuto" hidden style="margin-top:14px">
+        <div class="q-form" style="margin-top:0">
+          <div style="flex:1 1 150px"><label class="small" for="themeLight">Açık tema başlangıcı</label><input id="themeLight" type="time" value="07:00" style="width:100%;margin-top:7px"></div>
+          <div style="flex:1 1 150px"><label class="small" for="themeDark">Koyu tema başlangıcı</label><input id="themeDark" type="time" value="17:00" style="width:100%;margin-top:7px"></div>
+        </div>
+        <div class="small" id="themeAutoNote" style="margin-top:10px;line-height:1.6"></div>
+      </div>
+    </div>
     <div style="margin-bottom:16px"><div class="card">
         <h2>Hedeflerim</h2><p>Kendine ulaşılabilir hedefler koy, ilerlemeni düzenli takip et.</p>
         <div class="goal-row"><span>Günlük çalışma</span><strong id="goalDisplay">3 saat</strong></div>
@@ -729,10 +739,34 @@ document.querySelectorAll("[data-section]").forEach(b=>b.addEventListener("click
 document.querySelectorAll("[data-goto]").forEach(b=>b.addEventListener("click",()=>setSection(b.dataset.goto)));
 $("addTask").addEventListener("click",()=>addTask("taskInput"));
 $("taskInput").addEventListener("keydown",e=>{if(e.key==="Enter")addTask("taskInput")});
-function toggleTheme(){
-  state.theme=state.theme==="dark"?"light":"dark";
-  document.body.classList.toggle("light",state.theme==="light");persist();
+function themeAt(mode,auto,mins){
+  if(mode!=="auto")return mode==="light"?"light":"dark";
+  const a=auto||{},l=hm(a.light||"07:00"),d=hm(a.dark||"17:00");
+  if(isNaN(l)||isNaN(d)||l===d)return "dark";
+  return (l<d?(mins>=l&&mins<d):(mins>=l||mins<d))?"light":"dark";
 }
+function effectiveTheme(){const n=new Date();return themeAt(state.themeMode||state.theme||"dark",state.themeAuto,n.getHours()*60+n.getMinutes())}
+function applyTheme(){document.body.classList.toggle("light",effectiveTheme()==="light")}
+function renderThemeSettings(){
+  const m=state.themeMode||state.theme||"dark",a=state.themeAuto||{light:"07:00",dark:"17:00"};
+  document.querySelectorAll(".theme-tab").forEach(b=>b.classList.toggle("active",b.dataset.m===m));
+  $("themeAuto").hidden=m!=="auto";$("themeLight").value=a.light;$("themeDark").value=a.dark;
+  $("themeAutoNote").textContent="Şu an "+(effectiveTheme()==="light"?"açık":"koyu")+" tema. "+a.light+"'dan "+a.dark+"'a kadar açık, geri kalan saatlerde koyu olur.";
+}
+function setThemeMode(m){
+  state.themeMode=m;if(m!=="auto")state.theme=m;
+  if(!state.themeAuto)state.themeAuto={light:"07:00",dark:"17:00"};
+  applyTheme();persist();renderThemeSettings();
+}
+function toggleTheme(){setThemeMode(effectiveTheme()==="dark"?"light":"dark")}
+document.querySelectorAll(".theme-tab").forEach(b=>b.addEventListener("click",()=>setThemeMode(b.dataset.m)));
+["themeLight","themeDark"].forEach(id=>$(id).addEventListener("change",()=>{
+  const l=$("themeLight").value,d=$("themeDark").value;
+  if(!l||!d||l===d){renderThemeSettings();return}
+  state.themeAuto={light:l,dark:d};applyTheme();persist();renderThemeSettings();
+}));
+setInterval(()=>{applyTheme();if(!$("themeAuto").hidden)renderThemeSettings()},60000);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)applyTheme()});
 $("themeButton").addEventListener("click",toggleTheme);
 document.querySelectorAll(".exam-tab").forEach(b=>b.addEventListener("click",()=>{
   document.querySelectorAll(".exam-tab").forEach(x=>x.classList.toggle("active",x===b));
@@ -1215,7 +1249,6 @@ $("syncDot").addEventListener("click",e=>{e.stopPropagation();closeMenu();const 
 document.addEventListener("click",e=>{if(!pmenu.hidden&&!pmenu.contains(e.target))closeMenu();$("syncPop").hidden=true});
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeMenu()});
 pmenu.addEventListener("click",e=>{if(e.target.closest("[data-section]"))closeMenu()});
-$("themeSet").addEventListener("click",toggleTheme);
 $("setLogout").addEventListener("click",()=>$("pz-logout").click());
 const subOpts=["Türkçe","Matematik","Geometri","Fizik","Kimya","Biyoloji","Edebiyat","Tarih","Coğrafya","Felsefe","Din Kültürü","Yabancı Dil","Diğer"].map(n=>`<option>${n}</option>`).join("");
 $("swSubject").innerHTML='<option value="">Ders seç (isteğe bağlı)</option>'+subOpts;
@@ -1227,7 +1260,7 @@ function refreshAll(){
   renderTasks();renderChart();renderGoal();renderHistory();renderWeek();renderProfile();renderLastExam();renderYks();swDraw();renderLoyalty();renderSubjectStats();renderGreeting();renderQToday();fillTopics();renderProfileSummary();renderWeak();renderWeeklyReport();renderWkBanner();
   renderExamSubjects(document.querySelector(".exam-tab.active").dataset.exam);
   $("dailyNote").value=state.note||"";$("goalInput").value=state.goal;
-  document.body.classList.toggle("light",state.theme==="light");
+  applyTheme();renderThemeSettings();
 }
 refreshAll();
 $("weekDay").value=String(todayIdx());
