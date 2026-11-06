@@ -227,7 +227,7 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 @media(max-width:1100px){.week{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:650px){.week{grid-template-columns:1fr}.week-form #weekTopic{flex-basis:100%}.week-form #weekAdd{flex:1 1 100%}}
 .week-tabs{display:flex;gap:8px;margin-top:14px}
-.week-tab.active,.st-tab.active{background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 38%,transparent),color-mix(in srgb,var(--accent) 12%,transparent));color:var(--accent);border-color:var(--accent)}
+.week-tab.active,.st-tab.active,.wk-tab.active{background:linear-gradient(145deg,color-mix(in srgb,var(--accent) 38%,transparent),color-mix(in srgb,var(--accent) 12%,transparent));color:var(--accent);border-color:var(--accent)}
 .wday h3 small{color:var(--muted);font-weight:500;margin-left:4px}
 .wslot input[type=checkbox]{margin:1px 0 0;accent-color:var(--accent);flex-shrink:0}
 .wslot.done .wtitle{text-decoration:line-through;opacity:.55}
@@ -289,6 +289,7 @@ button.profile-mini{background:none;border:0;color:inherit;text-align:left;width
 .vs-line{display:flex;align-items:center;gap:8px;margin:4px 0}
 .vs-bar{height:10px;border-radius:99px;flex:0 0 auto}.vs-bar.me{background:var(--accent)}.vs-bar.o{background:var(--orange)}
 .vs-end{font-size:12px;white-space:nowrap}
+.up{color:var(--green)}.down{color:#fb7185}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -334,6 +335,10 @@ button.profile-mini{background:none;border:0;color:inherit;text-align:left;width
       <div><div class="eyebrow">YKS 2027 · TYT 19 HAZİRAN</div><div class="yks-days"><span id="yksDays">–</span><small id="yksUnit">gün kaldı</small></div><div class="card-sub">TYT 19 Haziran 2027 Cumartesi, AYT 20 Haziran 2027 Pazar (ÖSYM takvimi)</div></div>
       <span class="tag" id="yksWeeks"></span>
     </div>
+    <div class="card yks" id="wkBanner" hidden>
+      <div><h2>Haftalık özetin hazır 📊</h2><div class="card-sub" id="wkBannerSub"></div></div>
+      <button class="btn primary" id="wkBannerBtn">Özeti gör ↗</button>
+    </div>
     <div class="grid stats">
       <div class="card"><div class="stat-head">Bugünkü çalışma <span class="stat-icon">◷</span></div><div class="stat-number" id="studyStat">0 sa 0 dk</div><div class="stat-foot"><span class="green">●</span> Günlük hedefe doğru</div></div>
       <div class="card"><div class="stat-head">Çözülen sorular <span class="stat-icon">✎</span></div><div class="stat-number" id="questionStat">0</div><div class="stat-foot"><button class="wlink" data-goto="work" style="margin:0">+ Soru ekle</button></div></div>
@@ -365,6 +370,12 @@ button.profile-mini{background:none;border:0;color:inherit;text-align:left;width
       <div class="yks-days" id="loyaltyPct">–</div>
       <p id="loyaltyMsg" style="margin:6px 0 12px"></p>
       <div id="loyaltyBars"></div>
+    </div>
+
+    <div class="card" style="margin-bottom:18px">
+      <div class="card-head"><div><h2>Zayıf konuların</h2><div class="card-sub">Son 30 günde doğru oranın en düşük olan konular (en az 10 soru)</div></div><span class="tag">Tekrar önerisi</span></div>
+      <div id="weakList"></div>
+      <div class="small" id="weakMsg" style="margin-top:8px"></div>
     </div>
 
     <div class="grid bottom">
@@ -522,6 +533,11 @@ button.profile-mini{background:none;border:0;color:inherit;text-align:left;width
   </section>
 
   <section class="section" id="goals">
+    <div class="card" style="margin-bottom:16px">
+      <div class="card-head"><div><h2>Haftalık özet</h2><div class="card-sub" id="wkRange"></div></div></div>
+      <div class="week-tabs"><button class="btn wk-tab" data-w="-1">Geçen hafta</button><button class="btn wk-tab" data-w="0">Bu hafta</button></div>
+      <div id="wkReport" style="margin-top:14px"></div>
+    </div>
     <div class="card" style="margin-bottom:16px">
       <div class="card-head"><div><h2>Ders bazlı çalışma</h2><div class="card-sub">Her dersin süresi, toplam içindeki payı, çözdüğün soru sayısı ve doğru oranı. Bir derse basınca konuları açılır.</div></div></div>
       <div class="week-tabs"><button class="btn st-tab active" data-p="day">Bugün</button><button class="btn st-tab" data-p="week">Bu hafta</button><button class="btn st-tab" data-p="all">Tümü</button></div>
@@ -892,7 +908,7 @@ function swDraw(){
 $("swBtn").addEventListener("click",()=>{
   if(!state.timer)state.timer={startedAt:null};
   if(state.timer.startedAt)swCommit();else{state.timer.startedAt=Date.now();state.timer.subject=$("swSubject").value}
-  persist();swDraw();renderGoal();renderChart();renderLoyalty();renderSubjectStats();
+  persist();swDraw();renderGoal();renderChart();renderLoyalty();renderSubjectStats();renderWeeklyReport();
 });
 setInterval(()=>{if(state.timer&&state.timer.startedAt)swDraw()},1000);
 setInterval(()=>{if(state.timer&&state.timer.startedAt)renderGoal()},15000);
@@ -987,10 +1003,10 @@ function renderArchive(){
         const label=[w.subject&&"<b>"+safeText(w.subject)+"</b>",w.topic&&safeText(w.topic),w.questions?w.questions+" soru":""].filter(Boolean).join(" · ");
         return `<div class="arch-slot ${w.done?"ok":""}"><span>${w.done?"✓":"○"}</span><span class="wtime">${safeText(range)}</span><span>${label}${w.correct!=null?" · Net "+fmtNet(slotNet(w)):""}</span></div>`}).join("")}</div>`:"";
     }).join("");
-    return `<details class="arch"><summary><span>${fmtShort(new Date(y,m-1,d))} – ${fmtShort(new Date(y,m-1,d+6))} ${y}</span><span class="tag">${done}/${list.length} · ${fmtPct(done/list.length*100)}</span></summary>${days}</details>`;
+    return `<details class="arch"><summary><span>${fmtShort(new Date(y,m-1,d))} – ${fmtShort(new Date(y,m-1,d+6))} ${y}</span><span class="tag">${done}/${list.length} · ${fmtPct(done/list.length*100)}</span></summary><div class="small" style="margin-top:10px;line-height:1.7">${archiveSummary(k)}</div>${days}</details>`;
   }).join("")||'<div class="empty">Henüz arşivlenmiş program yok. Haftası dolan programlar burada görünür.</div>';
 }
-function weekChanged(){persist();renderWeek();renderTasks();renderLoyalty();renderSubjectStats()}
+function weekChanged(){persist();renderWeek();renderTasks();renderLoyalty();renderSubjectStats();renderWeak();renderWeeklyReport()}
 function weekClick(e){
   const t=e.target,del=t.closest("[data-wdel]");
   if(del){state.week.splice(Number(del.dataset.wdel),1);resOpen=null;weekChanged();return}
@@ -1081,7 +1097,7 @@ function renderQToday(){
   const last=(state.qlog||[])[(state.qlog||[]).length-1];
   $("qUndo").hidden=!last;if(last)$("qUndo").textContent="Son eklemeyi geri al ("+last.subject+", "+last.n+" soru)";
 }
-function qChanged(){persist();renderQToday();renderGoal();renderSubjectStats();renderProfileSummary();fillTopics()}
+function qChanged(){persist();renderQToday();renderGoal();renderSubjectStats();renderProfileSummary();fillTopics();renderWeak();renderWeeklyReport()}
 $("qAddBtn").addEventListener("click",()=>{
   const msg=t=>{$("qMsg").textContent=t},num=id=>Math.max(0,Math.floor(Number($(id).value)||0));
   const subject=$("qSubject").value;
@@ -1110,6 +1126,86 @@ function renderProfileSummary(){
   const ex=(type,key)=>{const e=lastExam(type),t=p[key];return e?"Son "+fmtNet(e.total)+(t?" / hedef "+fmtNet(t):""):(t?"Hedef "+fmtNet(t):"–")};
   $("profSummaryBox").innerHTML=row("Hedef",safeText([p.university,p.department].filter(Boolean).join(" · ")||"Henüz girmedin"))+row("TYT",ex("TYT","targetTYT"))+row("AYT",ex("AYT","targetAYT"))+row("Toplam çalışma",fmtMin(all))+row("Çözülen soru",qs);
 }
+function slotDateKey(w){const [y,m,d]=w.week.split("-").map(Number);return dayKey(new Date(y,m-1,d+w.day))}
+function weekDatesOf(wk){const [y,m,d]=wk.split("-").map(Number);return Array.from({length:7},(_,i)=>new Date(y,m-1,d+i))}
+const prevWeekKey=k=>{const [y,m,d]=k.split("-").map(Number);return dayKey(new Date(y,m-1,d-7))};
+function topicStats(inR,minN){
+  const map={};
+  const add=(sub,top,d,y,tot)=>{if(!sub||!top)return;const k=sub+"|"+top.toLocaleLowerCase("tr"),o=map[k]=map[k]||{subject:sub,topic:top,tot:0,d:0,y:0};o.tot+=tot;o.d+=d;o.y+=y};
+  state.week.forEach(w=>{if(w.correct!=null&&inR(slotDateKey(w)))add(w.subject,w.topic,w.correct||0,w.wrong||0,solvedOf(w))});
+  (state.qlog||[]).forEach(e=>{if(e.d!=null&&inR(e.date))add(e.subject,e.topic,e.d||0,e.y||0,e.n)});
+  return Object.values(map).map(o=>({...o,n:o.d+o.y,rate:o.d+o.y>0?o.d/(o.d+o.y)*100:null})).filter(o=>o.n>=(minN||10)).sort((a,b)=>a.rate-b.rate);
+}
+let weakCache=[];
+function renderWeak(){
+  const lim=dayKey(new Date(Date.now()-30*86400000));
+  weakCache=topicStats(k=>k>=lim,10).filter(o=>o.rate<100).slice(0,3);
+  $("weakList").innerHTML=weakCache.length?weakCache.map((o,i)=>`<div class="subject"><div class="subject-head"><span><b>${safeText(o.subject)}</b> · ${safeText(o.topic)}</span><span>${fmtPct(o.rate)}</span></div><div class="progress"><span style="width:${o.rate}%;background:${o.rate>=70?"var(--green)":o.rate>=50?"var(--orange)":"#fb7185"}"></span></div><div class="small" style="display:flex;justify-content:space-between;gap:8px;margin-top:4px"><span>Soru ${o.tot} · Doğru ${o.d} · Yanlış ${o.y}</span><button class="wlink" data-weak="${i}" style="margin:0">+ Bugüne ekle</button></div></div>`).join(""):'<div class="empty">Bir konuda en az 10 soru çözüp doğru/yanlış girdiğinde zayıf konuların burada çıkar.</div>';
+}
+$("weakList").addEventListener("click",e=>{
+  const b=e.target.closest("[data-weak]");if(!b)return;
+  const w=weakCache[Number(b.dataset.weak)];if(!w)return;
+  const wk=weekStartKey(),t=todayIdx(),low=w.topic.toLocaleLowerCase("tr");
+  if(state.week.some(x=>x.week===wk&&x.day===t&&!x.done&&x.subject===w.subject&&(x.topic||"").toLocaleLowerCase("tr")===low)){$("weakMsg").textContent="Bu konu bugünün programında zaten var.";return}
+  state.week.push({day:t,start:"",end:"",subject:w.subject,topic:w.topic,questions:20,week:wk,done:false});
+  $("weakMsg").textContent=w.topic+" bugünün programına eklendi (20 soru).";weekChanged();
+});
+function weekStats(wk){
+  const keys=weekDatesOf(wk).map(dayKey);let min=0,days=0;const sub={};
+  keys.forEach(k=>{const v=state.log[k]||0;min+=v;if(v>0)days++;const o=(state.sub||{})[k]||{};Object.keys(o).forEach(n=>{sub[n]=(sub[n]||0)+o[n]})});
+  let solved=0,d=0,y=0;
+  (state.qlog||[]).forEach(e=>{if(keys.includes(e.date)){solved+=e.n;d+=e.d||0;y+=e.y||0}});
+  const slots=state.week.filter(w=>w.week===wk);
+  slots.forEach(w=>{if(w.correct!=null){solved+=solvedOf(w);d+=w.correct||0;y+=w.wrong||0}});
+  const total=slots.length,done=slots.filter(w=>w.done).length,planned=slots.reduce((a,w)=>a+slotMin(w),0);
+  const blockPct=total?done/total*100:null,timePct=planned?min/planned*100:null;
+  const score=blockPct==null?null:timePct==null?blockPct:(blockPct+Math.min(100,timePct))/2;
+  const top=Object.entries(sub).sort((a,b)=>b[1]-a[1])[0];
+  return {wk,keys,min,days,solved,d,y,rate:d+y>0?d/(d+y)*100:null,net:netOf(d,y),total,done,planned,blockPct,timePct,score,top:top?top[0]:null,topMin:top?top[1]:0,hasData:min>0||solved>0||total>0};
+}
+function weekMessages(c,p){
+  if(!c.hasData)return ["Bu hafta için henüz kayıt yok."];
+  const m=[];
+  if(c.score!=null)m.push(loyaltyMsg(c.score));
+  if(p.hasData&&p.min>0){const r=(c.min-p.min)/p.min*100;m.push(r>=10?"Önceki haftadan "+fmtPct(r)+" daha fazla çalıştın 📈":r<=-10?"Önceki haftadan "+fmtPct(-r)+" daha az çalıştın, tempoyu biraz yükseltebilirsin ⏫":"Çalışma süren önceki haftayla hemen hemen aynı ⚖️")}
+  if(c.rate!=null&&c.d+c.y>=20)m.push(c.rate>=75?"Doğru oranın çok iyi, bu seviyeyi koru ✅":c.rate<50?"Doğru oranın düşük, yanlış yaptığın konulara geri dönmeyi dene 🔁":"Doğru oranın fena değil, zayıf konulara biraz daha vakit ayır 🎯");
+  if(c.days>=6)m.push("Neredeyse her gün çalıştın, süreklilik harika 🔥");
+  return m;
+}
+let wkTab=null;
+function renderWeeklyReport(){
+  const cur0=weekStartKey(),last=prevWeekKey(cur0);
+  if(wkTab==null)wkTab=weekStats(last).hasData?-1:0;
+  document.querySelectorAll(".wk-tab").forEach(b=>b.classList.toggle("active",Number(b.dataset.w)===wkTab));
+  const key=wkTab===-1?last:cur0,c=weekStats(key),p=weekStats(prevWeekKey(key));
+  const ds=weekDatesOf(key);
+  $("wkRange").textContent=fmtShort(ds[0])+" – "+fmtShort(ds[6])+(wkTab===0?" · devam ediyor":"");
+  if(wkTab===0){c.min+=runPart();const L=loyalty();c.score=L.score;c.blockPct=L.blockPct;c.timePct=L.timePct;c.done=L.done;c.total=L.total;c.hasData=c.hasData||c.min>0}
+  const pt=n=>(Math.round(n*10)/10).toLocaleString("tr-TR");
+  const dl=(a,b,f,u)=>{if(!p.hasData||a==null||b==null)return "";const df=a-b;if(Math.abs(df)<1e-9)return ' <span style="font-size:11px;font-weight:600;opacity:.7">= önceki hafta</span>';return ` <span class="${df>0?"up":"down"}" style="font-size:11px;font-weight:600">${df>0?"▲ ":"▼ "}${f(Math.abs(df))}${u||""}</span>`};
+  const row=(l,v,d)=>`<div class="goal-row"><span>${l}</span><strong>${v}${d||""}</strong></div>`;
+  const keySet=new Set(c.keys),weak=topicStats(k=>keySet.has(k),5)[0];
+  $("wkReport").innerHTML=c.hasData?row("Çalışma süresi",fmtMin(c.min),dl(c.min,p.min,fmtMin))
+    +row("Çalışılan gün",c.days+" / 7",dl(c.days,p.days,n=>String(n)," gün"))
+    +row("Çözülen soru",c.solved,dl(c.solved,p.solved,n=>String(n)))
+    +row("Doğru oranı",c.rate==null?"–":fmtPct(c.rate),c.rate==null?"":dl(c.rate,p.rate,pt," puan"))
+    +row("Net (doğru − yanlış/4)",c.d+c.y>0?fmtNet(c.net):"–","")
+    +row("Program sadakati",c.score==null?"Plan yok":fmtPct(c.score)+" ("+c.done+"/"+c.total+" blok)",c.score==null?"":dl(c.score,p.score,pt," puan"))
+    +row("En çok çalışılan ders",c.top?safeText(c.top)+" ("+fmtMin(c.topMin)+")":"–","")
+    +row("En zayıf konu",weak?safeText(weak.subject+" · "+weak.topic)+" ("+fmtPct(weak.rate)+")":"–","")
+    +weekMessages(c,p).map(t=>`<p style="margin:10px 0 0">${t}</p>`).join(""):'<div class="empty">Bu hafta için kayıt yok. Odak sayacını çalıştır, soru ekle ya da program bloklarını işaretle.</div>';
+}
+document.querySelectorAll(".wk-tab").forEach(b=>b.addEventListener("click",()=>{wkTab=Number(b.dataset.w);renderWeeklyReport()}));
+function archiveSummary(k){
+  const s=weekStats(k);
+  return "Çalışma <b>"+fmtMin(s.min)+"</b> · Soru <b>"+s.solved+"</b> · Doğru oranı <b>"+(s.rate==null?"–":fmtPct(s.rate))+"</b> · Sadakat <b>"+(s.score==null?"–":fmtPct(s.score))+"</b>";
+}
+function renderWkBanner(){
+  const n=new Date(),dow=n.getDay(),sun=dow===0&&n.getHours()>=18,mon=dow===1&&weekStats(prevWeekKey(weekStartKey())).hasData;
+  $("wkBanner").hidden=!(sun||mon);
+  if(sun||mon)$("wkBannerSub").textContent=sun?"Bu haftanın raporu hazır: süre, soru, doğru oranı ve sadakat.":"Geçen haftanın raporu hazır: önceki haftayla karşılaştırmalı.";
+}
+$("wkBannerBtn").addEventListener("click",()=>{wkTab=new Date().getDay()===0?0:-1;setSection("goals");renderWeeklyReport()});
 const pmenu=$("pmenu");
 function closeMenu(){pmenu.hidden=true;$("profileTop").setAttribute("aria-expanded","false")}
 function toggleMenu(){const h=pmenu.hidden;pmenu.hidden=!h;$("profileTop").setAttribute("aria-expanded",String(h))}
@@ -1128,7 +1224,7 @@ $("qSubject").innerHTML='<option value="">Ders seç</option>'+subOpts;
 setInterval(renderGreeting,60000);
 function refreshAll(){
   if(fixState(state))persist();
-  renderTasks();renderChart();renderGoal();renderHistory();renderWeek();renderProfile();renderLastExam();renderYks();swDraw();renderLoyalty();renderSubjectStats();renderGreeting();renderQToday();fillTopics();renderProfileSummary();
+  renderTasks();renderChart();renderGoal();renderHistory();renderWeek();renderProfile();renderLastExam();renderYks();swDraw();renderLoyalty();renderSubjectStats();renderGreeting();renderQToday();fillTopics();renderProfileSummary();renderWeak();renderWeeklyReport();renderWkBanner();
   renderExamSubjects(document.querySelector(".exam-tab.active").dataset.exam);
   $("dailyNote").value=state.note||"";$("goalInput").value=state.goal;
   document.body.classList.toggle("light",state.theme==="light");
