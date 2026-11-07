@@ -275,7 +275,7 @@ button.profile-mini{background:none;border:0;color:inherit;text-align:left;width
 .q-form #qSubject{flex:1 1 150px}.q-form #qTopic{flex:2 1 180px}.q-form #qN,.q-form #qD,.q-form #qY{flex:0 1 92px;min-width:0}
 .timer h2{display:flex;align-items:center;gap:8px}
 .mobile-nav{overflow:visible}
-.mobile-nav button.plus span{display:grid;place-items:center;width:46px;height:46px;margin-top:-22px;border-radius:50%;font-size:26px;color:#fff;background:linear-gradient(145deg,#b7a2fd,#7c5ce0);box-shadow:0 8px 20px rgba(124,92,224,.5),inset 0 1px 0 rgba(255,255,255,.4)}
+.mobile-nav button.plus span{display:grid;place-items:center;width:46px;height:46px;margin-top:-22px;border-radius:50%;font-size:26px;color:#fff;background:linear-gradient(145deg,var(--accent),var(--pbtn));box-shadow:0 8px 20px color-mix(in srgb,var(--pbtn) 55%,transparent),inset 0 1px 0 rgba(255,255,255,.4)}
 @media(max-width:650px){.top-actions .btn-label{display:none}.pmenu{top:64px;right:12px}}
 .sync-dot.busy{color:#facc15}
 .sync-pop{position:fixed;top:68px;right:60px;z-index:1001;max-width:min(300px,calc(100vw - 24px));padding:9px 12px;border-radius:12px;font-size:12px;line-height:1.5;background:color-mix(in srgb,var(--panel) 92%,transparent);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border:1px solid var(--glass-edge);box-shadow:0 10px 28px var(--glass-sh)}
@@ -314,6 +314,15 @@ button.profile-mini{background:none;border:0;color:inherit;text-align:left;width
 .ph-title{font-size:14px;font-weight:700;margin-top:2px;overflow-wrap:anywhere}
 .ph-body{font-size:13px;opacity:.92;overflow-wrap:anywhere}
 @media(max-width:900px){.admin-grid{grid-template-columns:1fr}.ad-preview{order:-1;position:static}}
+.swatches{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}
+.swatch{width:40px;height:40px;border-radius:50%;border:2px solid transparent;padding:0;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 4px 12px var(--glass-sh)}
+.swatch.active{border-color:var(--text);box-shadow:0 0 0 3px var(--panel),0 0 0 5px var(--text)}
+body[data-accent="blue"]{--accent:#60a5fa;--pbtn:#3b82f6}body.light[data-accent="blue"]{--accent:#2563eb;--pbtn:#1d4ed8}
+body[data-accent="green"]{--accent:#4ade80;--pbtn:#16a34a}body.light[data-accent="green"]{--accent:#15803d;--pbtn:#166534}
+body[data-accent="teal"]{--accent:#2dd4bf;--pbtn:#0d9488}body.light[data-accent="teal"]{--accent:#0f766e;--pbtn:#115e59}
+body[data-accent="orange"]{--accent:#fb923c;--pbtn:#ea580c}body.light[data-accent="orange"]{--accent:#c2410c;--pbtn:#9a3412}
+body[data-accent="pink"]{--accent:#f472b6;--pbtn:#db2777}body.light[data-accent="pink"]{--accent:#be185d;--pbtn:#9d174d}
+body[data-accent="red"]{--accent:#f87171;--pbtn:#dc2626}body.light[data-accent="red"]{--accent:#b91c1c;--pbtn:#991b1b}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -346,7 +355,7 @@ button.profile-mini{background:none;border:0;color:inherit;text-align:left;width
     <div class="pm-head"><div class="avatar" id="pmAvatar">?</div><div><strong id="pmName">Adını gir</strong><div class="small" id="pmSub">Profilini düzenle</div></div></div>
     <button class="pm-item" data-section="profile" role="menuitem"><span>☺</span> Profil</button>
     <button class="pm-item" data-section="friends" role="menuitem"><span>♧</span> Arkadaşlar</button>
-    <button class="pm-item" data-section="announcements" role="menuitem"><span>🔔</span> Duyurular <span class="pm-badge" id="pmBadge" hidden>0</span></button>
+    <button class="pm-item" data-section="announcements" role="menuitem"><span>🔔</span> Bildirimler <span class="pm-badge" id="pmBadge" hidden>0</span></button>
     <button class="pm-item" data-section="settings" role="menuitem"><span>⚙</span> Ayarlar</button>
     <button class="pm-item" id="pmAdmin" data-section="admin" role="menuitem" hidden><span>🛠</span> Yönetim</button>
     <div id="pz-userbar">
@@ -421,7 +430,7 @@ button.profile-mini{background:none;border:0;color:inherit;text-align:left;width
 
   <section class="section" id="work">
     <div class="card timer">
-      <div><h2><svg class="moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><defs><linearGradient id="moonG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b7a2fd"/><stop offset="1" stop-color="#8b6cf0"/></linearGradient></defs><path fill="url(#moonG)" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg> Odak sayacı</h2><div class="card-sub">Bugünkü toplam çalışma süren</div><div class="timer-time" id="swTime">00:00:00</div></div>
+      <div><h2><svg class="moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><defs><linearGradient id="moonG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--accent)"/><stop offset="1" style="stop-color:var(--pbtn)"/></linearGradient></defs><path fill="url(#moonG)" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg> Odak sayacı</h2><div class="card-sub">Bugünkü toplam çalışma süren</div><div class="timer-time" id="swTime">00:00:00</div></div>
       <select id="swSubject" aria-label="Ders"></select><button class="btn primary" id="swBtn">Başlat</button>
       <ul class="sw-guide">
         <li>Ders çalışmaya başlarken dersini seç ve <b>Başlat</b>'a bas. Süre o derse yazılır.</li>
@@ -461,6 +470,16 @@ button.profile-mini{background:none;border:0;color:inherit;text-align:left;width
         </div>
         <div class="small" id="themeAutoNote" style="margin-top:10px;line-height:1.6"></div>
       </div>
+      <h3 style="margin:20px 0 4px">Renk</h3><div class="small">Uygulamanın vurgu rengini seç. Hesabına kaydedilir.</div>
+      <div class="swatches" id="accentSwatches">
+        <button class="swatch" data-a="purple" style="background:#a78bfa" aria-label="Mor" title="Mor"></button>
+        <button class="swatch" data-a="blue" style="background:#60a5fa" aria-label="Mavi" title="Mavi"></button>
+        <button class="swatch" data-a="teal" style="background:#2dd4bf" aria-label="Turkuaz" title="Turkuaz"></button>
+        <button class="swatch" data-a="green" style="background:#4ade80" aria-label="Yeşil" title="Yeşil"></button>
+        <button class="swatch" data-a="orange" style="background:#fb923c" aria-label="Turuncu" title="Turuncu"></button>
+        <button class="swatch" data-a="pink" style="background:#f472b6" aria-label="Pembe" title="Pembe"></button>
+        <button class="swatch" data-a="red" style="background:#f87171" aria-label="Kırmızı" title="Kırmızı"></button>
+      </div>
     </div>
     <div style="margin-bottom:16px"><div class="card">
         <h2>Hedeflerim</h2><p>Kendine ulaşılabilir hedefler koy, ilerlemeni düzenli takip et.</p>
@@ -470,11 +489,11 @@ button.profile-mini{background:none;border:0;color:inherit;text-align:left;width
       </div>
       </div>
     <div class="card" style="margin-bottom:16px" id="pushCard">
-      <div class="card-head"><div><h2>Bildirimler</h2><div class="card-sub">Sabah mesajları ve duyurular</div></div><span class="tag" id="pushTag">–</span></div>
+      <div class="card-head"><div><h2>Bildirim ayarları</h2><div class="card-sub">Sabah mesajları ve haberler</div></div><span class="tag" id="pushTag">–</span></div>
       <p class="small" id="pushNote" style="line-height:1.6"></p>
       <div id="pushOn" hidden>
         <label class="small" style="display:flex;gap:8px;align-items:center;margin:10px 0"><input type="checkbox" id="prefMorning"> Sabah motivasyon mesajları</label>
-        <label class="small" style="display:flex;gap:8px;align-items:center;margin:10px 0"><input type="checkbox" id="prefAnnounce"> Duyurular (yeni özellikler, güncellemeler)</label>
+        <label class="small" style="display:flex;gap:8px;align-items:center;margin:10px 0"><input type="checkbox" id="prefAnnounce"> Haberler ve güncellemeler</label>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button class="btn" id="pushTest">Test bildirimi gönder</button><button class="btn" id="pushOff">Bildirimleri kapat</button></div>
       </div>
       <button class="btn primary" id="pushEnable" hidden style="margin-top:8px">Bildirimleri aç</button>
@@ -490,7 +509,7 @@ button.profile-mini{background:none;border:0;color:inherit;text-align:left;width
       <p id="annBody" style="font-weight:600;margin:0 0 8px"></p>
       <div class="rich" id="annText"></div>
     </div>
-    <div class="card"><div class="card-head"><div><h2>Duyurular</h2><div class="card-sub">Güncellemeler ve haberler</div></div><span class="tag" id="annCount">0</span></div><div id="annList"></div></div>
+    <div class="card"><div class="card-head"><div><h2>Bildirimler</h2><div class="card-sub">Güncellemeler, haberler ve mesajlar</div></div><span class="tag" id="annCount">0</span></div><div id="annList"></div></div>
   </section>
 
   <section class="section" id="admin">
@@ -516,7 +535,7 @@ button.profile-mini{background:none;border:0;color:inherit;text-align:left;width
           <div id="ruleEdit" hidden class="notice" style="margin-top:12px">
             <label class="small" for="ruleName" style="margin-top:0">Kural adı</label><input id="ruleName" type="text" maxlength="80">
             <label class="small" for="ruleCat">Kategori (kullanıcının hangi anahtarı kapatınca gelmez)</label>
-            <select id="ruleCat"><option value="morning">Sabah mesajı</option><option value="announce">Duyuru</option></select>
+            <select id="ruleCat"><option value="morning">Sabah mesajı</option><option value="announce">Haber / güncelleme</option></select>
             <label class="small" for="ruleTime">Saat</label><input id="ruleTime" type="time" value="08:00">
             <label class="small">Günler</label><div class="day-chips" id="ruleDays"></div>
             <label class="small" for="ruleMsgs">Mesaj havuzu (her satır bir mesaj: Başlık :: Alt metin)</label>
@@ -821,7 +840,7 @@ function setSection(id){
   if(id==="admin"&&!window.__isAdmin)id="dashboard";
   document.querySelectorAll(".section").forEach(s=>s.classList.toggle("active",s.id===id));
   document.querySelectorAll("[data-section]").forEach(b=>b.classList.toggle("active",b.dataset.section===id));
-  const titles={dashboard:greetText(),work:"Çalışma zamanı. 🌙",announcements:"Duyurular. 🔔",admin:"Yönetim. 🛠️",week:"Programın. 🗓️",profile:"Profilin. ✨",settings:"Ayarlar. ⚙️",exams:"Deneme analizi. 📈",friends:"Birlikte daha iyi. 🤝",goals:"İstatistiklerin. 📊"};
+  const titles={dashboard:greetText(),work:"Çalışma zamanı. 🌙",announcements:"Bildirimler. 🔔",admin:"Yönetim. 🛠️",week:"Programın. 🗓️",profile:"Profilin. ✨",settings:"Ayarlar. ⚙️",exams:"Deneme analizi. 📈",friends:"Birlikte daha iyi. 🤝",goals:"İstatistiklerin. 📊"};
   $("pageTitle").textContent=titles[id]||titles.dashboard;
   if(id==="friends"&&window.planZenFriends)window.planZenFriends();
   if(id==="settings"){$("setEmail").textContent=$("pz-user-email").textContent||"–";if(window.planZenPush)window.planZenPush()}
@@ -840,10 +859,12 @@ function themeAt(mode,auto,mins){
   return (l<d?(mins>=l&&mins<d):(mins>=l||mins<d))?"light":"dark";
 }
 function effectiveTheme(){const n=new Date();return themeAt(state.themeMode||state.theme||"dark",state.themeAuto,n.getHours()*60+n.getMinutes())}
-function applyTheme(){document.body.classList.toggle("light",effectiveTheme()==="light")}
+const ACCENTS=["purple","blue","teal","green","orange","pink","red"];
+function applyTheme(){document.body.classList.toggle("light",effectiveTheme()==="light");document.body.dataset.accent=ACCENTS.includes(state.accent)?state.accent:"purple"}
 function renderThemeSettings(){
   const m=state.themeMode||state.theme||"dark",a=state.themeAuto||{light:"07:00",dark:"17:00"};
   document.querySelectorAll(".theme-tab").forEach(b=>b.classList.toggle("active",b.dataset.m===m));
+  document.querySelectorAll(".swatch").forEach(b=>b.classList.toggle("active",b.dataset.a===(ACCENTS.includes(state.accent)?state.accent:"purple")));
   $("themeAuto").hidden=m!=="auto";$("themeLight").value=a.light;$("themeDark").value=a.dark;
   $("themeAutoNote").textContent="Şu an "+(effectiveTheme()==="light"?"açık":"koyu")+" tema. "+a.light+"'dan "+a.dark+"'a kadar açık, geri kalan saatlerde koyu olur.";
 }
@@ -854,6 +875,7 @@ function setThemeMode(m){
 }
 function toggleTheme(){setThemeMode(effectiveTheme()==="dark"?"light":"dark")}
 document.querySelectorAll(".theme-tab").forEach(b=>b.addEventListener("click",()=>setThemeMode(b.dataset.m)));
+document.querySelectorAll(".swatch").forEach(b=>b.addEventListener("click",()=>{state.accent=b.dataset.a;applyTheme();persist();renderThemeSettings()}));
 ["themeLight","themeDark"].forEach(id=>$(id).addEventListener("change",()=>{
   const l=$("themeLight").value,d=$("themeDark").value;
   if(!l||!d||l===d){renderThemeSettings();return}
@@ -1851,7 +1873,7 @@ $("examDate").value=fmtDate(dayKey(new Date()));
     $("pmBadge").hidden = !n; $("pmBadge").textContent = n; $("unreadDot").hidden = !n; $("annCount").textContent = annList.length;
   }
   function renderInbox() {
-    $("annList").innerHTML = annList.length ? annList.map(a => `<button class="ann-row ${reads.has(a.id) ? "read" : ""}" data-ann="${a.id}"><span class="dot"></span><span style="flex:1;min-width:0"><strong style="font-size:13px;display:block">${safeText(fillVars(a.title))}</strong><span class="small">${safeText(fmtDT(a.sent_at || a.created_at))}</span></span></button>`).join("") : '<div class="empty">Henüz duyuru yok.</div>';
+    $("annList").innerHTML = annList.length ? annList.map(a => `<button class="ann-row ${reads.has(a.id) ? "read" : ""}" data-ann="${a.id}"><span class="dot"></span><span style="flex:1;min-width:0"><strong style="font-size:13px;display:block">${safeText(fillVars(a.title))}</strong><span class="small">${safeText(fmtDT(a.sent_at || a.created_at))}</span></span></button>`).join("") : '<div class="empty">Henüz bildirim yok.</div>';
   }
   async function loadInbox() {
     if (!uid) return;
@@ -1859,18 +1881,22 @@ $("examDate").value=fmtDate(dayKey(new Date()));
     const [a, r] = await Promise.all([
       db.from("notifications").select(cols).eq("kind", "announce").eq("status", "sent").in("audience", ["all", "inactive7"]).order("sent_at", { ascending: false }).limit(30),
       db.from("notification_reads").select("notification_id")]);
-    annList = a.data || []; reads = new Set((r.data || []).map(x => x.notification_id)); renderInbox(); updateBadge();
+    annList = a.data || []; (r.data || []).forEach(x => reads.add(x.notification_id)); renderInbox(); updateBadge();
   }
   window.planZenAnn = loadInbox;
   async function openAnn(id) {
-    setSection("announcements");
+    if (!document.querySelector("#announcements.active")) setSection("announcements");
     let a = annList.find(x => x.id === id);
     if (!a) { const { data } = await db.from("notifications").select("id,title,body,detail,sent_at,created_at").eq("id", id).maybeSingle(); a = data; if (a) annList.unshift(a); }
     if (!a) return;
     $("annTitle").textContent = fillVars(a.title); $("annDate").textContent = fmtDT(a.sent_at || a.created_at);
     $("annBody").textContent = fillVars(a.body); $("annText").innerHTML = renderRich(fillVars(a.detail)); $("annDetail").hidden = false;
-    if (!reads.has(a.id)) { reads.add(a.id); db.from("notification_reads").upsert({ user_id: uid, notification_id: a.id }, { ignoreDuplicates: true }); }
     renderInbox(); updateBadge(); window.scrollTo(0, 0);
+    if (!reads.has(a.id)) {
+      reads.add(a.id); renderInbox(); updateBadge();
+      const { error } = await db.from("notification_reads").upsert({ user_id: uid, notification_id: a.id }, { ignoreDuplicates: true });
+      if (error) console.warn("okundu kaydedilemedi:", error.message);
+    }
   }
   $("annList").addEventListener("click", e => { const b = e.target.closest("[data-ann]"); if (b) openAnn(b.dataset.ann); });
   $("annClose").addEventListener("click", () => { $("annDetail").hidden = true; });
@@ -1926,7 +1952,7 @@ $("examDate").value=fmtDate(dayKey(new Date()));
   }
   $("adHistory").addEventListener("click", async e => { const b = e.target.closest("[data-cancel]"); if (!b || !confirm("Zamanlanmış bildirim iptal edilsin mi?")) return; try { await api("cancel", { id: b.dataset.cancel }); } catch (er) { alert(er.message); } adLoadHistory(); });
   async function adLoadStats() {
-    try { const s = await api("stats"); const row = (l, v) => `<div class="goal-row"><span>${l}</span><strong>${v}</strong></div>`; $("adStats").innerHTML = row("Kayıtlı kullanıcı", s.users) + row("Bildirimi açan kullanıcı", s.subscribedUsers) + row("Bildirim alan cihaz", s.devices) + row("Son 7 günde aktif", s.active7) + row("Gönderilen duyuru", s.announcements); }
+    try { const s = await api("stats"); const row = (l, v) => `<div class="goal-row"><span>${l}</span><strong>${v}</strong></div>`; $("adStats").innerHTML = row("Kayıtlı kullanıcı", s.users) + row("Bildirimi açan kullanıcı", s.subscribedUsers) + row("Bildirim alan cihaz", s.devices) + row("Son 7 günde aktif", s.active7) + row("Gönderilen bildirim", s.announcements); }
     catch (e) { $("adStats").innerHTML = '<div class="empty">Özet alınamadı: ' + safeText(e.message) + "</div>"; }
   }
   const DN = ["Pzt", "Sal", "Çar", "Per", "Cum", "Cmt", "Paz"];
@@ -1934,7 +1960,7 @@ $("examDate").value=fmtDate(dayKey(new Date()));
   async function adLoadRules() {
     const { data } = await db.from("auto_rules").select("*").order("created_at");
     rules = data || [];
-    $("ruleList").innerHTML = rules.map(r => `<div class="friend-row"><div class="friend-info"><strong style="font-size:12px">${safeText(r.name)}</strong><div class="small">${String(r.send_time).slice(0, 5)} · ${(r.days || []).length === 7 ? "her gün" : (r.days || []).map(d => DN[d - 1]).join(", ")} · ${r.category === "morning" ? "sabah mesajı" : "duyuru"} · ${(r.messages || []).length} mesaj${r.last_run_date ? " · son: " + safeText(r.last_run_date) : ""}</div></div><label class="small"><input type="checkbox" data-rtoggle="${r.id}" ${r.enabled ? "checked" : ""}> Açık</label><button class="btn" data-redit="${r.id}">Düzenle</button><button class="del" data-rdel="${r.id}" aria-label="Sil">✕</button></div>`).join("") || '<div class="empty">Henüz otomatik bildirim yok.</div>';
+    $("ruleList").innerHTML = rules.map(r => `<div class="friend-row"><div class="friend-info"><strong style="font-size:12px">${safeText(r.name)}</strong><div class="small">${String(r.send_time).slice(0, 5)} · ${(r.days || []).length === 7 ? "her gün" : (r.days || []).map(d => DN[d - 1]).join(", ")} · ${r.category === "morning" ? "sabah mesajı" : "haber"} · ${(r.messages || []).length} mesaj${r.last_run_date ? " · son: " + safeText(r.last_run_date) : ""}</div></div><label class="small"><input type="checkbox" data-rtoggle="${r.id}" ${r.enabled ? "checked" : ""}> Açık</label><button class="btn" data-redit="${r.id}">Düzenle</button><button class="del" data-rdel="${r.id}" aria-label="Sil">✕</button></div>`).join("") || '<div class="empty">Henüz otomatik bildirim yok.</div>';
   }
   function openRule(r) {
     editing = r ? r.id : null; $("ruleEdit").hidden = false; $("ruleMsg").textContent = "";
