@@ -337,6 +337,20 @@ body[data-accent="cosmic"]{--accent:#f39a5c;--pbtn:#dc6a1f}body.light[data-accen
 @keyframes flameDance{0%,100%{transform:scale(1,1) rotate(-1.5deg)}25%{transform:scale(1.05,.97) rotate(1.5deg)}50%{transform:scale(.97,1.06) rotate(-1deg)}75%{transform:scale(1.03,.99) rotate(1.2deg)}}
 @keyframes flameInner{0%,100%{transform:scaleY(1) scaleX(1)}50%{transform:scaleY(1.14) scaleX(.94)}}
 @media(prefers-reduced-motion:reduce){.flame.lit svg,.flame.lit .f-in{animation:none}}
+.timer-chip{position:fixed;top:calc(env(safe-area-inset-top,0px) + 78px);right:16px;z-index:900;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;padding:0;cursor:pointer;color:#facc15;
+  background:color-mix(in srgb,var(--panel) 78%,transparent);-webkit-backdrop-filter:blur(16px) saturate(160%);backdrop-filter:blur(16px) saturate(160%);
+  border:1.5px solid color-mix(in srgb,#facc15 55%,transparent);box-shadow:0 8px 22px var(--glass-sh);
+  opacity:0;transform:translateY(-16px) scale(.55);transform-origin:100% 0;pointer-events:none;
+  transition:opacity .35s ease,transform .5s cubic-bezier(.2,.9,.3,1.25),color .4s,border-color .4s}
+.timer-chip.show{opacity:1;transform:none;pointer-events:auto}
+.timer-chip svg{width:24px;height:24px;overflow:visible}
+.timer-chip.run{color:#34d399;border-color:color-mix(in srgb,#34d399 65%,transparent);animation:chipPulse 2.2s ease-out infinite}
+.timer-chip .hand{transform-origin:12px 14px}
+.timer-chip.run .hand{animation:chipSpin 4s linear infinite}
+@keyframes chipSpin{to{transform:rotate(360deg)}}
+@keyframes chipPulse{0%{box-shadow:0 8px 22px var(--glass-sh),0 0 0 0 rgba(52,211,153,.5)}70%,100%{box-shadow:0 8px 22px var(--glass-sh),0 0 0 12px rgba(52,211,153,0)}}
+@media(max-width:650px){.timer-chip{right:12px;top:calc(env(safe-area-inset-top,0px) + 70px)}}
+@media(prefers-reduced-motion:reduce){.timer-chip.run,.timer-chip.run .hand{animation:none}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -366,6 +380,7 @@ body[data-accent="cosmic"]{--accent:#f39a5c;--pbtn:#dc6a1f}body.light[data-accen
     <div class="top-actions"><button class="sync-dot" id="syncDot" hidden aria-label="Kaydetme durumu"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10a6 6 0 0 0-11.6-1.5A4.5 4.5 0 0 0 7 18h11a4 4 0 0 0 0-8z"/></svg></button><button class="avatar-btn" id="profileTop" aria-label="Profil menüsü" aria-haspopup="menu" aria-expanded="false"><div class="avatar" id="topAvatar">?</div><span class="unread-dot" id="unreadDot" hidden></span></button></div>
   </header>
   <div class="sync-pop" id="syncPop" hidden></div>
+  <button class="timer-chip" id="timerChip" aria-label="Odak sayacı"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2h4"/><path d="M12 5v2"/><circle cx="12" cy="14" r="7.5"/><path class="hand" d="M12 14V9.6"/></svg></button>
   <div class="pmenu" id="pmenu" hidden role="menu">
     <div class="pm-head"><div class="avatar" id="pmAvatar">?</div><div><strong id="pmName">Adını gir</strong><div class="small" id="pmSub">Profilini düzenle</div></div></div>
     <button class="pm-item" data-section="profile" role="menuitem"><span>☺</span> Profil</button>
@@ -872,6 +887,7 @@ function setSection(id){
   if(id==="settings"){$("setEmail").textContent=$("pz-user-email").textContent||"–";if(window.planZenPush)window.planZenPush()}
   if(id==="announcements"&&window.planZenAnn)window.planZenAnn();
   if(id==="admin"&&window.planZenAdmin)window.planZenAdmin();
+  updateTimerChip();
   window.scrollTo({top:0,behavior:"smooth"});
 }
 document.querySelectorAll("[data-section]").forEach(b=>b.addEventListener("click",()=>setSection(b.dataset.section)));
@@ -1082,7 +1098,16 @@ function swDraw(){
   $("swBtn").textContent=run?"Duraklat":"Başlat";
   $("swSubject").disabled=run;if(run)$("swSubject").value=state.timer.subject||"";
   $("miniSub").textContent=run?"Odak sayacı çalışıyor"+(state.timer.subject?" · "+state.timer.subject:""):"Odak sayacı duruyor · bugünkü toplam süren";
+  updateTimerChip();
 }
+function updateTimerChip(){
+  const chip=$("timerChip"),run=!!(state.timer&&state.timer.startedAt),sec=document.querySelector(".section.active");
+  chip.classList.toggle("show",!!window.__in&&!(sec&&sec.id==="work"));
+  chip.classList.toggle("run",run);
+  const t=run?"Odak sayacı çalışıyor · "+$("swTime").textContent:"Odak sayacı duruyor";
+  chip.title=t;chip.setAttribute("aria-label",t);
+}
+$("timerChip").addEventListener("click",()=>setSection("work"));
 $("swBtn").addEventListener("click",()=>{
   if(!state.timer)state.timer={startedAt:null};
   if(state.timer.startedAt)swCommit();else{state.timer.startedAt=Date.now();state.timer.subject=$("swSubject").value}
@@ -1394,7 +1419,7 @@ document.addEventListener("click",e=>{if(!pmenu.hidden&&!pmenu.contains(e.target
 document.addEventListener("keydown",e=>{if(e.key==="Escape")closeMenu()});
 pmenu.addEventListener("click",e=>{if(e.target.closest("[data-section]"))closeMenu()});
 $("setLogout").addEventListener("click",()=>$("pz-logout").click());
-const subOpts=["Türkçe","Matematik","Geometri","Fizik","Kimya","Biyoloji","Edebiyat","Tarih","Coğrafya","Felsefe","Din Kültürü","Yabancı Dil","Diğer"].map(n=>`<option>${n}</option>`).join("");
+const subOpts=["Türkçe","TYT Matematik","AYT Matematik","Geometri","Fizik","Kimya","Biyoloji","Edebiyat","Tarih","Coğrafya","Felsefe","Din Kültürü","Yabancı Dil","Diğer"].map(n=>`<option>${n}</option>`).join("");
 $("swSubject").innerHTML='<option value="">Ders seç (isteğe bağlı)</option>'+subOpts;
 $("weekSubject").innerHTML='<option value="">Ders seç</option>'+subOpts;
 $("qSubject").innerHTML='<option value="">Ders seç</option>'+subOpts;
@@ -2064,7 +2089,7 @@ $("examDate").value=fmtDate(dayKey(new Date()));
   // ---- oturum ----
   async function onUser(user) {
     if (!user || uid === user.id) return;
-    uid = user.id;
+    uid = user.id; window.__in = true; updateTimerChip();
     const { data } = await db.from("admins").select("user_id").maybeSingle();
     window.__isAdmin = !!data; $("pmAdmin").hidden = !data;
     await loadInbox();
@@ -2073,7 +2098,7 @@ $("examDate").value=fmtDate(dayKey(new Date()));
   }
   window.addEventListener("pz-login", e => onUser(e.detail));
   db.auth.getSession().then(({ data }) => { if (data && data.session && data.session.user) onUser(data.session.user); });
-  window.addEventListener("pz-logout", () => { uid = null; window.__isAdmin = false; $("pmAdmin").hidden = true; annList = []; reads = new Set(); updateBadge(); renderInbox(); });
+  window.addEventListener("pz-logout", () => { uid = null; window.__in = false; updateTimerChip(); window.__isAdmin = false; $("pmAdmin").hidden = true; annList = []; reads = new Set(); updateBadge(); renderInbox(); });
   window.__notif = { renderRich, parseMsgs, fillVars, myVars };
 })();
 </script>
