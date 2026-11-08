@@ -317,12 +317,18 @@ button.profile-mini{background:none;border:0;color:inherit;text-align:left;width
 .swatches{display:flex;flex-wrap:wrap;gap:12px;margin-top:12px}
 .swatch{width:40px;height:40px;border-radius:50%;border:2px solid transparent;padding:0;cursor:pointer;box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 4px 12px var(--glass-sh)}
 .swatch.active{border-color:var(--text);box-shadow:0 0 0 3px var(--panel),0 0 0 5px var(--text)}
-body[data-accent="blue"]{--accent:#60a5fa;--pbtn:#3b82f6}body.light[data-accent="blue"]{--accent:#2563eb;--pbtn:#1d4ed8}
-body[data-accent="green"]{--accent:#4ade80;--pbtn:#16a34a}body.light[data-accent="green"]{--accent:#15803d;--pbtn:#166534}
-body[data-accent="teal"]{--accent:#2dd4bf;--pbtn:#0d9488}body.light[data-accent="teal"]{--accent:#0f766e;--pbtn:#115e59}
-body[data-accent="orange"]{--accent:#fb923c;--pbtn:#ea580c}body.light[data-accent="orange"]{--accent:#c2410c;--pbtn:#9a3412}
-body[data-accent="pink"]{--accent:#f472b6;--pbtn:#db2777}body.light[data-accent="pink"]{--accent:#be185d;--pbtn:#9d174d}
-body[data-accent="red"]{--accent:#f87171;--pbtn:#dc2626}body.light[data-accent="red"]{--accent:#b91c1c;--pbtn:#991b1b}
+body[data-accent="sierra"]{--accent:#a7c1d9;--pbtn:#5681a8}body.light[data-accent="sierra"]{--accent:#4f77a0;--pbtn:#3f6590}
+body[data-accent="mist"]{--accent:#9bb0c4;--pbtn:#5f7f9e}body.light[data-accent="mist"]{--accent:#55708a;--pbtn:#46607a}
+body[data-accent="glacier"]{--accent:#9fd3ef;--pbtn:#3b97c9}body.light[data-accent="glacier"]{--accent:#1f7aa8;--pbtn:#17658c}
+body[data-accent="pacific"]{--accent:#66a4bd;--pbtn:#2f7690}body.light[data-accent="pacific"]{--accent:#2a6a82;--pbtn:#1f5669}
+body[data-accent="abyss"]{--accent:#7d97d9;--pbtn:#3d5bb5}body.light[data-accent="abyss"]{--accent:#3b57a8;--pbtn:#2e4690}
+body[data-accent="alpine"]{--accent:#94b596;--pbtn:#4f7a53}body.light[data-accent="alpine"]{--accent:#3f6a43;--pbtn:#335635}
+body[data-accent="midgreen"]{--accent:#88ad9a;--pbtn:#46705c}body.light[data-accent="midgreen"]{--accent:#3a6551;--pbtn:#2f5342}
+body[data-accent="sage"]{--accent:#b9cca5;--pbtn:#6e8a52}body.light[data-accent="sage"]{--accent:#5a7541;--pbtn:#4a6235}
+body[data-accent="deeppurple"]{--accent:#b4a0d2;--pbtn:#7a5f9e}body.light[data-accent="deeppurple"]{--accent:#6b4f8e;--pbtn:#594079}
+body[data-accent="lavender"]{--accent:#cdbdf0;--pbtn:#8f72cf}body.light[data-accent="lavender"]{--accent:#7d5fbd;--pbtn:#694ca6}
+body[data-accent="burgundy"]{--accent:#e0708d;--pbtn:#b0264f}body.light[data-accent="burgundy"]{--accent:#a3213f;--pbtn:#8a1a34}
+body[data-accent="cosmic"]{--accent:#f39a5c;--pbtn:#dc6a1f}body.light[data-accent="cosmic"]{--accent:#c2570f;--pbtn:#a54a0b}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -472,14 +478,21 @@ body[data-accent="red"]{--accent:#f87171;--pbtn:#dc2626}body.light[data-accent="
       </div>
       <h3 style="margin:20px 0 4px">Renk</h3><div class="small">Uygulamanın vurgu rengini seç. Hesabına kaydedilir.</div>
       <div class="swatches" id="accentSwatches">
-        <button class="swatch" data-a="purple" style="background:#a78bfa" aria-label="Mor" title="Mor"></button>
-        <button class="swatch" data-a="blue" style="background:#60a5fa" aria-label="Mavi" title="Mavi"></button>
-        <button class="swatch" data-a="teal" style="background:#2dd4bf" aria-label="Turkuaz" title="Turkuaz"></button>
-        <button class="swatch" data-a="green" style="background:#4ade80" aria-label="Yeşil" title="Yeşil"></button>
-        <button class="swatch" data-a="orange" style="background:#fb923c" aria-label="Turuncu" title="Turuncu"></button>
-        <button class="swatch" data-a="pink" style="background:#f472b6" aria-label="Pembe" title="Pembe"></button>
-        <button class="swatch" data-a="red" style="background:#f87171" aria-label="Kırmızı" title="Kırmızı"></button>
+        <button class="swatch" data-a="purple" style="background:#a78bfa" aria-label="PlanZen" title="PlanZen"></button>
+        <button class="swatch" data-a="sierra" style="background:#a7c1d9" aria-label="Sierra Mavisi · iPhone 13 Pro" title="Sierra Mavisi · iPhone 13 Pro"></button>
+        <button class="swatch" data-a="mist" style="background:#9bb0c4" aria-label="Sis Mavisi · iPhone 17" title="Sis Mavisi · iPhone 17"></button>
+        <button class="swatch" data-a="glacier" style="background:#9fd3ef" aria-label="Buzul Mavisi · iPhone 18 Pro" title="Buzul Mavisi · iPhone 18 Pro"></button>
+        <button class="swatch" data-a="pacific" style="background:#66a4bd" aria-label="Pasifik Mavisi · iPhone 12 Pro" title="Pasifik Mavisi · iPhone 12 Pro"></button>
+        <button class="swatch" data-a="abyss" style="background:#7d97d9" aria-label="Abis · iPhone 17 Pro" title="Abis · iPhone 17 Pro"></button>
+        <button class="swatch" data-a="alpine" style="background:#94b596" aria-label="Köknar Yeşili · iPhone 13 Pro" title="Köknar Yeşili · iPhone 13 Pro"></button>
+        <button class="swatch" data-a="midgreen" style="background:#88ad9a" aria-label="Gece Yeşili · iPhone 11 Pro" title="Gece Yeşili · iPhone 11 Pro"></button>
+        <button class="swatch" data-a="sage" style="background:#b9cca5" aria-label="Ada Çayı · iPhone 17" title="Ada Çayı · iPhone 17"></button>
+        <button class="swatch" data-a="deeppurple" style="background:#b4a0d2" aria-label="Derin Mor · iPhone 14 Pro" title="Derin Mor · iPhone 14 Pro"></button>
+        <button class="swatch" data-a="lavender" style="background:#cdbdf0" aria-label="Lavanta · iPhone 17" title="Lavanta · iPhone 17"></button>
+        <button class="swatch" data-a="burgundy" style="background:#e0708d" aria-label="Bordo · iPhone 18 Pro" title="Bordo · iPhone 18 Pro"></button>
+        <button class="swatch" data-a="cosmic" style="background:#f39a5c" aria-label="Kozmik Turuncu · iPhone 17 Pro" title="Kozmik Turuncu · iPhone 17 Pro"></button>
       </div>
+      <div class="small" id="accentName" style="margin-top:10px"></div>
     </div>
     <div style="margin-bottom:16px"><div class="card">
         <h2>Hedeflerim</h2><p>Kendine ulaşılabilir hedefler koy, ilerlemeni düzenli takip et.</p>
@@ -498,6 +511,8 @@ body[data-accent="red"]{--accent:#f87171;--pbtn:#dc2626}body.light[data-accent="
       </div>
       <button class="btn primary" id="pushEnable" hidden style="margin-top:8px">Bildirimleri aç</button>
       <div class="small" id="pushMsg" style="margin-top:8px"></div>
+      <button class="btn" id="pushCheck" style="margin-top:10px">Durumu kontrol et</button>
+      <div class="small" id="pushDiag" style="margin-top:8px;white-space:pre-wrap;line-height:1.7"></div>
       <p class="small" style="opacity:.8;line-height:1.6;margin-top:10px">Kişisel mesajlar için sunucu çalışma serini ve sürelerini okur, başka bir amaçla kullanmaz.</p>
     </div>
     <div class="card"><h2>Hesap</h2><p>Giriş yaptığın e-posta: <b id="setEmail">–</b></p><button class="btn" id="setLogout">Çıkış yap</button></div>
@@ -859,12 +874,14 @@ function themeAt(mode,auto,mins){
   return (l<d?(mins>=l&&mins<d):(mins>=l||mins<d))?"light":"dark";
 }
 function effectiveTheme(){const n=new Date();return themeAt(state.themeMode||state.theme||"dark",state.themeAuto,n.getHours()*60+n.getMinutes())}
-const ACCENTS=["purple","blue","teal","green","orange","pink","red"];
+const ACCENTS=["purple","sierra","mist","glacier","pacific","abyss","alpine","midgreen","sage","deeppurple","lavender","burgundy","cosmic"];
+const ACCENT_NAMES={purple:"PlanZen",sierra:"Sierra Mavisi · iPhone 13 Pro",mist:"Sis Mavisi · iPhone 17",glacier:"Buzul Mavisi · iPhone 18 Pro",pacific:"Pasifik Mavisi · iPhone 12 Pro",abyss:"Abis · iPhone 17 Pro",alpine:"Köknar Yeşili · iPhone 13 Pro",midgreen:"Gece Yeşili · iPhone 11 Pro",sage:"Ada Çayı · iPhone 17",deeppurple:"Derin Mor · iPhone 14 Pro",lavender:"Lavanta · iPhone 17",burgundy:"Bordo · iPhone 18 Pro",cosmic:"Kozmik Turuncu · iPhone 17 Pro"};
 function applyTheme(){document.body.classList.toggle("light",effectiveTheme()==="light");document.body.dataset.accent=ACCENTS.includes(state.accent)?state.accent:"purple"}
 function renderThemeSettings(){
   const m=state.themeMode||state.theme||"dark",a=state.themeAuto||{light:"07:00",dark:"17:00"};
   document.querySelectorAll(".theme-tab").forEach(b=>b.classList.toggle("active",b.dataset.m===m));
   document.querySelectorAll(".swatch").forEach(b=>b.classList.toggle("active",b.dataset.a===(ACCENTS.includes(state.accent)?state.accent:"purple")));
+  $("accentName").textContent="Seçili: "+ACCENT_NAMES[ACCENTS.includes(state.accent)?state.accent:"purple"];
   $("themeAuto").hidden=m!=="auto";$("themeLight").value=a.light;$("themeDark").value=a.dark;
   $("themeAutoNote").textContent="Şu an "+(effectiveTheme()==="light"?"açık":"koyu")+" tema. "+a.light+"'dan "+a.dark+"'a kadar açık, geri kalan saatlerde koyu olur.";
 }
@@ -1820,6 +1837,21 @@ $("examDate").value=fmtDate(dayKey(new Date()));
 
   // ---- bildirim ayarları (herkes) ----
   async function currentSub() { try { const reg = await navigator.serviceWorker.getRegistration(); return reg ? await reg.pushManager.getSubscription() : null; } catch (_) { return null; } }
+  async function getReg() {
+    let reg = await navigator.serviceWorker.getRegistration();
+    if (!reg) reg = await navigator.serviceWorker.register("sw.js");
+    if (!reg.active) {
+      const sw = reg.installing || reg.waiting;
+      if (sw) await new Promise((res, rej) => {
+        if (sw.state === "activated") return res();
+        sw.addEventListener("statechange", () => { if (sw.state === "activated") res(); });
+        setTimeout(() => rej(new Error("etkinleşmedi")), 10000);
+      });
+    }
+    return reg;
+  }
+  async function serverRow(ep) { const { data } = await db.from("push_subscriptions").select("prefs").eq("endpoint", ep).maybeSingle(); return data; }
+  function registerSub(sub) { const j = sub.toJSON(); return db.rpc("register_push", { p_endpoint: j.endpoint, p_p256dh: j.keys.p256dh, p_auth: j.keys.auth, p_ua: navigator.userAgent }); }
   async function renderPush() {
     const tag = $("pushTag"), note = $("pushNote");
     $("pushOn").hidden = true; $("pushEnable").hidden = true;
@@ -1827,29 +1859,52 @@ $("examDate").value=fmtDate(dayKey(new Date()));
     if (ios() && !standalone()) { tag.textContent = "Ana ekrana ekle"; note.textContent = "iPhone'da bildirimler sadece ana ekrana eklediğin uygulamada çalışır: Safari'de Paylaş → Ana Ekrana Ekle, sonra ana ekrandaki PlanZen'i aç (iOS 16.4 veya üstü gerekir)."; return; }
     if (!supported()) { tag.textContent = "Desteklenmiyor"; note.textContent = "Bu tarayıcı bildirimleri desteklemiyor."; return; }
     if (Notification.permission === "denied") { tag.textContent = "İzin kapalı"; note.textContent = "Bildirim izni kapalı. iPhone'da Ayarlar → Bildirimler → PlanZen'den açabilirsin. Olmazsa uygulamayı silip yeniden ekle."; return; }
-    const sub = await currentSub();
-    if (sub && Notification.permission === "granted") {
+    const sub = await currentSub(), granted = Notification.permission === "granted";
+    let row = sub && granted ? await serverRow(sub.endpoint) : null;
+    if (sub && granted && !row) { await registerSub(sub); row = await serverRow(sub.endpoint); }
+    if (row) {
       tag.textContent = "Açık"; note.textContent = "Bu cihaz bildirim alıyor."; $("pushOn").hidden = false;
-      const { data } = await db.from("push_subscriptions").select("prefs").eq("endpoint", sub.endpoint).maybeSingle();
-      const p = (data && data.prefs) || {}; $("prefMorning").checked = p.morning !== false; $("prefAnnounce").checked = p.announce !== false;
-    } else { tag.textContent = "Kapalı"; note.textContent = "Sabah motivasyon mesajları ve duyurular için bildirimleri aç."; $("pushEnable").hidden = false; }
+      const p = row.prefs || {}; $("prefMorning").checked = p.morning !== false; $("prefAnnounce").checked = p.announce !== false;
+    } else {
+      tag.textContent = "Kapalı";
+      note.textContent = sub && granted ? "Bu cihazda izin var ama sunucuya kaydedilemedi. Bildirimleri aç'a basıp tekrar dene; olmazsa Durumu kontrol et'e bas." : "Sabah motivasyon mesajları ve haberler için bildirimleri aç.";
+      $("pushEnable").hidden = false;
+    }
   }
   window.planZenPush = renderPush;
   $("pushEnable").addEventListener("click", async () => {
     const m = t => { $("pushMsg").textContent = t; };
     try {
+      m("İzin isteniyor…");
       const perm = await Notification.requestPermission();
       if (perm !== "granted") { m("İzin verilmedi. İstersen sonra tekrar deneyebilirsin."); renderPush(); return; }
-      const reg = await navigator.serviceWorker.ready;
+      m("Servis dosyası hazırlanıyor…");
+      let reg;
+      try { reg = await getReg(); } catch (e) { m("Servis dosyası (sw.js) yüklenemedi: " + (e.message || e) + ". sw.js dosyasının GitHub'da ana klasörde (index.html ile yan yana) durduğundan emin ol, sonra Durumu kontrol et'e bas."); return; }
+      m("Sunucu anahtarı alınıyor…");
       const { data: key, error: ke } = await db.rpc("push_public_key");
-      if (ke || !key) { m("Sunucu henüz hazır değil, biraz sonra tekrar dene."); return; }
+      if (ke || !key) { m("Sunucu henüz hazır değil: " + (ke ? ke.message : "anahtar yok")); return; }
+      m("Cihaz aboneliği oluşturuluyor…");
       let sub = await reg.pushManager.getSubscription();
       if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: b64ToU8(key) });
-      const j = sub.toJSON();
-      const { error } = await db.rpc("register_push", { p_endpoint: j.endpoint, p_p256dh: j.keys.p256dh, p_auth: j.keys.auth, p_ua: navigator.userAgent });
+      m("Sunucuya kaydediliyor…");
+      const { error } = await registerSub(sub);
       if (error) { m("Kaydedilemedi: " + error.message); return; }
       m("Bildirimler açıldı. Test bildirimi göndererek dene."); renderPush();
     } catch (e) { m("Açılamadı: " + (e.message || e)); }
+  });
+  $("pushCheck").addEventListener("click", async () => {
+    const L = [], add = t => { L.push(t); $("pushDiag").textContent = L.join("\n"); };
+    $("pushDiag").textContent = "Kontrol ediliyor…";
+    add("Mod: " + (standalone() ? "ana ekran uygulaması ✓" : "tarayıcı (iPhone'da ana ekrandan açmalısın) ✗"));
+    add("Bildirim izni: " + ("Notification" in window ? ({ granted: "verildi ✓", denied: "reddedildi ✗", "default": "henüz sorulmadı" }[Notification.permission]) : "desteklenmiyor ✗"));
+    for (const f of ["sw.js", "manifest.webmanifest"]) {
+      try { const r = await fetch(f, { cache: "no-store" }); add(f + ": " + (r.ok ? "bulundu ✓" : "bulunamadı ✗ (" + r.status + ")")); } catch (_) { add(f + ": erişilemedi ✗"); }
+    }
+    try { const reg = await navigator.serviceWorker.getRegistration(); add("Servis kaydı: " + (reg ? (reg.active ? "aktif ✓" : "kayıtlı ama aktif değil ✗") : "yok ✗")); } catch (_) { add("Servis kaydı: okunamadı ✗"); }
+    const sub = await currentSub(); add("Cihaz aboneliği: " + (sub ? "var ✓" : "yok"));
+    if (sub) { const row = await serverRow(sub.endpoint); add("Sunucu kaydı: " + (row ? "var ✓" : "yok ✗")); }
+    try { const { data: key } = await db.rpc("push_public_key"); add("Sunucu anahtarı: " + (key ? "hazır ✓" : "yok ✗")); } catch (_) {}
   });
   $("pushTest").addEventListener("click", async () => {
     $("pushMsg").textContent = "Gönderiliyor…";
