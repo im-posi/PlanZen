@@ -351,6 +351,8 @@ body[data-accent="cosmic"]{--accent:#f39a5c;--pbtn:#dc6a1f}body.light[data-accen
 @keyframes chipPulse{0%{box-shadow:0 8px 22px var(--glass-sh),0 0 0 0 rgba(52,211,153,.5)}70%,100%{box-shadow:0 8px 22px var(--glass-sh),0 0 0 12px rgba(52,211,153,0)}}
 @media(max-width:650px){.timer-chip{right:12px;top:calc(env(safe-area-inset-top,0px) + 70px)}}
 @media(prefers-reduced-motion:reduce){.timer-chip.run,.timer-chip.run .hand{animation:none}}
+.morph-ghost{position:fixed;z-index:950;overflow:hidden;transform-origin:0 0;pointer-events:none;border-radius:24px;background:color-mix(in srgb,var(--panel) 94%,var(--bg));border:1.5px solid color-mix(in srgb,#facc15 60%,transparent);box-shadow:0 20px 50px var(--glass-sh)}
+.morph-ghost.run{border-color:color-mix(in srgb,#34d399 70%,transparent)}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -879,6 +881,9 @@ function addTask(inputId){
 }
 function setSection(id){
   if(id==="admin"&&!window.__isAdmin)id="dashboard";
+  const prevSec=document.querySelector(".section.active");
+  if(prevSec&&prevSec.id==="work"&&id!=="work"&&window.__in)minimizeWork(prevSec);
+  if(id==="work")window.__chipHold=false;
   document.querySelectorAll(".section").forEach(s=>s.classList.toggle("active",s.id===id));
   document.querySelectorAll("[data-section]").forEach(b=>b.classList.toggle("active",b.dataset.section===id));
   const titles={dashboard:greetText(),work:"Çalışma zamanı. 🌙",announcements:"Bildirimler. 🔔",admin:"Yönetim. 🛠️",week:"Programın. 🗓️",profile:"Profilin. ✨",settings:"Ayarlar. ⚙️",exams:"Deneme analizi. 📈",friends:"Birlikte daha iyi. 🤝",goals:"İstatistiklerin. 📊"};
@@ -1102,12 +1107,60 @@ function swDraw(){
 }
 function updateTimerChip(){
   const chip=$("timerChip"),run=!!(state.timer&&state.timer.startedAt),sec=document.querySelector(".section.active");
-  chip.classList.toggle("show",!!window.__in&&!(sec&&sec.id==="work"));
+  chip.classList.toggle("show",!!window.__in&&!window.__chipHold&&!(sec&&sec.id==="work"));
   chip.classList.toggle("run",run);
   const t=run?"Odak sayacı çalışıyor · "+$("swTime").textContent:"Odak sayacı duruyor";
   chip.title=t;chip.setAttribute("aria-label",t);
 }
-$("timerChip").addEventListener("click",()=>setSection("work"));
+const reducedMotion=()=>!!(window.matchMedia&&window.matchMedia("(prefers-reduced-motion: reduce)").matches);
+function chipRest(){
+  const c=$("timerChip"),cs=getComputedStyle(c),w=parseFloat(cs.width)||46;
+  return {left:window.innerWidth-(parseFloat(cs.right)||16)-w,top:parseFloat(cs.top)||78,width:w,height:w};
+}
+// Çalış sayfasından çıkarken: sayfa küçülüp kronometre simgesine dönüşür
+function minimizeWork(sec){
+  if(reducedMotion()||typeof sec.animate!=="function")return;
+  const r=sec.getBoundingClientRect(),vh=window.innerHeight;
+  if(r.width<10||r.bottom<=0||r.top>=vh)return;
+  const top=Math.max(r.top,0),h=Math.min(r.bottom,vh)-top;
+  if(h<40)return;
+  const t=chipRest(),run=!!(state.timer&&state.timer.startedAt);
+  const o=document.createElement("div");o.className="morph-ghost"+(run?" run":"");
+  o.style.cssText="left:"+r.left+"px;top:"+top+"px;width:"+r.width+"px;height:"+h+"px";
+  const inner=sec.cloneNode(true);inner.removeAttribute("id");
+  inner.style.cssText="position:absolute;left:0;top:"+(r.top-top)+"px;width:"+r.width+"px;margin:0";
+  o.appendChild(inner);document.body.appendChild(o);
+  window.__chipHold=true;
+  const done=()=>{o.remove();window.__chipHold=false;updateTimerChip()};
+  try{
+    inner.animate([{opacity:1},{opacity:0,offset:.5},{opacity:0}],{duration:470,fill:"forwards"});
+    const a=o.animate([
+      {transform:"translate(0,0) scale(1,1)",borderRadius:"24px",opacity:1},
+      {transform:"translate("+(t.left-r.left)+"px,"+(t.top-top)+"px) scale("+(t.width/r.width)+","+(t.height/h)+")",borderRadius:"50%",opacity:.95}
+    ],{duration:470,easing:"cubic-bezier(.5,0,.2,1)",fill:"forwards"});
+    a.onfinish=done;a.oncancel=done;
+  }catch(_){done()}
+}
+// Kronometreye basınca: sayfa kronometreden büyüyerek açılır
+function expandWork(){
+  const cr=$("timerChip").getBoundingClientRect();
+  setSection("work");
+  const sec=$("work");
+  if(reducedMotion()||typeof sec.animate!=="function")return;
+  const r=sec.getBoundingClientRect();
+  if(r.width<10||cr.width<10)return;
+  sec.style.background="var(--bg)";sec.style.overflow="hidden";sec.style.transformOrigin="0 0";
+  const end=()=>{sec.style.background="";sec.style.overflow="";sec.style.transformOrigin=""};
+  try{
+    const a=sec.animate([
+      {transform:"translate("+(cr.left-r.left)+"px,"+(cr.top-r.top)+"px) scale("+(cr.width/r.width)+","+(cr.height/Math.max(r.height,1))+")",borderRadius:"50%",opacity:0},
+      {opacity:1,offset:.3},
+      {transform:"translate(0,0) scale(1,1)",borderRadius:"0px",opacity:1}
+    ],{duration:480,easing:"cubic-bezier(.2,.8,.2,1)"});
+    a.onfinish=end;a.oncancel=end;
+  }catch(_){end()}
+}
+$("timerChip").addEventListener("click",expandWork);
 $("swBtn").addEventListener("click",()=>{
   if(!state.timer)state.timer={startedAt:null};
   if(state.timer.startedAt)swCommit();else{state.timer.startedAt=Date.now();state.timer.subject=$("swSubject").value}
