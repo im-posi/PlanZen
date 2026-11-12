@@ -1813,7 +1813,7 @@ $("examDate").value=fmtDate(dayKey(new Date()));
     } catch (error) {
       connectionStatus.textContent =
         error.message === "zaman aşımı"
-          ? "Supabase 8 saniyede cevap vermedi. Bu sayfa dış sunucu isteklerini engelleyen bir önizlemede açılmış olabilir; dosyayı normal bir tarayıcıda ya da kendi sitende aç."
+          ? "PlanZen ders Planetine ulaşamadı. Sunucuda olan ufak tefek değişikliklerden dolayı giriş bilgilerini onaylayamadık. Kodlayıcı ile iletişime geçip sürecin ne kadar süreceğini öğrenebilirsin :)"
           : "Bağlantı kurulamadı: " + (error.message || "Bilinmeyen hata");
       console.error("PlanZen bağlantı hatası:", error);
     }
