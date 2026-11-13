@@ -376,6 +376,10 @@ body[data-accent="cosmic"]{--accent:#f39a5c;--pbtn:#dc6a1f}body.light[data-accen
 .bt-text{min-width:0;padding:8px 18px 8px 0;opacity:0;transition:opacity .35s ease .25s}
 .badge-toast.wide .bt-text{opacity:1}
 .bt-small{font-size:10px;letter-spacing:.6px;text-transform:uppercase;color:var(--muted)}.bt-name{font-weight:800;font-size:15px}.bt-desc{font-size:12px;color:var(--muted);line-height:1.35}
+.modal{position:fixed;inset:0;z-index:1200;display:grid;place-items:center;padding:16px;background:rgba(0,0,0,.5);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}
+.modal-card{width:min(520px,100%);max-height:90vh;overflow:auto;background:var(--panel);border:1px solid var(--glass-edge);border-radius:20px;padding:20px;box-shadow:0 24px 60px var(--glass-sh)}
+.modal .week-form select,.modal .week-form input{flex:1 1 140px;min-width:0}
+.modal-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -405,6 +409,22 @@ body[data-accent="cosmic"]{--accent:#f39a5c;--pbtn:#dc6a1f}body.light[data-accen
     <div class="top-actions"><button class="sync-dot" id="syncDot" hidden aria-label="Kaydetme durumu"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10a6 6 0 0 0-11.6-1.5A4.5 4.5 0 0 0 7 18h11a4 4 0 0 0 0-8z"/></svg></button><button class="avatar-btn" id="profileTop" aria-label="Profil menüsü" aria-haspopup="menu" aria-expanded="false"><div class="avatar" id="topAvatar">?</div><span class="unread-dot" id="unreadDot" hidden></span></button></div>
   </header>
   <div class="sync-pop" id="syncPop" hidden></div>
+  <div class="modal" id="blockModal" hidden role="dialog" aria-modal="true" aria-labelledby="bmTitle">
+    <div class="modal-card">
+      <h2 id="bmTitle">Bloğu düzenle</h2>
+      <div class="week-form" style="margin-top:14px">
+        <select id="bmWeek" aria-label="Hafta"></select>
+        <select id="bmDay" aria-label="Gün"><option value="0">Pazartesi</option><option value="1">Salı</option><option value="2">Çarşamba</option><option value="3">Perşembe</option><option value="4">Cuma</option><option value="5">Cumartesi</option><option value="6">Pazar</option></select>
+        <input id="bmStart" type="time" aria-label="Başlangıç saati" title="Başlangıç">
+        <input id="bmEnd" type="time" aria-label="Bitiş saati" title="Bitiş">
+        <select id="bmSubject" aria-label="Ders"></select>
+        <input id="bmTopic" type="text" maxlength="70" placeholder="Konu" aria-label="Konu">
+        <input id="bmQ" type="number" min="0" max="999" placeholder="Soru sayısı" aria-label="Soru sayısı">
+      </div>
+      <div class="small" id="bmMsg" style="margin-top:8px"></div>
+      <div class="modal-actions"><button class="btn primary" id="bmSave">Kaydet</button><button class="btn" id="bmCancel">Vazgeç</button><button class="btn" id="bmDelete">Sil</button></div>
+    </div>
+  </div>
   <div class="badge-toast" id="badgeToast" hidden role="status" aria-live="polite"><div class="bt-circle" id="btIcon"></div><div class="bt-text"><div class="bt-small">Yeni rozet kazandın</div><div class="bt-name" id="btName"></div><div class="bt-desc" id="btDesc"></div></div></div>
   <button class="timer-chip" id="timerChip" aria-label="Odak sayacı"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2h4"/><path d="M12 5v2"/><circle cx="12" cy="14" r="7.5"/><path class="hand" d="M12 14V9.6"/></svg></button>
   <div class="pmenu" id="pmenu" hidden role="menu">
@@ -721,9 +741,10 @@ body[data-accent="cosmic"]{--accent:#f39a5c;--pbtn:#dc6a1f}body.light[data-accen
 
   <section class="section" id="goals">
     <div class="card" style="margin-bottom:16px">
-      <div class="card-head"><div><h2>Haftalık özet</h2><div class="card-sub" id="wkRange"></div></div></div>
+      <div class="card-head"><div><h2>Haftalık özet</h2><div class="card-sub" id="wkRange"></div></div><button class="btn" id="wkShare">Resim olarak paylaş</button></div>
       <div class="week-tabs"><button class="btn wk-tab" data-w="-1">Geçen hafta</button><button class="btn wk-tab" data-w="0">Bu hafta</button></div>
       <div id="wkReport" style="margin-top:14px"></div>
+      <div class="small" id="wkShareMsg" style="margin-top:8px"></div>
     </div>
     <div class="card" style="margin-bottom:16px">
       <div class="card-head"><div><h2>Çalışma takvimi</h2><div class="card-sub">Son 20 hafta. Rengi koyu günler günlük hedefine yaklaştığın günler.</div></div><span class="tag" id="calTag"></span></div>
@@ -801,7 +822,7 @@ function slotHtml(w){
     else if(w.correct!=null)res=`<div class="small" style="margin-top:4px">Çözülen ${sv}${w.questions?" / "+w.questions+" ("+fmtPct(sv/w.questions*100)+")":""} · D ${c} · Y ${y}${bos>0?" · Boş "+bos:""} · Net ${fmtNet(slotNet(w))} · <button class="wlink" data-ropen="${w.i}">düzenle</button></div>`+(w.questions>0&&sv<w.questions?'<div class="small" style="opacity:.7;font-size:10px">Hedef tamamlanmadı</div>':"");
     else res=`<button class="wlink" data-ropen="${w.i}">Sonuç gir (çözülen / doğru / yanlış)</button>`;
   }
-  return `<div class="wslot ${w.done?"done":""}" data-slot="${w.i}"><input type="checkbox" data-wdone="${w.i}" ${w.done?"checked":""} aria-label="Tamamlandı"><div class="wbody"><div class="wtop"><span class="wtime">${safeText(range)}</span>${w.subject?`<b>${safeText(w.subject)}</b>`:""}</div>${detail?`<div class="wtitle">${detail}</div>`:""}${res}</div><button class="del" data-wdel="${w.i}" aria-label="Sil">✕</button></div>`;
+  return `<div class="wslot ${w.done?"done":""}" data-slot="${w.i}"><input type="checkbox" data-wdone="${w.i}" ${w.done?"checked":""} aria-label="Tamamlandı"><div class="wbody"><div class="wtop"><span class="wtime">${safeText(range)}</span>${w.subject?`<b>${safeText(w.subject)}</b>`:""}</div>${detail?`<div class="wtitle">${detail}</div>`:""}${res}</div>${w.week>=weekStartKey()?`<button class="del" data-wedit="${w.i}" aria-label="Düzenle">✎</button>`:""}<button class="del" data-wdel="${w.i}" aria-label="Sil">✕</button></div>`;
 }
 function renderTasks(){
   const wk=weekStartKey(),t=todayIdx();
@@ -1300,6 +1321,7 @@ function renderArchive(){
 function weekChanged(){persist();renderWeek();renderTasks();renderLoyalty();renderSubjectStats();renderWeak();renderWeeklyReport();checkBadges()}
 function weekClick(e){
   const t=e.target,del=t.closest("[data-wdel]");
+  const ed=t.closest("[data-wedit]");if(ed){openBlockEdit(Number(ed.dataset.wedit));return}
   if(del){state.week.splice(Number(del.dataset.wdel),1);resOpen=null;weekChanged();return}
   const op=t.closest("[data-ropen]");if(op){resOpen=Number(op.dataset.ropen);renderWeek();renderTasks();return}
   if(t.closest("[data-rcancel]")){resOpen=null;renderWeek();renderTasks();return}
@@ -1471,7 +1493,7 @@ function weekMessages(c,p){
   if(c.days>=6)m.push("Neredeyse her gün çalıştın, süreklilik harika 🔥");
   return m;
 }
-let wkTab=null;
+let wkTab=null,wkLast=null;
 function renderWeeklyReport(){
   const cur0=weekStartKey(),last=prevWeekKey(cur0);
   if(wkTab==null)wkTab=weekStats(last).hasData?-1:0;
@@ -1484,6 +1506,7 @@ function renderWeeklyReport(){
   const dl=(a,b,f,u)=>{if(!p.hasData||a==null||b==null)return "";const df=a-b;if(Math.abs(df)<1e-9)return ' <span style="font-size:11px;font-weight:600;opacity:.7">= önceki hafta</span>';return ` <span class="${df>0?"up":"down"}" style="font-size:11px;font-weight:600">${df>0?"▲ ":"▼ "}${f(Math.abs(df))}${u||""}</span>`};
   const row=(l,v,d)=>`<div class="goal-row"><span>${l}</span><strong>${v}${d||""}</strong></div>`;
   const keySet=new Set(c.keys),weak=topicStats(k=>keySet.has(k),5)[0];
+  wkLast={key,c,p,weak,msgs:weekMessages(c,p)};
   $("wkReport").innerHTML=c.hasData?row("Çalışma süresi",fmtMin(c.min),dl(c.min,p.min,fmtMin))
     +row("Çalışılan gün",c.days+" / 7",dl(c.days,p.days,n=>String(n)," gün"))
     +row("Çözülen soru",c.solved,dl(c.solved,p.solved,n=>String(n)))
@@ -1613,6 +1636,98 @@ function showNextBadge(){
     setTimeout(()=>{t.classList.remove("pop");setTimeout(()=>{t.hidden=true;badgeBusy=false;showNextBadge()},500)},5800);
   });
 }
+// ---- Blok düzenleme ----
+let editIdx=null;
+function openBlockEdit(i){
+  const w=state.week[i];if(!w)return;editIdx=i;
+  const cur=weekStartKey(),nxt=dayKey(weekDates(1)[0]);
+  $("bmWeek").innerHTML='<option value="'+cur+'">Bu hafta</option><option value="'+nxt+'">Gelecek hafta</option>';
+  $("bmWeek").value=w.week===nxt?nxt:cur;
+  $("bmDay").value=String(w.day);$("bmStart").value=w.start||"";$("bmEnd").value=w.end||"";
+  const extra=w.subject&&!subOpts.includes("<option>"+w.subject+"</option>")?"<option>"+safeText(w.subject)+"</option>":"";
+  $("bmSubject").innerHTML='<option value="">Ders seç</option>'+subOpts+extra;$("bmSubject").value=w.subject||"";
+  $("bmTopic").value=w.topic||"";$("bmQ").value=w.questions?String(w.questions):"";$("bmMsg").textContent="";
+  $("blockModal").hidden=false;
+}
+function closeBlockEdit(){$("blockModal").hidden=true;editIdx=null}
+$("bmCancel").addEventListener("click",closeBlockEdit);
+$("blockModal").addEventListener("click",e=>{if(e.target===$("blockModal"))closeBlockEdit()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("blockModal").hidden)closeBlockEdit()});
+$("bmSave").addEventListener("click",()=>{
+  const w=state.week[editIdx];if(!w){closeBlockEdit();return}
+  const subject=$("bmSubject").value,topic=$("bmTopic").value.trim(),start=$("bmStart").value,end=$("bmEnd").value;
+  if(!subject&&!topic){$("bmMsg").textContent="Ders ya da konu yaz.";return}
+  if(start&&end&&end<=start){$("bmMsg").textContent="Bitiş saati başlangıçtan sonra olmalı.";return}
+  w.week=$("bmWeek").value;w.day=Number($("bmDay").value);w.start=start;w.end=end;w.subject=subject;w.topic=topic;
+  w.questions=Math.max(0,Math.floor(Number($("bmQ").value)||0));
+  closeBlockEdit();weekChanged();
+});
+$("bmDelete").addEventListener("click",()=>{
+  if(editIdx==null||!confirm("Bu blok silinsin mi?"))return;
+  state.week.splice(editIdx,1);resOpen=null;closeBlockEdit();weekChanged();
+});
+// ---- Haftalık özeti resim olarak paylaş ----
+function hexRgba(h,a){h=String(h||"#a78bfa").trim();const m=/^#?([0-9a-f]{6})$/i.exec(h);if(!m)return "rgba(167,139,250,"+a+")";const n=parseInt(m[1],16);return "rgba("+(n>>16&255)+","+(n>>8&255)+","+(n&255)+","+a+")"}
+function drawWeeklyCard(ctx,W,H,d){
+  const F='-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,system-ui,sans-serif',MUT="rgba(255,255,255,.62)";
+  const rr=(x,y,w,h,r)=>{ctx.beginPath();ctx.moveTo(x+r,y);ctx.lineTo(x+w-r,y);ctx.arc(x+w-r,y+r,r,-Math.PI/2,0);ctx.lineTo(x+w,y+h-r);ctx.arc(x+w-r,y+h-r,r,0,Math.PI/2);ctx.lineTo(x+r,y+h);ctx.arc(x+r,y+h-r,r,Math.PI/2,Math.PI);ctx.lineTo(x,y+r);ctx.arc(x+r,y+r,r,Math.PI,Math.PI*1.5);ctx.closePath()};
+  const txt=(t,x,y,size,color,weight,align)=>{ctx.font=(weight||"600")+" "+size+"px "+F;ctx.fillStyle=color;ctx.textAlign=align||"left";ctx.textBaseline="alphabetic";ctx.fillText(String(t),x,y)};
+  const fit=(t,maxW,size,weight,min)=>{let s=size;ctx.font=(weight||"800")+" "+s+"px "+F;while(ctx.measureText(String(t)).width>maxW&&s>(min||26)){s-=2;ctx.font=(weight||"800")+" "+s+"px "+F}return s};
+  const lines=(t,maxW,size,weight,max)=>{ctx.font=(weight||"500")+" "+size+"px "+F;const out=[];let line="";String(t).split(" ").forEach(w=>{const test=line?line+" "+w:w;if(ctx.measureText(test).width>maxW&&line){out.push(line);line=w}else line=test});if(line)out.push(line);if(out.length>max){out.length=max;out[max-1]=out[max-1].replace(/\s*\S*$/,"")+"…"}return out};
+  // arka plan
+  let g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,"#141526");g.addColorStop(1,"#0b0c15");ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  g=ctx.createRadialGradient(160,140,0,160,140,620);g.addColorStop(0,hexRgba(d.accent,.38));g.addColorStop(1,hexRgba(d.accent,0));ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  g=ctx.createRadialGradient(980,1220,0,980,1220,700);g.addColorStop(0,hexRgba(d.accent2||d.accent,.26));g.addColorStop(1,hexRgba(d.accent2||d.accent,0));ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+  // üst satır
+  g=ctx.createLinearGradient(72,72,164,164);g.addColorStop(0,d.accent);g.addColorStop(1,d.accent2||d.accent);ctx.fillStyle=g;rr(72,72,92,92,26);ctx.fill();
+  ctx.strokeStyle="#1a1530";ctx.lineWidth=9;ctx.lineCap="round";
+  [0,45,90,135].forEach(a=>{const r=a*Math.PI/180,dx=Math.cos(r)*27,dy=Math.sin(r)*27;ctx.beginPath();ctx.moveTo(118-dx,118-dy);ctx.lineTo(118+dx,118+dy);ctx.stroke()});
+  txt("PlanZen",186,132,48,"#fff","800");txt("Haftalık özet",1008,128,30,MUT,"600","right");
+  // başlık
+  txt(d.range,72,268,fit(d.range,936,84,"800"),"#fff","800");
+  txt((d.name?d.name+"'in haftası":"Bu haftanın özeti")+(d.live?" · devam ediyor":""),72,324,34,MUT,"600");
+  // dört kutu
+  const cw=456,ch=236,xs=[72,552],ys=[380,640];
+  [["Çalışma süresi",d.timeTxt,d.sub1],["Çözülen soru",d.solvedTxt,d.sub2],["Doğru oranı",d.rateTxt,d.sub3],["Program sadakati",d.scoreTxt,d.sub4]].forEach((c,i)=>{
+    const x=xs[i%2],y=ys[Math.floor(i/2)];
+    ctx.fillStyle="rgba(255,255,255,.07)";rr(x,y,cw,ch,34);ctx.fill();ctx.strokeStyle="rgba(255,255,255,.13)";ctx.lineWidth=2;rr(x,y,cw,ch,34);ctx.stroke();
+    txt(c[0],x+30,y+58,28,MUT,"600");txt(c[1],x+30,y+152,fit(c[1],cw-60,92,"800"),"#fff","800");txt(c[2]||"",x+30,y+204,fit(c[2]||"",cw-60,26,"600",18),hexRgba(d.accent,1),"600");
+  });
+  // bilgi satırları
+  let y=950;(d.info||[]).slice(0,4).forEach(t=>{const L=lines(t,936,34,"600",1);txt(L[0],72,y,34,"#fff","600");y+=56});
+  // mesaj
+  if(d.msg){const L=lines(d.msg,864,33,"600",2),bh=40+L.length*44;ctx.fillStyle=hexRgba(d.accent,.16);rr(72,1164,936,bh,32);ctx.fill();ctx.strokeStyle=hexRgba(d.accent,.55);ctx.lineWidth=2;rr(72,1164,936,bh,32);ctx.stroke();L.forEach((t,i)=>txt(t,108,1164+50+i*44,33,"#fff","600"))}
+  txt("planzen · çalış, ilerle",W/2,H-30,26,"rgba(255,255,255,.4)","600","center");
+}
+
+async function shareWeekly(){
+  const m=$("wkShareMsg");
+  if(!wkLast||!wkLast.c.hasData){m.textContent="Paylaşılacak veri yok.";return}
+  const {key,c,p,weak,msgs}=wkLast,ds=weekDatesOf(key);
+  const delta=(a,b,f)=>{if(!p.hasData||b==null)return "";const df=a-b;return Math.abs(df)<1e-9?"= önceki hafta":(df>0?"▲ ":"▼ ")+f(Math.abs(df))};
+  const cs=getComputedStyle(document.body),acc=cs.getPropertyValue("--accent").trim()||"#a78bfa",acc2=cs.getPropertyValue("--pbtn").trim()||acc;
+  const got=Object.keys(state.badges||{}).length,info=["🔥 Seri: "+streakNow()+" gün · "+c.days+" / 7 gün çalıştın"];
+  if(c.top)info.push("📚 En çok çalışılan: "+c.top+" ("+fmtMin(c.topMin)+")");
+  if(weak)info.push("🎯 En zayıf konu: "+weak.subject+" · "+weak.topic+" ("+fmtPct(weak.rate)+")");
+  info.push("🏅 Rozetler: "+got+" / "+BADGES.length);
+  const d={accent:acc,accent2:acc2,range:fmtShort(ds[0])+" – "+fmtShort(ds[6]),name:((state.profile||{}).name||"").trim().split(/\s+/)[0],live:wkTab===0,
+    timeTxt:fmtMin(c.min),sub1:delta(c.min,p.min,fmtMin)?delta(c.min,p.min,fmtMin)+" · önceki hafta":c.days+" / 7 gün çalıştın",
+    solvedTxt:String(c.solved),sub2:delta(c.solved,p.solved,n=>String(n))||"",
+    rateTxt:c.rate==null?"–":fmtPct(c.rate),sub3:c.d+c.y>0?"Net "+fmtNet(c.net):"",
+    scoreTxt:c.score==null?"Plan yok":fmtPct(c.score),sub4:c.total?c.done+" / "+c.total+" blok":"",info,msg:(msgs||[])[0]||""};
+  try{
+    const cv=document.createElement("canvas");cv.width=1080;cv.height=1350;drawWeeklyCard(cv.getContext("2d"),1080,1350,d);
+    const blob=await new Promise(r=>cv.toBlob(r,"image/png"));
+    if(!blob){m.textContent="Resim oluşturulamadı.";return}
+    const file=new File([blob],"planzen-haftalik-ozet.png",{type:"image/png"});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      try{await navigator.share({files:[file],title:"PlanZen haftalık özet"});m.textContent="";return}catch(e){if(e&&e.name==="AbortError")return}
+    }
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=file.name;document.body.appendChild(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(a.href),4000);m.textContent="Resim indirildi.";
+  }catch(e){m.textContent="Resim oluşturulamadı: "+(e.message||e)}
+}
+$("wkShare").addEventListener("click",shareWeekly);
 const pmenu=$("pmenu");
 function closeMenu(){pmenu.hidden=true;$("profileTop").setAttribute("aria-expanded","false")}
 function toggleMenu(){const h=pmenu.hidden;pmenu.hidden=!h;$("profileTop").setAttribute("aria-expanded",String(h))}
@@ -1813,7 +1928,7 @@ $("examDate").value=fmtDate(dayKey(new Date()));
     } catch (error) {
       connectionStatus.textContent =
         error.message === "zaman aşımı"
-          ? "PlanZen ders Planetine ulaşamadı. Sunucuda olan ufak tefek değişikliklerden dolayı giriş bilgilerini onaylayamadık. Kodlayıcı ile iletişime geçip sürecin ne kadar süreceğini öğrenebilirsin :)"
+          ? "Supabase 8 saniyede cevap vermedi. Bu sayfa dış sunucu isteklerini engelleyen bir önizlemede açılmış olabilir; dosyayı normal bir tarayıcıda ya da kendi sitende aç."
           : "Bağlantı kurulamadı: " + (error.message || "Bilinmeyen hata");
       console.error("PlanZen bağlantı hatası:", error);
     }
@@ -1852,7 +1967,9 @@ $("examDate").value=fmtDate(dayKey(new Date()));
     if (error) { if (!statsWarned) { statsWarned = true; msg("Arkadaşların detaylarını görebilmesi için yeni güncelleme SQL'ini çalıştırman gerekiyor."); } return; }
     lastStats = js;
   }
-  let lastRemoteAt = null, dirty = false, pulling = false;
+  let lastRemoteAt = null, dirty = false, pulling = false, loadFailed = false, loading = false;
+  const OFFLINE = "Çevrimdışı: değişiklikler cihazda, bağlantı gelince gönderilecek";
+  function markDirty(v) { dirty = v; try { localStorage.setItem("pz_dirty_" + uid, v ? "1" : ""); } catch (_) {} }
   async function saveNow(retry) {
     if (!uid || !loaded) return;
     try {
@@ -1860,17 +1977,17 @@ $("examDate").value=fmtDate(dayKey(new Date()));
       const res = lastRemoteAt
         ? await db.from("user_data").update({ data: state, updated_at: stamp }).eq("user_id", uid).eq("updated_at", lastRemoteAt).select("updated_at")
         : await db.from("user_data").upsert({ user_id: uid, data: state, updated_at: stamp }).select("updated_at");
-      if (res.error) { dirty = true; setSync("Kaydedilemedi: " + res.error.message); return; }
+      if (res.error) { markDirty(true); setSync(navigator.onLine === false ? OFFLINE : "Kaydedilemedi: " + res.error.message); return; }
       if (lastRemoteAt && (!res.data || !res.data.length)) {
         // başka bir cihaz araya yazmış: onun verisiyle birleştirip bir kez daha dene
-        if (retry) { dirty = true; setSync("Kaydedilemedi: çakışma"); return; }
+        if (retry) { markDirty(true); setSync("Kaydedilemedi: çakışma"); return; }
         const { data: r } = await db.from("user_data").select("data,updated_at").eq("user_id", uid).maybeSingle();
         if (r && r.data) { state = mergeStates(state, { ...makeState(), ...r.data }); localSave(); lastRemoteAt = r.updated_at; refreshAll(); return saveNow(true); }
-        dirty = true; return;
+        markDirty(true); return;
       }
-      lastRemoteAt = res.data[0].updated_at; dirty = false;
+      lastRemoteAt = res.data[0].updated_at; markDirty(false);
       setSync("Kaydedildi ✓"); pushWeek(); pushStats();
-    } catch (e) { dirty = true; setSync("Kaydedilemedi: bağlantı hatası"); }
+    } catch (e) { markDirty(true); setSync(navigator.onLine === false ? OFFLINE : "Kaydedilemedi: bağlantı hatası"); }
   }
   // Uygulamaya dönünce ya da arada bir: başka cihazda yapılan değişiklikleri çek
   const typing = () => { const a = document.activeElement; return !!(a && /^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName)); };
@@ -1886,12 +2003,38 @@ $("examDate").value=fmtDate(dayKey(new Date()));
       }
     } catch (_) {} finally { pulling = false; }
   }
-  document.addEventListener("visibilitychange", () => { if (!document.hidden) pullRemote(); });
-  window.addEventListener("focus", () => pullRemote());
-  window.addEventListener("online", () => pullRemote());
-  setInterval(() => { if (!document.hidden && !typing()) pullRemote(); }, 45000);
+  // İlk yükleme: internet yoksa cihazdaki kopyayla açılır, bağlantı gelince tekrar denenir
+  async function loadRemote() {
+    if (!uid || loaded || loading) return false;
+    loading = true;
+    try {
+      setSync("Senkronize ediliyor…");
+      let r; try { r = await db.from("user_data").select("data,updated_at").eq("user_id", uid).maybeSingle(); } catch (e) { r = { error: e }; }
+      if (r.error) { loadFailed = true; setSync(navigator.onLine === false ? OFFLINE : "Bulut hatası: " + (r.error.message || "")); return false; }
+      loadFailed = false;
+      const data = r.data;
+      let pending = false; try { pending = localStorage.getItem("pz_dirty_" + uid) === "1"; } catch (_) {}
+      if (data && data.data && Array.isArray(data.data.tasks)) {
+        const remote = { ...makeState(), ...data.data };
+        state = pending ? mergeStates(state, remote) : remote; localSave(); refreshAll();
+      }
+      lastRemoteAt = data ? data.updated_at : null;
+      loaded = true;
+      if (!data || pending) await saveNow(); else setSync("Kaydedildi ✓");
+      if (await loadProfile()) loadFriends();
+      return true;
+    } finally { loading = false; }
+  }
+  const refreshSync = () => (loaded ? pullRemote() : loadRemote());
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) refreshSync(); });
+  window.addEventListener("focus", () => refreshSync());
+  window.addEventListener("online", () => refreshSync());
+  window.addEventListener("offline", () => { if (uid) setSync(OFFLINE); });
+  setInterval(() => { if (!document.hidden && !typing()) refreshSync(); }, 45000);
+
   window.planZenSync = () => {
-    if (!uid || !loaded) return;
+    if (!uid) return;
+    if (!loaded) { if (loadFailed) { markDirty(true); setSync(OFFLINE); } return; }
     setSync("Kaydediliyor…");
     clearTimeout(saveTimer);
     saveTimer = setTimeout(saveNow, 800);
@@ -2043,27 +2186,20 @@ $("examDate").value=fmtDate(dayKey(new Date()));
 
   async function onLogin(user) {
     if (!user || uid === user.id) return;
-    uid = user.id; loaded = false; profile = null;
+    uid = user.id; loaded = false; profile = null; loadFailed = false;
     storeKey = "planzen_" + uid;
     let local = null;
     try { local = JSON.parse(localStorage.getItem(storeKey) || "null"); } catch (_) {}
     state = { ...makeState(), ...(local || {}) };
     refreshAll();
-    setSync("Senkronize ediliyor…");
-    const { data, error } = await db.from("user_data").select("data,updated_at").eq("user_id", uid).maybeSingle();
-    if (error) { setSync("Bulut hatası: " + error.message); return; }
-    if (data && data.data && Array.isArray(data.data.tasks)) { state = { ...makeState(), ...data.data }; localSave(); refreshAll(); }
-    lastRemoteAt = data ? data.updated_at : null;
-    loaded = true;
-    if (!data) await saveNow(); else setSync("Kaydedildi ✓");
-    if (await loadProfile()) loadFriends();
+    await loadRemote();
   }
   window.addEventListener("pz-login", e => onLogin(e.detail));
   // Sayfa açılırken oturum, bu script yüklenmeden önce bulunmuş olabilir: olayı kaçırmamak için oturuma ayrıca bak.
   db.auth.getSession().then(({ data }) => { if (data && data.session && data.session.user) onLogin(data.session.user); });
 
   window.addEventListener("pz-logout", () => {
-    uid = null; loaded = false; profile = null; lastRemoteAt = null; dirty = false;
+    uid = null; loaded = false; profile = null; lastRemoteAt = null; dirty = false; loadFailed = false;
     clearTimeout(saveTimer);
     storeKey = "planzen_guest";
     state = makeState();
