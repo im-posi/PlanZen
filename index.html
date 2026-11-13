@@ -380,10 +380,23 @@ body[data-accent="cosmic"]{--accent:#f39a5c;--pbtn:#dc6a1f}body.light[data-accen
 .modal-card{width:min(520px,100%);max-height:90vh;overflow:auto;background:var(--panel);border:1px solid var(--glass-edge);border-radius:20px;padding:20px;box-shadow:0 24px 60px var(--glass-sh)}
 .modal .week-form select,.modal .week-form input{flex:1 1 140px;min-width:0}
 .modal-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.splash{position:fixed;inset:0;z-index:1500;display:grid;place-items:center;cursor:pointer;
+  background:color-mix(in srgb,var(--bg) 58%,transparent);-webkit-backdrop-filter:blur(26px) saturate(150%);backdrop-filter:blur(26px) saturate(150%);
+  animation:spOverlay 2.3s ease forwards}
+.splash-brand{display:flex;align-items:center}
+.splash-word{overflow:hidden;white-space:nowrap;max-width:0;opacity:0;margin-right:0;font-size:46px;font-weight:800;letter-spacing:-1.5px;line-height:1.2;color:var(--text);transform-origin:100% 50%;animation:spWord 2.3s cubic-bezier(.4,0,.2,1) forwards}
+.splash-logo{width:84px;height:84px;display:block;filter:drop-shadow(0 10px 28px color-mix(in srgb,var(--accent) 55%,transparent));animation:spLogo 2.3s cubic-bezier(.3,1.3,.4,1) forwards}
+@keyframes spOverlay{0%,76%{opacity:1}100%{opacity:0;-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0);visibility:hidden}}
+@keyframes spLogo{0%{transform:scale(.55);opacity:0}20%,52%{transform:scale(1);opacity:1}60%{transform:scale(1.13)}68%,76%{transform:scale(1);opacity:1}100%{transform:scale(.8);opacity:0}}
+@keyframes spWord{0%,15%{max-width:0;opacity:0;margin-right:0;transform:none}41%,54%{max-width:280px;opacity:1;margin-right:18px;transform:none}76%,100%{max-width:0;opacity:0;margin-right:0;transform:scale(.2)}}
+@keyframes spSkip{to{opacity:0;visibility:hidden;-webkit-backdrop-filter:blur(0);backdrop-filter:blur(0)}}
+.splash.skip{animation:spSkip .3s ease forwards}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body>
+<div class="splash" id="splash" aria-hidden="true"><div class="splash-brand"><div class="splash-word">PlanZen</div><svg class="splash-logo" viewBox="0 0 96 96"><defs><linearGradient id="spG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--accent)"/><stop offset="1" style="stop-color:var(--pbtn)"/></linearGradient></defs><rect width="96" height="96" rx="26" fill="url(#spG)"/><g stroke="#1a1530" stroke-width="9" stroke-linecap="round"><path d="M48 24v48M24 48h48M31 31l34 34M65 31L31 65"/></g></svg></div></div>
+<script>try{var sp=document.getElementById("splash");if(sp&&(sessionStorage.getItem("pz_splash")||(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches)))sp.remove()}catch(e){}</script>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><linearGradient id="flameG" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ff5a00"/><stop offset=".6" stop-color="#ff9a1f"/><stop offset="1" stop-color="#ffc247"/></linearGradient><linearGradient id="flameG2" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ffb21f"/><stop offset="1" stop-color="#ffe680"/></linearGradient></defs></svg>
 <div class="app">
 <aside class="sidebar">
@@ -1728,6 +1741,14 @@ async function shareWeekly(){
   }catch(e){m.textContent="Resim oluşturulamadı: "+(e.message||e)}
 }
 $("wkShare").addEventListener("click",shareWeekly);
+(()=>{
+  const sp=document.getElementById("splash");if(!sp)return;
+  try{sessionStorage.setItem("pz_splash","1")}catch(_){}
+  const done=()=>{if(sp.isConnected)sp.remove()};
+  sp.addEventListener("animationend",e=>{if(e.target===sp&&!sp.classList.contains("skip"))done()});
+  sp.addEventListener("click",()=>{sp.classList.add("skip");setTimeout(done,320)});
+  setTimeout(done,3000);
+})();
 const pmenu=$("pmenu");
 function closeMenu(){pmenu.hidden=true;$("profileTop").setAttribute("aria-expanded","false")}
 function toggleMenu(){const h=pmenu.hidden;pmenu.hidden=!h;$("profileTop").setAttribute("aria-expanded",String(h))}
