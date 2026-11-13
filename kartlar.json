@@ -1,0 +1,77 @@
+{
+  "decks": [
+    {
+      "id": "edebiyat",
+      "title": "Türk Dili ve Edebiyatı Hafıza Kartları",
+      "icon": "📚",
+      "periods": [
+        {
+          "id": "islam-oncesi",
+          "title": "İslamiyet Öncesi Türk Edebiyatı",
+          "cards": []
+        },
+        {
+          "id": "gecis",
+          "title": "Geçiş Dönemi",
+          "cards": []
+        },
+        {
+          "id": "halk",
+          "title": "Halk Edebiyatı (Âşık, Tekke, Anonim)",
+          "cards": []
+        },
+        {
+          "id": "divan",
+          "title": "Divan Edebiyatı",
+          "cards": [
+            {
+              "id": "ed-demo-1",
+              "f": "Divan şiirinde en çok kullanılan nazım biçimi hangisidir?",
+              "b": "Gazel",
+              "demo": true
+            },
+            {
+              "id": "ed-demo-2",
+              "f": "Gazelin ilk beytine ne ad verilir?",
+              "b": "Matla",
+              "demo": true
+            }
+          ]
+        },
+        {
+          "id": "tanzimat",
+          "title": "Tanzimat Dönemi",
+          "cards": [
+            {
+              "id": "ed-demo-3",
+              "f": "Tanzimat Fermanı (Gülhane Hatt-ı Hümayunu) hangi yıl ilan edildi?",
+              "b": "1839",
+              "demo": true
+            },
+            {
+              "id": "ed-demo-4",
+              "f": "Tercüman-ı Ahval gazetesini kimler çıkarmıştır?",
+              "b": "Agâh Efendi ve Şinasi (1860)",
+              "demo": true
+            }
+          ]
+        },
+        {
+          "id": "servet-fecr",
+          "title": "Servet-i Fünun ve Fecr-i Âti",
+          "cards": []
+        },
+        {
+          "id": "milli",
+          "title": "Millî Edebiyat Dönemi",
+          "cards": []
+        },
+        {
+          "id": "cumhuriyet",
+          "title": "Cumhuriyet Dönemi",
+          "cards": []
+        }
+      ]
+    }
+  ]
+}
