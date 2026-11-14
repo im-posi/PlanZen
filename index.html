@@ -3,7 +3,7 @@
 <html lang="tr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#10111a">
 <title>PlanZen | Çalışma Alanın</title>
 <link rel="manifest" href="manifest.webmanifest">
@@ -404,6 +404,16 @@ body[data-accent="cosmic"]{--accent:#f39a5c;--pbtn:#dc6a1f}body.light[data-accen
 .cd-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line)}
 .cd-row .info{flex:1;min-width:0}.cd-row strong{display:block;font-size:14px}
 .cd-row .progress{margin-top:6px}
+body{padding-top:env(safe-area-inset-top,0px)}
+.pmenu{top:calc(env(safe-area-inset-top,0px) + 72px)}.sync-pop{top:calc(env(safe-area-inset-top,0px) + 68px)}
+@media(max-width:650px){main{padding-bottom:calc(98px + env(safe-area-inset-bottom,0px))}.pmenu{top:calc(env(safe-area-inset-top,0px) + 64px)}}
+#studyCard{cursor:pointer}#studyCard:active{transform:scale(.98)}
+.modal.top2{z-index:1210}.modal.top3{z-index:1220}
+.sess-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--line);font-size:13px}
+.sess-row .wtime{min-width:84px}.sess-row .grow{flex:1;min-width:0}
+.sw-warn{flex-basis:100%;font-size:12px;line-height:1.6;color:#facc15}
+.shake{animation:pzShake .42s}
+@keyframes pzShake{20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
@@ -436,6 +446,30 @@ body[data-accent="cosmic"]{--accent:#f39a5c;--pbtn:#dc6a1f}body.light[data-accen
     <div class="top-actions"><button class="sync-dot" id="syncDot" hidden aria-label="Kaydetme durumu"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10a6 6 0 0 0-11.6-1.5A4.5 4.5 0 0 0 7 18h11a4 4 0 0 0 0-8z"/></svg></button><button class="avatar-btn" id="profileTop" aria-label="Profil menüsü" aria-haspopup="menu" aria-expanded="false"><div class="avatar" id="topAvatar">?</div><span class="unread-dot" id="unreadDot" hidden></span></button></div>
   </header>
   <div class="sync-pop" id="syncPop" hidden></div>
+  <div class="modal" id="dayModal" hidden role="dialog" aria-modal="true" aria-labelledby="dmTitle"><div class="modal-card">
+    <div class="card-head"><div><h2 id="dmTitle"></h2><div class="card-sub" id="dmSub"></div></div><button class="btn" id="dmClose">Kapat</button></div>
+    <div id="dmSubjects"></div>
+    <h3 style="margin:16px 0 2px">Çalışmalar</h3>
+    <div id="dmList"></div>
+    <div class="small" id="dmMsg" style="margin-top:10px;line-height:1.6"></div>
+    <div class="modal-actions"><button class="btn primary" id="dmAdd">+ Süre ekle</button></div>
+  </div></div>
+  <div class="modal top2" id="sessModal" hidden role="dialog" aria-modal="true" aria-labelledby="smTitle"><div class="modal-card">
+    <h2 id="smTitle">Çalışmayı düzenle</h2>
+    <div class="week-form" style="margin-top:14px">
+      <select id="smSubject" aria-label="Ders"></select>
+      <input id="smStart" type="time" aria-label="Başlangıç saati" title="Başlangıç">
+      <input id="smEnd" type="time" aria-label="Bitiş saati" title="Bitiş">
+      <input id="smMin" type="number" min="1" max="1440" inputmode="numeric" placeholder="Süre (dk)" aria-label="Süre, dakika">
+    </div>
+    <div class="small" style="margin-top:8px;line-height:1.6">Saatleri girersen süre kendiliğinden hesaplanır. Saati bilmiyorsan sadece süreyi yaz.</div>
+    <div class="small" id="smMsg" style="margin-top:8px;color:#facc15"></div>
+    <div class="modal-actions"><button class="btn primary" id="smSave">Kaydet</button><button class="btn" id="smCancel">Vazgeç</button><button class="btn" id="smDelete">Sil</button></div>
+  </div></div>
+  <div class="modal top3" id="confirmModal" hidden role="alertdialog" aria-modal="true" aria-labelledby="cfTitle"><div class="modal-card" style="width:min(420px,100%)">
+    <h2 id="cfTitle"></h2><p id="cfText" style="line-height:1.6"></p>
+    <div class="modal-actions"><button class="btn primary" id="cfOk">Evet</button><button class="btn" id="cfNo">Vazgeç</button></div>
+  </div></div>
   <div class="modal" id="blockModal" hidden role="dialog" aria-modal="true" aria-labelledby="bmTitle">
     <div class="modal-card">
       <h2 id="bmTitle">Bloğu düzenle</h2>
@@ -478,7 +512,7 @@ body[data-accent="cosmic"]{--accent:#f39a5c;--pbtn:#dc6a1f}body.light[data-accen
       <button class="btn primary" id="wkBannerBtn">Özeti gör ↗</button>
     </div>
     <div class="grid stats">
-      <div class="card"><div class="stat-head">Bugünkü çalışma <span class="stat-icon">◷</span></div><div class="stat-number" id="studyStat">0 sa 0 dk</div><div class="stat-foot"><span class="green">●</span> Günlük hedefe doğru</div></div>
+      <div class="card" id="studyCard" role="button" tabindex="0" aria-label="Bugünkü çalışmayı ders ders gör"><div class="stat-head">Bugünkü çalışma <span class="stat-icon">◷</span></div><div class="stat-number" id="studyStat">0 sa 0 dk</div><div class="stat-foot"><span class="green">●</span> Ders ders gör ›</div></div>
       <div class="card"><div class="stat-head">Çözülen sorular <span class="stat-icon">✎</span></div><div class="stat-number" id="questionStat">0</div><div class="stat-foot"><button class="wlink" data-goto="work" style="margin:0">+ Soru ekle</button></div></div>
       <div class="card"><div class="stat-head">Tamamlanan görev <span class="stat-icon">✓</span></div><div class="stat-number" id="taskStat">0 / 0</div><div class="stat-foot">Adım adım ilerliyorsun</div></div>
       <div class="card"><div class="stat-head">Seri <span class="stat-icon flame" id="flame" role="img" aria-label="Seri durumu"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="f-out" d="M12 2 C12.5 5.2 16.2 6.8 17.6 10.4 C18.8 13.6 17.8 17.2 15.2 19.4 C14.2 20.3 13.1 21 12 21 C10.9 21 9.8 20.3 8.8 19.4 C6.2 17.2 5.2 13.8 6.6 10.8 C7.2 12.2 8.1 12.9 9.1 13.1 C8.7 10 9.8 7.2 10.7 5.2 C11.3 3.9 11.8 2.9 12 2 Z"/><path class="f-in" d="M12 21 C10 21 8.9 19.6 9.1 17.8 C9.3 15.7 11 14.9 11.6 12.8 C12.7 14.4 15 15.6 15 18 C15 19.8 13.8 21 12 21 Z"/></svg></span></div><div class="stat-number" id="streakStat">0 gün</div><div class="stat-foot">Düzen, mükemmellikten iyidir</div></div>
@@ -535,8 +569,9 @@ body[data-accent="cosmic"]{--accent:#f39a5c;--pbtn:#dc6a1f}body.light[data-accen
     <div class="card timer">
       <div><h2><svg class="moon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><defs><linearGradient id="moonG" x1="0" y1="0" x2="1" y2="1"><stop offset="0" style="stop-color:var(--accent)"/><stop offset="1" style="stop-color:var(--pbtn)"/></linearGradient></defs><path fill="url(#moonG)" d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg> Odak sayacı</h2><div class="card-sub">Bugünkü toplam çalışma süren</div><div class="timer-time" id="swTime">00:00:00</div></div>
       <select id="swSubject" aria-label="Ders"></select><button class="btn primary" id="swBtn">Başlat</button>
+      <div class="sw-warn" id="swWarn" hidden><span id="swWarnText"></span> <button class="wlink" id="swAnyway" style="margin:0">Dersiz başlat</button></div>
       <ul class="sw-guide">
-        <li>Ders çalışmaya başlarken dersini seç ve <b>Başlat</b>'a bas. Süre o derse yazılır.</li>
+        <li>Ders çalışmaya başlarken dersini seç ve <b>Başlat</b>'a bas. Süre o derse yazılır. Seçmeyi unuttuysan sayaç çalışırken de seçebilirsin.</li>
         <li>Mola verdiğinde ya da bitirdiğinde <b>Duraklat</b>'a bas.</li>
         <li>Süre sıfırlanmaz; gün boyunca birikir, hedef halkasına ve haftalık grafiğe eklenir. Gece yarısı yeni güne geçer.</li>
         <li>Uygulamayı kapatsan da sayaç çalışmaya devam eder, o yüzden bitirince Duraklat'a basmayı unutma.</li>
@@ -837,7 +872,7 @@ const initialTasks = [
   {title:"AYT Fen",meta:"Konu çalışması · 30 dk",tag:"Fen",done:false},
   {title:"Günün tekrarı",meta:"Yanlışları gözden geçir · 15 dk",tag:"Tekrar",done:false}
 ];
-const makeState = () => ({tasks:[], goal:3, q:{}, exams:[], note:"", theme:"dark", log:{}, sub:{}, qlog:[], week:[], profile:{}, timer:{startedAt:null}});
+const makeState = () => ({tasks:[], goal:3, q:{}, exams:[], note:"", theme:"dark", log:{}, sub:{}, sessions:[], dayEdit:{}, qlog:[], week:[], profile:{}, timer:{startedAt:null}});
 let state = makeState();
 try {
   const saved = JSON.parse(localStorage.getItem(storeKey) || "null");
@@ -1190,13 +1225,19 @@ $("saveNote").addEventListener("click",()=>{
   state.note=$("dailyNote").value;persist();$("noteStatus").textContent="Not kaydedildi.";
 });
 $("dailyNote").value=state.note||"";
+const pad2=n=>String(n).padStart(2,"0");
+const hmOf=ms=>{const d=new Date(ms);return pad2(d.getHours())+":"+pad2(d.getMinutes())};
+const r3=v=>Math.round(v*1000)/1000;
+const sid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
 function swCommit(){
   const t=state.timer;if(!t||!t.startedAt)return;
   let a=t.startedAt;const end=Date.now();
+  state.sessions=state.sessions||[];
   while(true){
     const d=new Date(a),nx=new Date(d.getFullYear(),d.getMonth(),d.getDate()+1).getTime(),stop=Math.min(end,nx),k=dayKey(d);
-    const mm=(stop-a)/60000;state.log[k]=Math.round(((state.log[k]||0)+mm)*1000)/1000;
-    const sn=t.subject||"Genel";state.sub=state.sub||{};state.sub[k]=state.sub[k]||{};state.sub[k][sn]=Math.round(((state.sub[k][sn]||0)+mm)*1000)/1000;
+    const mm=(stop-a)/60000;state.log[k]=r3((state.log[k]||0)+mm);
+    const sn=t.subject||"Genel";state.sub=state.sub||{};state.sub[k]=state.sub[k]||{};state.sub[k][sn]=r3((state.sub[k][sn]||0)+mm);
+    if(mm>=0.05){state.sessions.push({id:sid(),date:k,s:hmOf(a),e:stop===nx?"23:59":hmOf(stop),subject:sn,min:r3(mm)});if(state.dayEdit&&state.dayEdit[k])state.dayEdit[k]=Date.now()}
     if(stop>=end)break;a=stop;
   }
   t.startedAt=null;
@@ -1207,7 +1248,8 @@ function swDraw(){
   $("swTime").textContent=ts;$("miniTime").textContent=ts;
   const run=!!(state.timer&&state.timer.startedAt);
   $("swBtn").textContent=run?"Duraklat":"Başlat";
-  $("swSubject").disabled=run;if(run)$("swSubject").value=state.timer.subject||"";
+  $("swSubject").disabled=false;if(run&&document.activeElement!==$("swSubject"))$("swSubject").value=state.timer.subject||"";
+  if(run){const ns=!state.timer.subject;$("swWarn").hidden=!ns;if(ns){$("swWarnText").textContent="Ders seçilmedi, süre Genel'e yazılıyor. Dersini yukarıdan seç.";$("swAnyway").hidden=true}}
   $("miniSub").textContent=run?"Odak sayacı çalışıyor"+(state.timer.subject?" · "+state.timer.subject:""):"Odak sayacı duruyor · bugünkü toplam süren";
   updateTimerChip();
 }
@@ -1267,10 +1309,24 @@ function expandWork(){
   }catch(_){end()}
 }
 $("timerChip").addEventListener("click",expandWork);
+let swBypass=false;
 $("swBtn").addEventListener("click",()=>{
   if(!state.timer)state.timer={startedAt:null};
-  if(state.timer.startedAt)swCommit();else{state.timer.startedAt=Date.now();state.timer.subject=$("swSubject").value}
-  persist();swDraw();renderGoal();renderChart();renderLoyalty();renderSubjectStats();renderWeeklyReport();
+  if(state.timer.startedAt)swCommit();
+  else{
+    if(!$("swSubject").value&&!swBypass){
+      $("swWarnText").textContent="Önce dersini seç ki süre doğru derse yazılsın.";$("swAnyway").hidden=false;$("swWarn").hidden=false;
+      const el=$("swSubject");el.classList.remove("shake");void el.offsetWidth;el.classList.add("shake");haptic(3);return;
+    }
+    swBypass=false;$("swWarn").hidden=true;
+    state.timer.startedAt=Date.now();state.timer.subject=$("swSubject").value;haptic(1);
+  }
+  persist();swDraw();renderGoal();renderChart();renderLoyalty();renderSubjectStats();renderWeeklyReport();renderDay();
+});
+$("swAnyway").addEventListener("click",()=>{swBypass=true;$("swBtn").click()});
+$("swSubject").addEventListener("change",()=>{
+  if($("swSubject").value&&!(state.timer&&state.timer.startedAt))$("swWarn").hidden=true;
+  if(state.timer&&state.timer.startedAt){state.timer.subject=$("swSubject").value;persist();swDraw();renderSubjectStats();renderDay()}
 });
 setInterval(()=>{if(state.timer&&state.timer.startedAt)swDraw()},1000);
 setInterval(()=>{if(state.timer&&state.timer.startedAt)renderGoal()},15000);
@@ -1337,6 +1393,7 @@ function fixState(st){
     st.tasks.forEach(k=>st.week.push({day:t,start:"",end:"",subject:"",topic:k.title,questions:0,week:wk,done:!!k.done}));
     st.tasks=[];ch=true;
   }
+  if(!Array.isArray(st.sessions)){st.sessions=[];ch=true}
   if(!Array.isArray(st.qlog)){st.qlog=[];ch=true}
   if(st.q&&Object.keys(st.q).length){Object.keys(st.q).forEach(k=>{if(st.q[k]>0)st.qlog.push({t:0,date:k,subject:"Genel",topic:"",n:st.q[k],d:null,y:null})});st.q={};ch=true}
   return ch;
@@ -1401,7 +1458,7 @@ function dndStart(slot,x,y){
   const r=slot.getBoundingClientRect(),g=slot.cloneNode(true);
   g.classList.add("ghost");g.style.width=r.width+"px";document.body.appendChild(g);
   dnd={i:Number(slot.dataset.slot),slot,g,ox:x-r.left,oy:y-r.top,over:null};slot.classList.add("dragging");dndMove(x,y);
-  if(navigator.vibrate)navigator.vibrate(12);
+  haptic(1);
 }
 function dndEnd(){
   if(!dnd)return;const {i,over,g,slot}=dnd;dnd=null;g.remove();slot.classList.remove("dragging");
@@ -1594,6 +1651,14 @@ function mergeStates(L,R){
   M.badges={...(R.badges||{}),...(L.badges||{})};
   M.bestStreak=Math.max(L.bestStreak||0,R.bestStreak||0);
   M.cards={...(R.cards||{})};Object.keys(L.cards||{}).forEach(k=>{const a=L.cards[k],b=M.cards[k];if(!b||(a.u||0)>=(b.u||0))M.cards[k]=a});
+  // elle düzeltilen günler: en son düzelten cihazın o günkü kaydı aynen alınır
+  const de={...(R.dayEdit||{})};Object.keys(L.dayEdit||{}).forEach(k=>{de[k]=Math.max(de[k]||0,L.dayEdit[k])});
+  const srcOf=k=>((L.dayEdit||{})[k]||0)>=((R.dayEdit||{})[k]||0)?L:R;
+  Object.keys(de).forEach(k=>{const S=srcOf(k);if((S.log||{})[k]!=null)M.log[k]=S.log[k];else delete M.log[k];if((S.sub||{})[k])M.sub[k]={...S.sub[k]};else delete M.sub[k]});
+  M.dayEdit=de;
+  M.sessions=uni(L.sessions,R.sessions,x=>x.id).filter(x=>!de[x.date]).concat(Object.keys(de).flatMap(k=>(srcOf(k).sessions||[]).filter(x=>x.date===k)));
+  const lr=L.badgeRev||0,rr=R.badgeRev||0;
+  if(lr||rr){const A=lr>=rr?L:R,B=lr>=rr?R:L;M.badges={...(A.badges||{})};Object.keys(B.badges||{}).forEach(id=>{if(!TIME_BADGES.includes(id)&&!M.badges[id])M.badges[id]=B.badges[id]});M.badgeRev=Math.max(lr,rr);M.bestStreak=A.bestStreak||0}
   return M;
 }
 // ---- Çalışma takvimi ----
@@ -1602,7 +1667,7 @@ function showCalInfo(){
   if(!calSel){$("calInfo").textContent="Bir güne basınca detayı görürsün.";return}
   const [y,m,d]=calSel.split("-").map(Number),dt=new Date(y,m-1,d),min=state.log[calSel]||0,sub=(state.sub||{})[calSel]||{};
   const top=Object.entries(sub).sort((a,b)=>b[1]-a[1]).slice(0,3).map(([n,v])=>n+" "+fmtMin(v)).join(", ");
-  $("calInfo").innerHTML="<b>"+safeText(dt.toLocaleDateString("tr-TR",{day:"numeric",month:"long",weekday:"long"}))+"</b> · Çalışma "+fmtMin(min)+" · Soru "+solvedOn(calSel)+(top?" · "+safeText(top):"");
+  $("calInfo").innerHTML="<b>"+safeText(dt.toLocaleDateString("tr-TR",{day:"numeric",month:"long",weekday:"long"}))+"</b> · Çalışma "+fmtMin(min)+" · Soru "+solvedOn(calSel)+(top?" · "+safeText(top):"")+' · <button class="wlink" id="calEdit" style="margin:0">Ders ders gör / düzenle</button>';
 }
 function renderCalendar(){
   const W=20,mon=weekDates(0)[0],start=new Date(mon.getFullYear(),mon.getMonth(),mon.getDate()-(W-1)*7),goal=Math.max(1,state.goal)*60,today=dayKey(new Date());
@@ -1620,6 +1685,7 @@ function renderCalendar(){
   $("calMonths").innerHTML=months;$("calGrid").innerHTML=cells;$("calTag").textContent=active+" gün çalıştın";showCalInfo();
 }
 $("calGrid").addEventListener("click",e=>{const b=e.target.closest("[data-d]");if(!b||b.disabled)return;calSel=calSel===b.dataset.d?null:b.dataset.d;renderCalendar()});
+$("calInfo").addEventListener("click",e=>{if(e.target.closest("#calEdit")&&calSel)openDay(calSel)});
 // ---- Rozetler ----
 const BADGES=[
  {id:"first",n:"İlk Adım",i:"🌱",d:"İlk çalışma süreni kaydettin",t:c=>c.totalMin>0},
@@ -1631,6 +1697,8 @@ const BADGES=[
  {id:"hours50",n:"Saat Ustası",i:"⌛",d:"Toplam 50 saat çalıştın",t:c=>c.totalMin>=3000},
  {id:"hours100",n:"Yüz Saat Kulübü",i:"👑",d:"Toplam 100 saat çalıştın",t:c=>c.totalMin>=6000},
  {id:"marathon",n:"Maraton",i:"🏃",d:"Tek günde 4 saat çalıştın",t:c=>c.maxDay>=240},
+ {id:"night",n:"Gece Kuşu",i:"🦉",d:"Gece 23:00'ten sonra en az 15 dakika çalıştın",t:c=>c.night},
+ {id:"early",n:"Erken Kalkan",i:"🌅",d:"Sabah 07:00'den önce en az 15 dakika çalıştın",t:c=>c.early},
  {id:"goal",n:"Günün Yıldızı",i:"⭐",d:"Günlük çalışma hedefine ulaştın",t:c=>c.goalHit},
  {id:"q100",n:"Soru Avcısı",i:"🎯",d:"100 soru çözdün",t:c=>c.solved>=100},
  {id:"q500",n:"Soru Makinesi",i:"🚀",d:"500 soru çözdün",t:c=>c.solved>=500},
@@ -1657,9 +1725,21 @@ function badgeCtx(){
   const hit=(tp,key)=>{const e=lastExam(tp);return !!(e&&p[key]&&e.total>=p[key])};
   const cur=weekStartKey();let loyal=false,perfect=false;
   [...new Set(state.week.map(w=>w.week))].filter(k=>k<cur).forEach(k=>{const ws=weekStats(k);if(ws.total>=5&&ws.blockPct>=90)loyal=true;if(ws.total>=5&&ws.blockPct>=100)perfect=true});
-  return {totalMin,maxDay,best:Math.max(longestStreak(),streakNow(),state.bestStreak||0),solved:totalSolved(),exams:state.exams.length,leap,targetHit:hit("TYT","targetTYT")||hit("AYT","targetAYT"),loyal,perfect,goalHit:todayMin()>=Math.max(1,state.goal)*60};
+  return {totalMin,maxDay,best:Math.max(longestStreak(),streakNow(),state.bestStreak||0),solved:totalSolved(),exams:state.exams.length,leap,targetHit:hit("TYT","targetTYT")||hit("AYT","targetAYT"),loyal,perfect,goalHit:todayMin()>=Math.max(1,state.goal)*60||keys.some(k=>state.log[k]>=Math.max(1,state.goal)*60),
+    night:(state.sessions||[]).some(x=>x.s&&x.min>=15&&(hm(x.s)>=1380||hm(x.s)<240)),early:(state.sessions||[]).some(x=>x.s&&x.min>=15&&hm(x.s)>=240&&hm(x.s)<420)};
 }
 let badgeQueue=[],badgeBusy=false;
+const TIME_BADGES=["first","streak3","streak7","streak14","streak30","hours10","hours50","hours100","marathon","goal","night","early"];
+// Çalışma süresi düzeltilince artık hak edilmeyen süre rozetleri geri alınır
+function revokeBadges(){
+  if(!state.badges)return [];
+  state.bestStreak=Math.max(longestStreak(),streakNow());
+  const c=badgeCtx(),lost=[];
+  BADGES.forEach(b=>{if(TIME_BADGES.includes(b.id)&&state.badges[b.id]&&!b.t(c)){delete state.badges[b.id];lost.push(b.n)}});
+  if(lost.length)state.badgeRev=Date.now();
+  badgeQueue=badgeQueue.filter(b=>state.badges[b.id]);
+  renderBadges();return lost;
+}
 function checkBadges(){
   if(!window.__in)return;
   const first=!state.badges;state.badges=state.badges||{};
@@ -1681,7 +1761,7 @@ function showNextBadge(){
   const b=badgeQueue.shift(),t=$("badgeToast");
   $("btIcon").textContent=b.i;$("btName").textContent=b.n;$("btDesc").textContent=b.d;
   t.hidden=false;t.classList.remove("wide","pop");void t.offsetWidth;
-  if(navigator.vibrate)navigator.vibrate([30,40,30]);
+  haptic(2);
   requestAnimationFrame(()=>{
     t.classList.add("pop");
     setTimeout(()=>t.classList.add("wide"),650);
@@ -1885,6 +1965,125 @@ document.addEventListener("keydown",e=>{
   if(e.key===" "||e.key==="Enter"){e.preventDefault();flipCard()}
   else if(e.key==="1")answerCard(false);else if(e.key==="2")answerCard(true);
 });
+// ---- Titreşim (iPhone'da Safari titreşim desteği vermez; iOS 17.4+ için anahtar düğmesi yöntemi denenir) ----
+function haptic(n){
+  n=n||1;
+  try{
+    if(navigator.vibrate){navigator.vibrate(n>1?Array.from({length:n*2-1},(_,i)=>i%2?55:40):16);return}
+    const tap=()=>{try{const l=document.createElement("label"),i=document.createElement("input");l.setAttribute("aria-hidden","true");l.style.display="none";i.type="checkbox";i.setAttribute("switch","");l.appendChild(i);document.head.appendChild(l);l.click();document.head.removeChild(l)}catch(_){}};
+    tap();for(let k=1;k<n;k++)setTimeout(tap,k*110);
+  }catch(_){}
+}
+// ---- Onay penceresi ----
+function askConfirm(title,text,ok){
+  return new Promise(res=>{
+    $("cfTitle").textContent=title;$("cfText").textContent=text;$("cfOk").textContent=ok||"Evet";$("confirmModal").hidden=false;
+    const done=v=>{$("confirmModal").hidden=true;$("cfOk").onclick=null;$("cfNo").onclick=null;res(v)};
+    $("cfOk").onclick=()=>done(true);$("cfNo").onclick=()=>done(false);
+  });
+}
+// ---- Günlük çalışma dökümü ve düzeltme ----
+let dmDay=null,smId=null;
+const daySessions=k=>(state.sessions||[]).filter(x=>x.date===k);
+function dayEntries(k){
+  const list=daySessions(k).map(x=>({...x})),sum={};
+  list.forEach(x=>{sum[x.subject]=(sum[x.subject]||0)+x.min});
+  const sub=(state.sub||{})[k]||{},rest={};let subTot=0;
+  Object.keys(sub).forEach(n=>{subTot+=sub[n];const r=sub[n]-(sum[n]||0);if(r>0.05)rest[n]=r});
+  const extra=(state.log[k]||0)-subTot;if(extra>0.05)rest["Genel"]=(rest["Genel"]||0)+extra;
+  Object.keys(rest).forEach(n=>list.push({id:"legacy:"+n,date:k,s:"",e:"",subject:n,min:r3(rest[n]),legacy:true}));
+  return list.sort((a,b)=>(a.s||"99:99").localeCompare(b.s||"99:99"));
+}
+function materializeDay(k){
+  const map={},ent=dayEntries(k);
+  state.sessions=(state.sessions||[]).filter(x=>x.date!==k).concat(ent.map(x=>{const id=x.legacy?sid():x.id;map[x.id]=id;return {id,date:k,s:x.s,e:x.e,subject:x.subject,min:x.min}}));
+  return map;
+}
+function recomputeDay(k){
+  let tot=0;const sub={};
+  daySessions(k).forEach(x=>{tot+=x.min;sub[x.subject]=r3((sub[x.subject]||0)+x.min)});
+  state.sub=state.sub||{};
+  if(tot>0){state.log[k]=r3(tot);state.sub[k]=sub}else{delete state.log[k];delete state.sub[k]}
+  state.dayEdit=state.dayEdit||{};state.dayEdit[k]=Date.now();
+}
+function dayLabel(k){
+  const [y,m,d]=k.split("-").map(Number),nice=new Date(y,m-1,d).toLocaleDateString("tr-TR",{day:"numeric",month:"long",weekday:"long"});
+  const t=new Date(),diff=Math.round((new Date(t.getFullYear(),t.getMonth(),t.getDate())-new Date(y,m-1,d))/86400000);
+  return diff===0?"Bugün":diff===1?"Dün ("+nice+")":diff===2?"Evvelsi gün ("+nice+")":nice;
+}
+function openDay(k){dmDay=k;$("dmMsg").textContent="";$("dayModal").hidden=false;renderDay()}
+function closeDay(){$("dayModal").hidden=true;$("sessModal").hidden=true;dmDay=null}
+function renderDay(){
+  if(!dmDay||$("dayModal").hidden)return;
+  const k=dmDay,isToday=k===dayKey(new Date()),list=dayEntries(k),running=isToday&&state.timer&&state.timer.startedAt,run=running?runPart():0;
+  const by={};list.forEach(x=>{by[x.subject]=(by[x.subject]||0)+x.min});
+  if(running){const n=state.timer.subject||"Genel";by[n]=(by[n]||0)+run}
+  const total=Object.values(by).reduce((a,v)=>a+v,0),names=Object.keys(by).sort((a,b)=>by[b]-by[a]);
+  $("dmTitle").textContent=isToday?"Bugünkü çalışma":dayLabel(k);
+  $("dmSub").textContent="Toplam "+fmtMin(total)+(isToday?"":" · geçmiş gün");
+  $("dmSubjects").innerHTML=names.length?names.map((n,i)=>barRow(safeText(n),total?by[n]/total*100:0,fmtMin(by[n])+" · "+fmtPct(total?by[n]/total*100:0),PIE_COLORS[i%PIE_COLORS.length])).join(""):'<div class="empty">Bu gün için çalışma kaydı yok.</div>';
+  const mid=new Date();mid.setHours(0,0,0,0);
+  const live=running?`<div class="sess-row"><span class="wtime">${hmOf(Math.max(state.timer.startedAt,mid.getTime()))}–şimdi</span><span class="grow"><b>${safeText(state.timer.subject||"Genel")}</b><div class="small">Sayaç çalışıyor. Dersi Çalış sayfasından değiştirebilirsin.</div></span><b>${fmtMin(run)}</b></div>`:"";
+  $("dmList").innerHTML=live+list.map(x=>`<div class="sess-row"><span class="wtime">${x.s?safeText(x.s+(x.e?"–"+x.e:"")):"Saat yok"}</span><span class="grow"><b>${safeText(x.subject)}</b>${x.subject==="Genel"?'<div class="small">Ders seçilmemiş</div>':""}</span><b>${fmtMin(x.min)}</b><button class="del" data-sedit="${safeText(x.id)}" aria-label="Düzenle">✎</button></div>`).join("")||(live?"":'<div class="empty">Henüz kayıt yok. Aşağıdan süre ekleyebilirsin.</div>');
+}
+function openSess(id){
+  if(!dmDay)return;
+  smId=id||null;const x=id?dayEntries(dmDay).find(e=>e.id===id):null;
+  if(id&&!x)return;
+  $("smTitle").textContent=x?"Çalışmayı düzenle":"Süre ekle";
+  const cur=x?x.subject:"",extra=cur&&cur!=="Genel"&&!subOpts.includes("<option>"+cur+"</option>")?"<option>"+safeText(cur)+"</option>":"";
+  $("smSubject").innerHTML='<option value="">Ders seç</option>'+subOpts+extra+'<option value="Genel">Genel (ders yok)</option>';$("smSubject").value=cur;
+  $("smStart").value=x?x.s:"";$("smEnd").value=x?x.e:"";$("smMin").value=x?String(Math.max(1,Math.round(x.min))):"";
+  $("smDelete").hidden=!x;$("smMsg").textContent="";$("sessModal").hidden=false;
+}
+function smSync(from){
+  const a=hm($("smStart").value),b=hm($("smEnd").value);
+  if(from==="time"&&!isNaN(a)&&!isNaN(b)&&b>a)$("smMin").value=String(b-a);
+  if(from==="min"&&!isNaN(a)){const m=Math.floor(Number($("smMin").value)||0);if(m>0&&a+m<=1439){const t=a+m;$("smEnd").value=pad2(Math.floor(t/60))+":"+pad2(t%60)}}
+}
+function dayChanged(){renderGoal();renderChart();renderLoyalty();renderSubjectStats();renderWeeklyReport();renderProfileSummary();swDraw();renderDay()}
+async function saveSess(del){
+  const k=dmDay,today=dayKey(new Date()),bad=t=>{$("smMsg").textContent=t;haptic(2)};
+  if(!k)return;
+  let subject="",s="",e="",min=0;
+  const orig=smId?dayEntries(k).find(x=>x.id===smId):null;
+  if(!del){
+    subject=$("smSubject").value;s=$("smStart").value;e=$("smEnd").value;min=Math.floor(Number($("smMin").value)||0);
+    if(!subject){bad("Dersi seç.");return}
+    if(e&&!s){bad("Bitiş saatini yazdıysan başlangıcı da yaz.");return}
+    const a=hm(s),b=hm(e);
+    if(s&&e){if(!(b>a)){bad("Bitiş saati başlangıçtan sonra olmalı.");return}min=b-a}
+    if(!(min>0)){bad("Süreyi dakika olarak yaz ya da saatleri gir.");return}
+    if(s&&!e){const t=a+min;if(t>1439){bad("Bu süre gün sonunu aşıyor.");return}e=pad2(Math.floor(t/60))+":"+pad2(t%60)}
+    if(k===today&&e){const n=new Date();if(hm(e)>n.getHours()*60+n.getMinutes()){bad("Bitiş saati şu andan sonra olamaz.");return}}
+    const others=dayEntries(k).filter(x=>x.id!==smId).reduce((t,x)=>t+x.min,0)+(k===today?runPart():0);
+    if(others+min>1440){bad("Bir günde 24 saatten fazla çalışma olamaz.");return}
+    if(orig&&Math.round(orig.min)===min&&!(s&&e&&(s!==orig.s||e!==orig.e)))min=orig.min;
+  }
+  if(k!==today&&!(await askConfirm("Geçmiş bir günü değiştiriyorsun",dayLabel(k)+" tarihli çalışma kaydını "+(del?"silmek":smId?"değiştirmek":"eklemek")+" üzeresin. Bu; serini, haftalık süreni ve rozetlerini etkileyebilir. Emin misin?",del?"Evet, sil":"Evet, değiştir")))return;
+  const map=materializeDay(k),id=smId?(map[smId]||smId):null;
+  if(del)state.sessions=state.sessions.filter(x=>x.id!==id);
+  else if(id){const x=state.sessions.find(x=>x.id===id);if(x){x.subject=subject;x.s=s;x.e=e;x.min=min}}
+  else state.sessions.push({id:sid(),date:k,s,e,subject,min});
+  recomputeDay(k);
+  const lost=revokeBadges();
+  $("sessModal").hidden=true;smId=null;
+  persist();dayChanged();
+  $("dmMsg").textContent=(del?"Kayıt silindi.":"Kaydedildi.")+(lost.length?" Bu düzeltmeyle geri alınan rozet: "+lost.join(", ")+".":"");
+}
+$("studyCard").addEventListener("click",()=>openDay(dayKey(new Date())));
+$("studyCard").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();openDay(dayKey(new Date()))}});
+$("dmClose").addEventListener("click",closeDay);
+$("dayModal").addEventListener("click",e=>{if(e.target===$("dayModal"))closeDay()});
+$("dmAdd").addEventListener("click",()=>openSess(null));
+$("dmList").addEventListener("click",e=>{const b=e.target.closest("[data-sedit]");if(b)openSess(b.dataset.sedit)});
+$("smCancel").addEventListener("click",()=>{$("sessModal").hidden=true;smId=null});
+$("smSave").addEventListener("click",()=>saveSess(false));
+$("smDelete").addEventListener("click",()=>saveSess(true));
+["smStart","smEnd"].forEach(id=>$(id).addEventListener("change",()=>smSync("time")));
+$("smMin").addEventListener("input",()=>smSync("min"));
+document.addEventListener("keydown",e=>{if(e.key!=="Escape")return;if(!$("confirmModal").hidden)return;if(!$("sessModal").hidden){$("sessModal").hidden=true;smId=null}else if(!$("dayModal").hidden)closeDay()});
+setInterval(()=>{if(state.timer&&state.timer.startedAt)renderDay()},15000);
 const pmenu=$("pmenu");
 function closeMenu(){pmenu.hidden=true;$("profileTop").setAttribute("aria-expanded","false")}
 function toggleMenu(){const h=pmenu.hidden;pmenu.hidden=!h;$("profileTop").setAttribute("aria-expanded",String(h))}
