@@ -1,77 +1,1329 @@
 {
-  "decks": [
+ "decks": [
+  {
+   "id": "edebiyat",
+   "title": "Türk Dili ve Edebiyatı Hafıza Kartları",
+   "icon": "📚",
+   "periods": [
     {
-      "id": "edebiyat",
-      "title": "Türk Dili ve Edebiyatı Hafıza Kartları",
-      "icon": "📚",
-      "periods": [
-        {
-          "id": "islam-oncesi",
-          "title": "İslamiyet Öncesi Türk Edebiyatı",
-          "cards": []
-        },
-        {
-          "id": "gecis",
-          "title": "Geçiş Dönemi",
-          "cards": []
-        },
-        {
-          "id": "halk",
-          "title": "Halk Edebiyatı (Âşık, Tekke, Anonim)",
-          "cards": []
-        },
-        {
-          "id": "divan",
-          "title": "Divan Edebiyatı",
-          "cards": [
-            {
-              "id": "ed-demo-1",
-              "f": "Divan şiirinde en çok kullanılan nazım biçimi hangisidir?",
-              "b": "Gazel",
-              "demo": true
-            },
-            {
-              "id": "ed-demo-2",
-              "f": "Gazelin ilk beytine ne ad verilir?",
-              "b": "Matla",
-              "demo": true
-            }
-          ]
-        },
-        {
-          "id": "tanzimat",
-          "title": "Tanzimat Dönemi",
-          "cards": [
-            {
-              "id": "ed-demo-3",
-              "f": "Tanzimat Fermanı (Gülhane Hatt-ı Hümayunu) hangi yıl ilan edildi?",
-              "b": "1839",
-              "demo": true
-            },
-            {
-              "id": "ed-demo-4",
-              "f": "Tercüman-ı Ahval gazetesini kimler çıkarmıştır?",
-              "b": "Agâh Efendi ve Şinasi (1860)",
-              "demo": true
-            }
-          ]
-        },
-        {
-          "id": "servet-fecr",
-          "title": "Servet-i Fünun ve Fecr-i Âti",
-          "cards": []
-        },
-        {
-          "id": "milli",
-          "title": "Millî Edebiyat Dönemi",
-          "cards": []
-        },
-        {
-          "id": "cumhuriyet",
-          "title": "Cumhuriyet Dönemi",
-          "cards": []
-        }
-      ]
+     "id": "islam-oncesi",
+     "title": "İslamiyet Öncesi Türk Edebiyatı",
+     "cards": [
+      {
+       "id": "ed-islam-oncesi-01",
+       "f": "İslamiyet öncesi Türk edebiyatı hangi iki döneme ayrılır?",
+       "b": "Sözlü dönem (Orhun Yazıtları'ndan önce) ve yazılı dönem (Orhun Yazıtları ile başlar)."
+      },
+      {
+       "id": "ed-islam-oncesi-02",
+       "f": "Sözlü dönemde ölen kişi için söylenen ağıt türüne ne ad verilir?",
+       "b": "Sagu"
+      },
+      {
+       "id": "ed-islam-oncesi-03",
+       "f": "Sözlü dönemde atasözlerine ne denir?",
+       "b": "Sav"
+      },
+      {
+       "id": "ed-islam-oncesi-04",
+       "f": "Sözlü dönemde doğa, aşk, savaş gibi konuları işleyen lirik şiirlere ne denir?",
+       "b": "Koşuk"
+      },
+      {
+       "id": "ed-islam-oncesi-05",
+       "f": "Sözlü dönemde kopuz eşliğinde şiir söyleyen şaire ne denir?",
+       "b": "Ozan (kopuz çalar). Dinî törenleri yöneten kişi ise kam (şaman)."
+      },
+      {
+       "id": "ed-islam-oncesi-06",
+       "f": "Sözlü dönem şiirinin ölçü, uyak ve nazım birimi nedir?",
+       "b": "Ölçü: hece. Uyak: yarım uyak. Nazım birimi: dörtlük. Ahenk ayrıca ses tekrarlarıyla (aliterasyon) sağlanır."
+      },
+      {
+       "id": "ed-islam-oncesi-07",
+       "f": "Alp Er Tunga ve Şu destanları hangi Türk topluluğuna aittir?",
+       "b": "Saka (İskit) destanları"
+      },
+      {
+       "id": "ed-islam-oncesi-08",
+       "f": "Oğuz Kağan Destanı hangi Türk topluluğuna aittir?",
+       "b": "Hun"
+      },
+      {
+       "id": "ed-islam-oncesi-09",
+       "f": "Bozkurt ve Ergenekon destanları hangi topluluğa aittir?",
+       "b": "Göktürk"
+      },
+      {
+       "id": "ed-islam-oncesi-10",
+       "f": "Türeyiş ve Göç destanları hangi topluluğa aittir?",
+       "b": "Uygur"
+      },
+      {
+       "id": "ed-islam-oncesi-11",
+       "f": "Manas Destanı hangi Türk topluluğuna aittir?",
+       "b": "Kırgız"
+      },
+      {
+       "id": "ed-islam-oncesi-12",
+       "f": "Yazılı dönemin ilk ürünleri nelerdir?",
+       "b": "Orhun (Göktürk) Yazıtları: Kül Tigin, Bilge Kağan ve Tonyukuk yazıtları."
+      },
+      {
+       "id": "ed-islam-oncesi-13",
+       "f": "Orhun Yazıtları'nın önemi nedir?",
+       "b": "Türk adının geçtiği ilk yazılı belgelerdir; Göktürk (Orhun) alfabesiyle ve Eski Türkçe ile yazılmıştır."
+      },
+      {
+       "id": "ed-islam-oncesi-14",
+       "f": "Kül Tigin ve Bilge Kağan yazıtlarının dikildiği yıllar nelerdir?",
+       "b": "Kül Tigin: 732, Bilge Kağan: 735"
+      },
+      {
+       "id": "ed-islam-oncesi-15",
+       "f": "Kül Tigin ve Bilge Kağan yazıtlarını kim yazmıştır?",
+       "b": "Yollug Tigin"
+      },
+      {
+       "id": "ed-islam-oncesi-16",
+       "f": "Orhun Yazıtları'nı kim bulmuş, kim çözmüştür?",
+       "b": "1889'da Rus bilim insanı Yadrintsev buldu; Danimarkalı Vilhelm Thomsen 1893'te çözdü."
+      },
+      {
+       "id": "ed-islam-oncesi-17",
+       "f": "Orhun Yazıtları nerededir?",
+       "b": "Moğolistan'da, Orhun Nehri kıyısındadır."
+      },
+      {
+       "id": "ed-islam-oncesi-18",
+       "f": "Tonyukuk Yazıtı'nın özelliği nedir?",
+       "b": "Göktürk devlet adamı Bilge Tonyukuk'un kendi yaşamını ve devlet işlerini anlattığı yazıttır; yazıtı kendisi yazdırmıştır."
+      },
+      {
+       "id": "ed-islam-oncesi-19",
+       "f": "Bilge Kağan ile Kül Tigin arasındaki akrabalık nedir?",
+       "b": "Kardeştirler; Bilge Kağan ağabeydir."
+      },
+      {
+       "id": "ed-islam-oncesi-20",
+       "f": "Yenisey Yazıtları'nın özelliği nedir?",
+       "b": "Çoğu mezar taşı olan, Göktürk alfabesiyle yazılmış kısa yazıtlardır; Yenisey Irmağı çevresindedir."
+      },
+      {
+       "id": "ed-islam-oncesi-21",
+       "f": "Uygurların kullandığı alfabe hangisidir?",
+       "b": "Uygur alfabesi (Sogd kökenli). Maniheizm ve Budizm'i benimsediler."
+      },
+      {
+       "id": "ed-islam-oncesi-22",
+       "f": "Altun Yaruk (Altın Işık) hangi dönemin eseridir ve türü nedir?",
+       "b": "Uygur dönemi; Budist dinî eser."
+      },
+      {
+       "id": "ed-islam-oncesi-23",
+       "f": "Sekiz Yükmek hangi dönemin eseridir?",
+       "b": "Uygur dönemi; Budist dinî eser."
+      },
+      {
+       "id": "ed-islam-oncesi-24",
+       "f": "Irk Bitig nedir?",
+       "b": "Göktürk alfabesiyle yazılmış bir fal kitabıdır."
+      },
+      {
+       "id": "ed-islam-oncesi-25",
+       "f": "Maytrisimit nedir?",
+       "b": "Uygur dönemine ait, Maitreya'nın (gelecekteki Buda) gelişini anlatan Budist eserdir; bazı kaynaklarca ilk Türk tiyatro metni sayılır."
+      }
+     ]
+    },
+    {
+     "id": "gecis",
+     "title": "Geçiş Dönemi",
+     "cards": [
+      {
+       "id": "ed-gecis-01",
+       "f": "İlk Müslüman Türk devleti hangisidir?",
+       "b": "Karahanlılar"
+      },
+      {
+       "id": "ed-gecis-02",
+       "f": "Karahanlı döneminde kullanılan yazı dili hangisidir?",
+       "b": "Hakaniye Türkçesi (Karahanlı Türkçesi)"
+      },
+      {
+       "id": "ed-gecis-03",
+       "f": "Kutadgu Bilig'in yazarı kimdir?",
+       "b": "Balasagunlu Yusuf Has Hacib"
+      },
+      {
+       "id": "ed-gecis-04",
+       "f": "Kutadgu Bilig ne zaman yazılmıştır ve kime sunulmuştur?",
+       "b": "1069-1070'te yazılmış; Karahanlı hükümdarı Tavgaç Buğra Han'a sunulmuştur."
+      },
+      {
+       "id": "ed-gecis-05",
+       "f": "Kutadgu Bilig ne anlama gelir?",
+       "b": "Mutluluk veren bilgi"
+      },
+      {
+       "id": "ed-gecis-06",
+       "f": "Kutadgu Bilig'in nazım biçimi ve ölçüsü nedir?",
+       "b": "Mesnevi nazım biçimi, aruz ölçüsü"
+      },
+      {
+       "id": "ed-gecis-07",
+       "f": "Kutadgu Bilig'in türü nedir?",
+       "b": "Didaktik (öğretici) siyasetname; Türk-İslam edebiyatının ilk büyük eseridir."
+      },
+      {
+       "id": "ed-gecis-08",
+       "f": "Kutadgu Bilig'in dört kişisi ve temsil ettikleri kavramlar nelerdir?",
+       "b": "Kün-Toğdı (hükümdar): adalet. Ay-Toldı (vezir): devlet/mutluluk. Ögdülmiş (vezirin oğlu): akıl. Odgurmuş (vezirin kardeşi): akıbet."
+      },
+      {
+       "id": "ed-gecis-09",
+       "f": "Divanü Lügat-it-Türk'ün yazarı kimdir?",
+       "b": "Kaşgarlı Mahmut"
+      },
+      {
+       "id": "ed-gecis-10",
+       "f": "Divanü Lügat-it-Türk hangi dilde yazılmıştır ve amacı nedir?",
+       "b": "Arapça yazılmıştır; Araplara Türkçeyi öğretmek amacıyla hazırlanmıştır."
+      },
+      {
+       "id": "ed-gecis-11",
+       "f": "Divanü Lügat-it-Türk hangi halifeye sunulmuştur?",
+       "b": "Abbasi Halifesi Muktedi Biemrillah'a"
+      },
+      {
+       "id": "ed-gecis-12",
+       "f": "Divanü Lügat-it-Türk'ün yazılış yılları nelerdir?",
+       "b": "1072-1074"
+      },
+      {
+       "id": "ed-gecis-13",
+       "f": "Divanü Lügat-it-Türk'ün Türk dili ve edebiyatı bakımından önemi nedir?",
+       "b": "Türkçenin ilk sözlüğü ve ilk dil bilgisi çalışmasıdır; sagu, koşuk, sav gibi sözlü edebiyat örneklerini içerir; ilk Türk dünyası haritasını barındırır."
+      },
+      {
+       "id": "ed-gecis-14",
+       "f": "Atabetü'l-Hakayık'ın yazarı kimdir?",
+       "b": "Edip Ahmet Yükneki"
+      },
+      {
+       "id": "ed-gecis-15",
+       "f": "Atabetü'l-Hakayık ne anlama gelir ve türü nedir?",
+       "b": "Hakikatlerin eşiği. Didaktik (ahlaki öğütler); mesnevi biçiminde, aruz ölçüsüyle yazılmıştır."
+      },
+      {
+       "id": "ed-gecis-16",
+       "f": "Divan-ı Hikmet'in yazarı kimdir?",
+       "b": "Ahmet Yesevi"
+      },
+      {
+       "id": "ed-gecis-17",
+       "f": "Divan-ı Hikmet'in nazım biçimi ve ölçüsü nedir?",
+       "b": "Hikmet adı verilen dörtlüklerden oluşur; hece ölçüsüyle yazılmıştır."
+      },
+      {
+       "id": "ed-gecis-18",
+       "f": "Ahmet Yesevi ve Divan-ı Hikmet hangi edebiyat geleneğinin başlangıcı sayılır?",
+       "b": "Tasavvufi-dinî halk edebiyatı (tekke edebiyatı) geleneğinin"
+      },
+      {
+       "id": "ed-gecis-19",
+       "f": "Kısasü'l-Enbiya'nın yazarı kimdir ve hangi dönemin eseridir?",
+       "b": "Nasırüddin Rabguzi; Harezm Türkçesi (14. yy), peygamber kıssalarını anlatır."
+      },
+      {
+       "id": "ed-gecis-20",
+       "f": "Muhabbetname'nin yazarı kimdir?",
+       "b": "Harezmi (Harezm Türkçesi, 14. yy)"
+      },
+      {
+       "id": "ed-gecis-21",
+       "f": "Kutb'un Hüsrev ü Şirin mesnevisi hangi dönemin eseridir?",
+       "b": "Harezm Türkçesi dönemi (14. yy); Nizami'den çevirisidir."
+      },
+      {
+       "id": "ed-gecis-22",
+       "f": "Çağatay Türkçesinin en büyük sanatçısı kimdir?",
+       "b": "Ali Şir Nevai (15. yy)"
+      },
+      {
+       "id": "ed-gecis-23",
+       "f": "Ali Şir Nevai'nin Türkçeyi Farsçayla karşılaştırıp üstün gösterdiği eser hangisidir?",
+       "b": "Muhakemetü'l-Lügateyn"
+      },
+      {
+       "id": "ed-gecis-24",
+       "f": "Ali Şir Nevai'nin Çağatay tezkiresi hangisidir?",
+       "b": "Mecalisü'n-Nefais"
+      },
+      {
+       "id": "ed-gecis-25",
+       "f": "Ali Şir Nevai'nin beş mesnevilik eserine ne denir?",
+       "b": "Hamse"
+      }
+     ]
+    },
+    {
+     "id": "halk",
+     "title": "Halk Edebiyatı (Âşık, Tekke, Anonim)",
+     "cards": [
+      {
+       "id": "ed-halk-01",
+       "f": "Halk edebiyatı hangi üç koldan oluşur?",
+       "b": "Âşık (saz şairleri) edebiyatı, tekke (tasavvuf) edebiyatı ve anonim halk edebiyatı."
+      },
+      {
+       "id": "ed-halk-02",
+       "f": "Halk şiirinin ölçüsü ve nazım birimi nedir?",
+       "b": "Hece ölçüsü; nazım birimi dörtlüktür."
+      },
+      {
+       "id": "ed-halk-03",
+       "f": "Anonim halk şiiri türleri nelerdir?",
+       "b": "Mani, türkü, ninni, ağıt, bilmece, tekerleme, atasözü ve deyim."
+      },
+      {
+       "id": "ed-halk-04",
+       "f": "Mani nedir?",
+       "b": "Yedi heceli, dört dizeli, genellikle aaba uyaklı anonim halk şiiri türüdür."
+      },
+      {
+       "id": "ed-halk-05",
+       "f": "Koşma ölçüsü ve uyak düzeni nedir?",
+       "b": "Genellikle 11'li hece; abab, cccb, dddb uyak düzeni."
+      },
+      {
+       "id": "ed-halk-06",
+       "f": "Semai'nin özelliği nedir?",
+       "b": "8'li hece ölçüsüyle yazılır; uyak düzeni koşmadaki gibidir."
+      },
+      {
+       "id": "ed-halk-07",
+       "f": "Varsağı'nın özelliği nedir?",
+       "b": "Yörük ve Türkmen ağzıyla söylenen, 8'li hece ölçülü, coşkulu şiirdir."
+      },
+      {
+       "id": "ed-halk-08",
+       "f": "Koşmanın konularına göre türleri nelerdir?",
+       "b": "Güzelleme (aşk, doğa), koçaklama (yiğitlik, savaş), taşlama (yergi) ve ağıt (ölüm)."
+      },
+      {
+       "id": "ed-halk-09",
+       "f": "Âşık edebiyatında ustalık dereceleri nelerdir?",
+       "b": "Çırak, kalfa, usta"
+      },
+      {
+       "id": "ed-halk-10",
+       "f": "Âşık edebiyatında iki âşığın karşılıklı doğaçlama şiir söyleyerek yarışmasına ne denir?",
+       "b": "Atışma (karşılaşma)"
+      },
+      {
+       "id": "ed-halk-11",
+       "f": "Karacaoğlan hangi yüzyılda yaşamış bir halk şairidir ve şiirlerinin teması nedir?",
+       "b": "17. yüzyıl; aşk ve doğa. Toros Yörüklerindendir; dili sadedir."
+      },
+      {
+       "id": "ed-halk-12",
+       "f": "Pir Sultan Abdal hangi yüzyılda yaşamıştır ve nasıl ölmüştür?",
+       "b": "16. yüzyıl; Alevi-Bektaşi halk şairidir, Sivas Valisi Hızır Paşa tarafından idam edilmiştir."
+      },
+      {
+       "id": "ed-halk-13",
+       "f": "Köroğlu'nun şiirlerinde öne çıkan tür nedir?",
+       "b": "Koçaklama"
+      },
+      {
+       "id": "ed-halk-14",
+       "f": "Dadaloğlu'nun ünlü dizesi nedir ve hangi boydandır?",
+       "b": "\"Kalktı göç eylendi Avşar elinden\"; Avşar boyundandır (19. yy)."
+      },
+      {
+       "id": "ed-halk-15",
+       "f": "19. yüzyıl âşık edebiyatının önemli şairleri kimlerdir?",
+       "b": "Dertli, Ruhsati, Bayburtlu Zihni, Erzurumlu Emrah, Seyrani, Dadaloğlu"
+      },
+      {
+       "id": "ed-halk-16",
+       "f": "Âşık Veysel nerelidir ve eserlerinden bazıları nelerdir?",
+       "b": "Sivas Şarkışla (Sivrialan köyü); gözleri görmeyen bir âşıktır. Uzun İnce Bir Yoldayım, Kara Toprak, Dostlar Beni Hatırlasın şiirleri ünlüdür."
+      },
+      {
+       "id": "ed-halk-17",
+       "f": "Dede Korkut Hikâyeleri hangi topluluğun sözlü geleneğine dayanır ve kaç boydan oluşur?",
+       "b": "Oğuz Türkleri; Dresden nüshasında 12 boy ve bir önsöz bulunur."
+      },
+      {
+       "id": "ed-halk-18",
+       "f": "Dede Korkut Hikâyeleri'nde hangi kahraman Tepegöz'ü öldürür?",
+       "b": "Basat"
+      },
+      {
+       "id": "ed-halk-19",
+       "f": "Halk hikâyelerine örnek veriniz.",
+       "b": "Kerem ile Aslı, Âşık Garip, Köroğlu, Tahir ile Zühre, Emrah ile Selvihan, Ferhat ile Şirin."
+      },
+      {
+       "id": "ed-halk-20",
+       "f": "Halk hikâyeleri hangi biçimde anlatılır?",
+       "b": "Nazım ve nesir karışıktır; anlatıcı saz eşliğinde şiirleri okur, olayları düz yazıyla anlatır."
+      },
+      {
+       "id": "ed-halk-21",
+       "f": "Masalların başlangıcındaki kalıplaşmış sözlere ne denir?",
+       "b": "Tekerleme (Bir varmış, bir yokmuş...)"
+      },
+      {
+       "id": "ed-halk-22",
+       "f": "Nasreddin Hoca fıkraları hangi edebiyat kolunun ürünüdür?",
+       "b": "Anonim halk edebiyatının fıkra türü"
+      },
+      {
+       "id": "ed-halk-23",
+       "f": "Tekke edebiyatında Allah'ı övmek için yazılan, hece ölçülü dinî şiire ne denir?",
+       "b": "İlahi"
+      },
+      {
+       "id": "ed-halk-24",
+       "f": "Bektaşi tekkelerinde söylenen tasavvufi şiire ne denir?",
+       "b": "Nefes"
+      },
+      {
+       "id": "ed-halk-25",
+       "f": "Yunus Emre kime bağlı bir dervişti?",
+       "b": "Tapduk Emre"
+      },
+      {
+       "id": "ed-halk-26",
+       "f": "Yunus Emre'nin iki ana eseri hangileridir?",
+       "b": "Divan ve Risaletü'n-Nushiyye (mesnevi)"
+      },
+      {
+       "id": "ed-halk-27",
+       "f": "Yunus Emre şiirlerinin temel özellikleri nelerdir?",
+       "b": "Sade Türkçe, hece ölçüsü, Tanrı ve insan sevgisi, hoşgörü. \"Yaratılanı hoş gör Yaratan'dan ötürü\""
+      },
+      {
+       "id": "ed-halk-28",
+       "f": "Hacı Bektaş-ı Veli hangi tarikatın kurucusudur ve ünlü eseri nedir?",
+       "b": "Bektaşiliğin kurucusudur; ünlü eseri Makalat'tır."
+      },
+      {
+       "id": "ed-halk-29",
+       "f": "Mevlâna'nın başlıca eserleri nelerdir ve hangi dilde yazılmıştır?",
+       "b": "Mesnevi, Divan-ı Kebir, Fihi Ma Fih; Farsça yazılmıştır. Mevlevilik tarikatı onun adıyla anılır."
+      },
+      {
+       "id": "ed-halk-30",
+       "f": "Kaygusuz Abdal hangi tarikata bağlıdır ve eserlerinden biri nedir?",
+       "b": "Bektaşi; Budalaname"
+      },
+      {
+       "id": "ed-halk-31",
+       "f": "Süleyman Çelebi'nin eseri hangisidir?",
+       "b": "Mevlid (Vesiletü'n-Necat), 15. yy, Bursa"
+      },
+      {
+       "id": "ed-halk-32",
+       "f": "Karagöz oyununun bölümleri nelerdir?",
+       "b": "Mukaddime (giriş), muhavere (söyleşme), fasıl (asıl oyun) ve bitiş"
+      },
+      {
+       "id": "ed-halk-33",
+       "f": "Ortaoyunu'nun başlıca kişileri kimlerdir?",
+       "b": "Kavuklu ve Pişekâr"
+      },
+      {
+       "id": "ed-halk-34",
+       "f": "Meddah nedir?",
+       "b": "Tek başına bir hikâyeyi taklitlerle anlatan, geleneksel sahne sanatçısı."
+      }
+     ]
+    },
+    {
+     "id": "divan",
+     "title": "Divan Edebiyatı",
+     "cards": [
+      {
+       "id": "ed-divan-01",
+       "f": "Divan edebiyatının ölçüsü ve nazım birimi nedir?",
+       "b": "Aruz ölçüsü; nazım birimi genellikle beyit (iki dize), bazı biçimlerde bent."
+      },
+      {
+       "id": "ed-divan-02",
+       "f": "Divan şiirinde kullanılan üç dil nedir?",
+       "b": "Türkçe, Arapça ve Farsça (Osmanlı Türkçesi)"
+      },
+      {
+       "id": "ed-divan-03",
+       "f": "Aruz ölçüsünde heceler nasıl sınıflandırılır?",
+       "b": "Kısa (açık ve kısa ünlülü) ve uzun (kapalı ya da uzun ünlülü) olarak; ölçüyü hecelerin sayısı değil uzun-kısa dizilişi belirler."
+      },
+      {
+       "id": "ed-divan-04",
+       "f": "Divan şiirinde şairin takma adına ne denir?",
+       "b": "Mahlas"
+      },
+      {
+       "id": "ed-divan-05",
+       "f": "Divan şiirinde sevgiliye, bülbüle ve güle yüklenen anlamlar nelerdir?",
+       "b": "Bülbül âşığı, gül sevgiliyi temsil eder (mazmun). Şem (mum) ve pervane de aşığın fedakârlığını anlatır."
+      },
+      {
+       "id": "ed-divan-06",
+       "f": "Divan şiirindeki \"rind\" ve \"zahit\" kavramları neyi anlatır?",
+       "b": "Rind: hoşgörülü, dünyaya çok bağlanmayan kişi. Zahit: dinin dış biçimine bağlı, katı kişi."
+      },
+      {
+       "id": "ed-divan-07",
+       "f": "Gazelin özellikleri nelerdir?",
+       "b": "5-15 beyit; uyak düzeni aa ba ca da...; aşk, şarap, tabiat işlenir. İlk beyit matla, son beyit (mahlasın geçtiği) makta, en güzel beyit beytü'l-gazel (şah beyit)."
+      },
+      {
+       "id": "ed-divan-08",
+       "f": "Kasidenin özellikleri nelerdir?",
+       "b": "33-99 beyit; uyak düzeni gazel gibi aa ba ca...; övgü, din, tabiat gibi konular işlenir."
+      },
+      {
+       "id": "ed-divan-09",
+       "f": "Kasidenin bölümleri nelerdir?",
+       "b": "Nesib (teşbib), girizgâh, medhiye, fahriye, dua"
+      },
+      {
+       "id": "ed-divan-10",
+       "f": "Mesnevinin özellikleri nelerdir?",
+       "b": "Her beyit kendi içinde uyaklıdır (aa bb cc); beyit sayısı sınırsızdır; uzun hikâyeler anlatır."
+      },
+      {
+       "id": "ed-divan-11",
+       "f": "Hamse nedir?",
+       "b": "Bir şairin beş mesnevi yazıp bir araya getirmesidir (Nizami geleneği)."
+      },
+      {
+       "id": "ed-divan-12",
+       "f": "Şehrengiz nedir?",
+       "b": "Bir şehrin güzellerini, ünlü kişilerini ve görülecek yerlerini anlatan mesnevidir. Örnek: Mesihi'nin Edirne Şehrengizi."
+      },
+      {
+       "id": "ed-divan-13",
+       "f": "Terkib-i bent ile terci-i bent arasındaki fark nedir?",
+       "b": "İkisi de bentlerden oluşur. Terkib-i bentte vasıta beyti her bentte değişir, terci-i bentte aynı kalır."
+      },
+      {
+       "id": "ed-divan-14",
+       "f": "Rubai kaç dizelik nazım biçimidir ve uyak düzeni nedir?",
+       "b": "4 dize; aaxa (üçüncü dize serbest)"
+      },
+      {
+       "id": "ed-divan-15",
+       "f": "Tuyuğ'un özelliği nedir?",
+       "b": "Türklere özgü, rubai gibi 4 dizelik ve aaxa uyaklı nazım biçimidir; aruzla yazılır."
+      },
+      {
+       "id": "ed-divan-16",
+       "f": "Mersiye nedir?",
+       "b": "Ölen birinin ardından yazılan ağıt niteliğinde şiir. Örnek: Bâkî'nin Kanuni Mersiyesi."
+      },
+      {
+       "id": "ed-divan-17",
+       "f": "Tevhid, münacaat ve naat ne anlama gelir?",
+       "b": "Tevhid: Allah'ın birliğini anlatır. Münacaat: Allah'a yakarıştır. Naat: Hz. Muhammed'i över."
+      },
+      {
+       "id": "ed-divan-18",
+       "f": "Şarkı nazım biçimi hangi şairle özdeşleşir?",
+       "b": "Nedim"
+      },
+      {
+       "id": "ed-divan-19",
+       "f": "Ahmedi'nin en önemli eseri nedir?",
+       "b": "İskendername (içinde Osmanlı hanedanının ilk manzum tarihi bulunur); 14.-15. yüzyıl şairidir."
+      },
+      {
+       "id": "ed-divan-20",
+       "f": "Şeyhi'nin ünlü iki eseri nelerdir?",
+       "b": "Hüsrev ü Şirin (mesnevi) ve Harname (hiciv)"
+      },
+      {
+       "id": "ed-divan-21",
+       "f": "Ahmet Paşa'nın tanınmış kasidesi hangisidir?",
+       "b": "Kerem Kasidesi"
+      },
+      {
+       "id": "ed-divan-22",
+       "f": "16. yüzyılın Divan edebiyatı açısından önemi nedir?",
+       "b": "Divan şiirinin zirve yüzyılıdır; Fuzuli, Bâkî, Zatî, Hayalî, Taşlıcalı Yahya gibi şairler yetişmiştir."
+      },
+      {
+       "id": "ed-divan-23",
+       "f": "Fuzuli'nin yazdığı üç dil ve doğum yeri nedir?",
+       "b": "Türkçe, Arapça, Farsça; Irak (Kerbela/Hille), Bağdat'ta yaşamıştır."
+      },
+      {
+       "id": "ed-divan-24",
+       "f": "Fuzuli'nin eserlerinden bazıları nelerdir?",
+       "b": "Leyla vü Mecnun, Beng ü Bade (mesnevi), Su Kasidesi, Hadikatü's-Süeda (Kerbela olayını anlatır), Şikâyetname (nesir)"
+      },
+      {
+       "id": "ed-divan-25",
+       "f": "Fuzuli kaç yılında ve nerede ölmüştür?",
+       "b": "1556, Kerbela (veba salgını)"
+      },
+      {
+       "id": "ed-divan-26",
+       "f": "Bâkî'ye verilen lakap nedir ve hangi hükümdarın döneminde yaşamıştır?",
+       "b": "Sultanü'ş-şuara (şairler sultanı); Kanuni Sultan Süleyman"
+      },
+      {
+       "id": "ed-divan-27",
+       "f": "Kanuni Sultan Süleyman'ın şiirlerinde kullandığı mahlas nedir?",
+       "b": "Muhibbi"
+      },
+      {
+       "id": "ed-divan-28",
+       "f": "Fatih Sultan Mehmet'in şiirlerinde kullandığı mahlas nedir?",
+       "b": "Avni"
+      },
+      {
+       "id": "ed-divan-29",
+       "f": "Nef'i hangi yüzyıl şairidir ve hangi türde ustadır?",
+       "b": "17. yüzyıl; kaside (\"kasideler şairi\")"
+      },
+      {
+       "id": "ed-divan-30",
+       "f": "Nef'i'nin hiciv eseri hangisidir ve sonu nasıl olmuştur?",
+       "b": "Siham-ı Kaza; IV. Murat zamanında bu hicivleri yüzünden öldürülmüştür."
+      },
+      {
+       "id": "ed-divan-31",
+       "f": "Nabi hangi yüzyılda yaşamıştır ve şiir anlayışı nasıldır?",
+       "b": "17. yüzyıl; hikemi (öğüt ve hikmet içeren) tarzın temsilcisidir."
+      },
+      {
+       "id": "ed-divan-32",
+       "f": "Nabi'nin Hayriyye adlı eseri nedir?",
+       "b": "Oğlu Ebulhayr'a verdiği öğütleri içeren mesnevidir."
+      },
+      {
+       "id": "ed-divan-33",
+       "f": "Sebk-i Hindi (Hint üslubu) nedir ve temsilcileri kimlerdir?",
+       "b": "17. yüzyılda yaygınlaşan, ince hayaller ve karmaşık anlatım içeren üsluptur; Nailî, Neşatî, Şeyh Galip temsilcileridir."
+      },
+      {
+       "id": "ed-divan-34",
+       "f": "Lale Devri hangi şairle özdeşleşmiştir ve hangi padişah dönemindedir?",
+       "b": "Nedim; III. Ahmet (Damat İbrahim Paşa)"
+      },
+      {
+       "id": "ed-divan-35",
+       "f": "Nedim'in şiirinin özellikleri nelerdir?",
+       "b": "Halk söyleyişine yakınlık, dünya zevkleri, İstanbul sevgisi; \"şarkı\" nazım biçimini ustaca kullanmıştır."
+      },
+      {
+       "id": "ed-divan-36",
+       "f": "Şeyh Galip'in en ünlü eseri nedir?",
+       "b": "Hüsn ü Aşk (1782), tasavvufi mesnevi"
+      },
+      {
+       "id": "ed-divan-37",
+       "f": "Şeyh Galip hangi tarikata mensuptur?",
+       "b": "Mevlevi (Galata Mevlevihanesi şeyhi)"
+      },
+      {
+       "id": "ed-divan-38",
+       "f": "Surname nedir ve Divan edebiyatındaki ünlü örneği hangisidir?",
+       "b": "Düğün ve şenlikleri anlatan eser; Vehbi'nin Surname'si (III. Ahmet'in şehzadelerinin sünnet düğünü)."
+      },
+      {
+       "id": "ed-divan-39",
+       "f": "İlk tezkire (şair biyografisi) hangisidir ve kim yazmıştır?",
+       "b": "Heşt Behişt, Sehi Bey (16. yy)"
+      },
+      {
+       "id": "ed-divan-40",
+       "f": "Divan edebiyatındaki başlıca tezkire yazarları kimlerdir?",
+       "b": "Sehi Bey, Latifi, Âşık Çelebi, Kınalızade Hasan Çelebi"
+      },
+      {
+       "id": "ed-divan-41",
+       "f": "Divan edebiyatının kadın şairlerinden bazıları kimlerdir?",
+       "b": "Mihri Hatun, Zeynep Hatun, Fıtnat Hanım, Leyla Hanım"
+      }
+     ]
+    },
+    {
+     "id": "tanzimat",
+     "title": "Tanzimat Dönemi",
+     "cards": [
+      {
+       "id": "ed-tanzimat-01",
+       "f": "Tanzimat Fermanı hangi yıl ve hangi padişah döneminde ilan edilmiştir?",
+       "b": "1839, Abdülmecid (Gülhane Hatt-ı Hümayunu; Mustafa Reşit Paşa hazırlamıştır)."
+      },
+      {
+       "id": "ed-tanzimat-02",
+       "f": "Islahat Fermanı hangi yıl ilan edilmiştir?",
+       "b": "1856"
+      },
+      {
+       "id": "ed-tanzimat-03",
+       "f": "Tanzimat edebiyatı kaç döneme ayrılır ve dönemlerin sınırı nedir?",
+       "b": "İki: Birinci dönem 1860-1876, ikinci dönem 1876-1896."
+      },
+      {
+       "id": "ed-tanzimat-04",
+       "f": "Tanzimat edebiyatının birinci döneminin sanat anlayışı nedir?",
+       "b": "\"Sanat toplum içindir\"; edebiyat, halkı eğitmek ve düşünceleri yaymak için araçtır."
+      },
+      {
+       "id": "ed-tanzimat-05",
+       "f": "Tanzimat birinci dönemin ikinci dönemden farkı nedir?",
+       "b": "Birinci dönem: toplum için sanat, vatan-hürriyet temaları. İkinci dönem: sanat anlayışı çeşitlenir, sanat için sanat eğilimi görülür."
+      },
+      {
+       "id": "ed-tanzimat-06",
+       "f": "Tanzimat birinci dönem sanatçıları kimlerdir?",
+       "b": "Şinasi, Namık Kemal, Ziya Paşa, Ahmet Mithat Efendi, Şemseddin Sami, Ali Suavi"
+      },
+      {
+       "id": "ed-tanzimat-07",
+       "f": "Tanzimat ikinci dönem sanatçıları kimlerdir?",
+       "b": "Recaizade Mahmut Ekrem, Abdülhak Hamit Tarhan, Samipaşazade Sezai, Nabizade Nazım, Muallim Naci"
+      },
+      {
+       "id": "ed-tanzimat-08",
+       "f": "Türk edebiyatında ilk özel gazete nedir ve kim çıkarmıştır?",
+       "b": "Tercüman-ı Ahval (1860); Agâh Efendi ve Şinasi"
+      },
+      {
+       "id": "ed-tanzimat-09",
+       "f": "Şinasi'nin çıkardığı gazete hangisidir?",
+       "b": "Tasvir-i Efkâr (1862)"
+      },
+      {
+       "id": "ed-tanzimat-10",
+       "f": "Türk edebiyatında ilk resmî gazete hangisidir?",
+       "b": "Takvim-i Vekayi (1831)"
+      },
+      {
+       "id": "ed-tanzimat-11",
+       "f": "Hürriyet gazetesi nerede ve hangi akımın yayın organıdır?",
+       "b": "Londra'da (1868) Yeni Osmanlılar'ın yayın organı; Namık Kemal ve Ziya Paşa başlıca yazarlarıdır."
+      },
+      {
+       "id": "ed-tanzimat-12",
+       "f": "Türk edebiyatının ilk tiyatro eseri hangisidir ve yazarı kimdir?",
+       "b": "Şair Evlenmesi, Şinasi (tek perdelik komedi, 1859-1860)"
+      },
+      {
+       "id": "ed-tanzimat-13",
+       "f": "Şinasi'nin diğer önemli eserleri nelerdir?",
+       "b": "Tercüme-i Manzume (Fransızcadan çeviri şiirler), Durub-ı Emsal-i Osmaniye (atasözleri derlemesi)"
+      },
+      {
+       "id": "ed-tanzimat-14",
+       "f": "Şinasi'nin Türk edebiyatına katkıları nelerdir?",
+       "b": "Batılı anlamda ilk tiyatro eserini yazdı, noktalama işaretlerini kullandı, gazete çıkardı, Fransız şiirini tanıttı; sade dili savundu."
+      },
+      {
+       "id": "ed-tanzimat-15",
+       "f": "Namık Kemal'in hangi eseri Türk edebiyatının ilk edebi romanıdır?",
+       "b": "İntibah (Sergüzeşt-i Ali Bey), 1876"
+      },
+      {
+       "id": "ed-tanzimat-16",
+       "f": "Namık Kemal'in ilk tarihi romanı hangisidir?",
+       "b": "Cezmi (1880)"
+      },
+      {
+       "id": "ed-tanzimat-17",
+       "f": "Namık Kemal'in en ünlü tiyatro eseri hangisidir ve sonuçları ne olmuştur?",
+       "b": "Vatan yahut Silistre (1873); oyunun yarattığı coşku yüzünden Namık Kemal Kıbrıs'a sürülmüştür."
+      },
+      {
+       "id": "ed-tanzimat-18",
+       "f": "Namık Kemal'in diğer tiyatro eserleri nelerdir?",
+       "b": "Gülnihal, Akif Bey, Zavallı Çocuk, Kara Bela"
+      },
+      {
+       "id": "ed-tanzimat-19",
+       "f": "Namık Kemal'in edebiyat eleştirisi alanındaki önemli eseri hangisidir?",
+       "b": "Mukaddime-i Celal; Tahrib-i Harabat ve Takip de eleştiri yazılarıdır."
+      },
+      {
+       "id": "ed-tanzimat-20",
+       "f": "Ziya Paşa'nın en ünlü eserleri nelerdir?",
+       "b": "Zafername (hiciv), Harabat (antoloji), Terkib-i Bent ve Rüya"
+      },
+      {
+       "id": "ed-tanzimat-21",
+       "f": "Ziya Paşa'nın şiir ve edebiyat anlayışındaki görüşü nedir?",
+       "b": "Divan şiirini savunur; \"Şiir ve İnşa\" makalesinde halk edebiyatını küçümser."
+      },
+      {
+       "id": "ed-tanzimat-22",
+       "f": "Ahmet Mithat Efendi'nin eserlerinin ortak özelliği nedir?",
+       "b": "Okuru eğitmeyi hedefleyen \"kıssadan hisse\" anlayışı, sade dil ve her konuda yazma isteği."
+      },
+      {
+       "id": "ed-tanzimat-23",
+       "f": "Ahmet Mithat Efendi'nin Felatun Bey ile Rakım Efendi romanı neyi anlatır?",
+       "b": "Batılılaşma konusunu işler: Felatun Bey alafranga züppe, Rakım Efendi ise sağduyulu kişidir."
+      },
+      {
+       "id": "ed-tanzimat-24",
+       "f": "Ahmet Mithat Efendi'nin ilk hikâye kitabı hangisidir?",
+       "b": "Letaif-i Rivayat (1870)"
+      },
+      {
+       "id": "ed-tanzimat-25",
+       "f": "Ahmet Mithat Efendi'nin gazetesi hangisidir?",
+       "b": "Tercüman-ı Hakikat (1878)"
+      },
+      {
+       "id": "ed-tanzimat-26",
+       "f": "Türk edebiyatının ilk romanı hangisidir ve yazarı kimdir?",
+       "b": "Taaşşuk-ı Talat ve Fitnat (1872), Şemseddin Sami"
+      },
+      {
+       "id": "ed-tanzimat-27",
+       "f": "Şemseddin Sami'nin sözlük çalışmaları nelerdir?",
+       "b": "Kamus-ı Fransevi, Kamus-ı Türki (1901), Kamus-ül Alam (ansiklopedi)"
+      },
+      {
+       "id": "ed-tanzimat-28",
+       "f": "Şemseddin Sami'nin tiyatro eseri hangisidir?",
+       "b": "Besa yahut Ahde Vefa (1875)"
+      },
+      {
+       "id": "ed-tanzimat-29",
+       "f": "Türkçeye çevrilen ilk roman hangisidir?",
+       "b": "Telemak (Fénelon), Yusuf Kâmil Paşa"
+      },
+      {
+       "id": "ed-tanzimat-30",
+       "f": "Ahmet Vefik Paşa'nın edebiyat alanındaki katkısı nedir?",
+       "b": "Molière'in oyunlarını Türkçeleştirdi (Zoraki Tabib vb.) ve Lehçe-i Osmani sözlüğünü hazırladı."
+      },
+      {
+       "id": "ed-tanzimat-31",
+       "f": "Abdülhak Hamit Tarhan'ın ünlü eseri hangisidir ve neden yazılmıştır?",
+       "b": "Makber (1885); eşi Fatma Hanım'ın ölümü üzerine yazılan şiirlerdir."
+      },
+      {
+       "id": "ed-tanzimat-32",
+       "f": "Abdülhak Hamit Tarhan'a verilen lakap nedir?",
+       "b": "Şair-i Azam"
+      },
+      {
+       "id": "ed-tanzimat-33",
+       "f": "Abdülhak Hamit Tarhan'ın tiyatro eserlerinden bazıları nelerdir?",
+       "b": "Eşber, Finten, Tarık, Nesteren, Duhter-i Hindu"
+      },
+      {
+       "id": "ed-tanzimat-34",
+       "f": "Recaizade Mahmut Ekrem'in edebiyat kuramı eseri hangisidir?",
+       "b": "Talim-i Edebiyat"
+      },
+      {
+       "id": "ed-tanzimat-35",
+       "f": "Recaizade Mahmut Ekrem'in romanı hangisidir ve baş kişisi kimdir?",
+       "b": "Araba Sevdası; Bihruz Bey (alafranga züppe)"
+      },
+      {
+       "id": "ed-tanzimat-36",
+       "f": "Muallim Naci'nin Ekrem'e karşı yazdığı eser hangisidir?",
+       "b": "Demdeme"
+      },
+      {
+       "id": "ed-tanzimat-37",
+       "f": "Samipaşazade Sezai'nin hangi eserleri tanınmıştır?",
+       "b": "Sergüzeşt (roman) ve Küçük Şeyler (hikâye)"
+      },
+      {
+       "id": "ed-tanzimat-38",
+       "f": "Nabizade Nazım'ın Zehra romanı hangi akımın örneğidir?",
+       "b": "Natüralizm"
+      },
+      {
+       "id": "ed-tanzimat-39",
+       "f": "Tanzimat dönemi tiyatro topluluğunun ilk kurucusu kimdir?",
+       "b": "Güllü Agop (Osmanlı Tiyatrosu / Gedikpaşa)"
+      }
+     ]
+    },
+    {
+     "id": "servet-fecr",
+     "title": "Servet-i Fünun ve Fecr-i Âti",
+     "cards": [
+      {
+       "id": "ed-servet-fecr-01",
+       "f": "Servet-i Fünun edebiyatı hangi dergi etrafında oluşmuştur?",
+       "b": "Servet-i Fünun dergisi; dergiyi Ahmet İhsan Tokgöz yayımlamış, topluluğun edebî rehberi Recaizade Mahmut Ekrem olmuştur."
+      },
+      {
+       "id": "ed-servet-fecr-02",
+       "f": "Servet-i Fünun topluluğunun ana ilkesi nedir?",
+       "b": "Sanat sanat içindir"
+      },
+      {
+       "id": "ed-servet-fecr-03",
+       "f": "Servet-i Fünun topluluğu hangi yıl dağılmıştır ve neden?",
+       "b": "1901; dergi hükümet tarafından kapatılınca topluluk dağılmıştır."
+      },
+      {
+       "id": "ed-servet-fecr-04",
+       "f": "Servet-i Fünun şiirinin etkilendiği Fransız akımları nelerdir?",
+       "b": "Parnasizm ve Sembolizm"
+      },
+      {
+       "id": "ed-servet-fecr-05",
+       "f": "Servet-i Fünun şiirinin özellikleri nelerdir?",
+       "b": "Aruz ölçüsü, ağır ve süslü dil, Fransız şiirinden alınan nazım biçimleri, bireysel temalar, hüzün ve karamsarlık."
+      },
+      {
+       "id": "ed-servet-fecr-06",
+       "f": "Servet-i Fünun sanatçıları kimlerdir?",
+       "b": "Tevfik Fikret, Cenap Şahabettin, Halit Ziya Uşaklıgil, Mehmet Rauf, Hüseyin Cahit Yalçın, Süleyman Nazif"
+      },
+      {
+       "id": "ed-servet-fecr-07",
+       "f": "Tevfik Fikret'in ilk şiir kitabı hangisidir?",
+       "b": "Rübab-ı Şikeste (1900)"
+      },
+      {
+       "id": "ed-servet-fecr-08",
+       "f": "Tevfik Fikret'in başlıca kitap ve şiirleri nelerdir?",
+       "b": "Kitaplar: Haluk'un Defteri, Rübab'ın Cevabı, Şermin. Şiirler: Sis, Tarih-i Kadim, Millet Şarkısı, Promete."
+      },
+      {
+       "id": "ed-servet-fecr-09",
+       "f": "Tevfik Fikret'in Sis şiiri neyi anlatır?",
+       "b": "İstanbul'u saran sisi, II. Abdülhamit dönemi baskı ve karamsarlığın simgesi olarak kullanır."
+      },
+      {
+       "id": "ed-servet-fecr-10",
+       "f": "Tevfik Fikret'in yaşadığı ev ve yönettiği okul hangileridir?",
+       "b": "Aşiyan (Bebek); Galatasaray Lisesi müdürlüğü yapmıştır."
+      },
+      {
+       "id": "ed-servet-fecr-11",
+       "f": "Cenap Şahabettin'in eserlerinden bazıları nelerdir?",
+       "b": "Tamat, Evrak-ı Eyyam, Elvah-ı Şita, Hac Yolunda"
+      },
+      {
+       "id": "ed-servet-fecr-12",
+       "f": "Halit Ziya Uşaklıgil'in en ünlü romanı hangisidir ve ana kişileri kimlerdir?",
+       "b": "Aşk-ı Memnu; Adnan Bey, Bihter, Behlül, Nihal, Firdevs Hanım"
+      },
+      {
+       "id": "ed-servet-fecr-13",
+       "f": "Halit Ziya Uşaklıgil'in başka romanları hangileridir?",
+       "b": "Mai ve Siyah (Ahmet Cemil), Kırık Hayatlar, Nesl-i Ahir, Bir Yazın Tarihi"
+      },
+      {
+       "id": "ed-servet-fecr-14",
+       "f": "Mehmet Rauf'un Eylül romanı hangi özelliğiyle bilinir?",
+       "b": "Türk edebiyatının ilk psikolojik romanı sayılır."
+      },
+      {
+       "id": "ed-servet-fecr-15",
+       "f": "Mehmet Rauf'un Eylül romanındaki kişiler kimlerdir?",
+       "b": "Suat, Necip, Süreyya"
+      },
+      {
+       "id": "ed-servet-fecr-16",
+       "f": "Servet-i Fünun hikâye ve romanlarının özellikleri nelerdir?",
+       "b": "Gerçekçi ve psikolojik tahlile yönelme, ayrıntılı betimleme, bireysel konular, süslü ve ağır dil."
+      },
+      {
+       "id": "ed-servet-fecr-17",
+       "f": "Fecr-i Âti topluluğu hangi yıllar arasında etkin olmuştur?",
+       "b": "1909-1912"
+      },
+      {
+       "id": "ed-servet-fecr-18",
+       "f": "Fecr-i Âti topluluğunun ilkesi nedir?",
+       "b": "Sanat şahsi ve muhteremdir (bireysel ve saygındır)."
+      },
+      {
+       "id": "ed-servet-fecr-19",
+       "f": "Fecr-i Âti topluluğunun üyelerinden bazıları kimlerdir?",
+       "b": "Ahmet Haşim, Refik Halit Karay, Emin Bülent Serdaroğlu, Tahsin Nahit, Celal Sahir Erozan"
+      },
+      {
+       "id": "ed-servet-fecr-20",
+       "f": "Ahmet Haşim hangi akımın şairidir?",
+       "b": "Sembolizm"
+      },
+      {
+       "id": "ed-servet-fecr-21",
+       "f": "Ahmet Haşim'in eserleri nelerdir?",
+       "b": "Şiir: Göl Saatleri, Piyale. Düzyazı: Gurabahane-i Laklakan, Bize Göre, Frankfurt Seyahatnamesi."
+      },
+      {
+       "id": "ed-servet-fecr-22",
+       "f": "Ahmet Haşim'in şiir anlayışı nasıldır?",
+       "b": "Şiir müziktir; anlamdan çok sesin ve imgenin çağrışımlarına dayanır, kapalı anlatımı sever."
+      },
+      {
+       "id": "ed-servet-fecr-23",
+       "f": "Refik Halit Karay'ın hikâye kitabı hangisidir?",
+       "b": "Memleket Hikâyeleri"
+      }
+     ]
+    },
+    {
+     "id": "milli",
+     "title": "Millî Edebiyat Dönemi",
+     "cards": [
+      {
+       "id": "ed-milli-01",
+       "f": "Millî Edebiyat akımının başlangıcı kabul edilen dergi hangisidir?",
+       "b": "Genç Kalemler (Selanik, 1911)"
+      },
+      {
+       "id": "ed-milli-02",
+       "f": "Genç Kalemler dergisinde yayımlanan, dilde sadeleşmeyi savunan makale hangisidir?",
+       "b": "Yeni Lisan (Ömer Seyfettin, 1911)"
+      },
+      {
+       "id": "ed-milli-03",
+       "f": "Yeni Lisan hareketinin ilkeleri nelerdir?",
+       "b": "Konuşma dili olan İstanbul Türkçesi esas alınmalı; Arapça ve Farsça kurallar ve kelimeler (Türkçede karşılığı varsa) atılmalıdır."
+      },
+      {
+       "id": "ed-milli-04",
+       "f": "Genç Kalemler dergisini çıkaranlar kimlerdir?",
+       "b": "Ömer Seyfettin, Ali Canip Yöntem, Ziya Gökalp"
+      },
+      {
+       "id": "ed-milli-05",
+       "f": "Millî Edebiyat akımının ilkeleri nelerdir?",
+       "b": "Sade dil, hece ölçüsü, millî konular ve değerler, gerçekçilik; Anadolu ve Türk halkı edebiyatın konusu olur."
+      },
+      {
+       "id": "ed-milli-06",
+       "f": "Millî Edebiyat dönemi şiirinin ölçüsü nedir?",
+       "b": "Hece ölçüsü (aruz da kullanılır: Yahya Kemal)"
+      },
+      {
+       "id": "ed-milli-07",
+       "f": "Millî Edebiyat'ın fikir babası kimdir?",
+       "b": "Ziya Gökalp"
+      },
+      {
+       "id": "ed-milli-08",
+       "f": "Ziya Gökalp'in başlıca eserleri nelerdir?",
+       "b": "Türkçülüğün Esasları, Türkleşmek İslamlaşmak Muasırlaşmak, Kızıl Elma, Yeni Hayat, Türk Medeniyeti Tarihi"
+      },
+      {
+       "id": "ed-milli-09",
+       "f": "Ömer Seyfettin hangi tür hikâyeciliğin temsilcisidir?",
+       "b": "Maupassant tarzı (olay hikâyesi)"
+      },
+      {
+       "id": "ed-milli-10",
+       "f": "Ömer Seyfettin'in ünlü hikâyeleri nelerdir?",
+       "b": "Primo Türk Çocuğu, Bomba, Kaşağı, Pembe İncili Kaftan, Beyaz Lale, Yüksek Ökçeler, Ashab-ı Kehfimiz, Efruz Bey"
+      },
+      {
+       "id": "ed-milli-11",
+       "f": "Ömer Seyfettin'in romanı hangisidir?",
+       "b": "Gizli Mabed"
+      },
+      {
+       "id": "ed-milli-12",
+       "f": "Mehmet Emin Yurdakul'un önemi nedir?",
+       "b": "\"Türkçe Şiirler\" (1899) ile hece ölçüsüyle millî konulara yönelen ilk şairlerdendir; \"Türk şairi\" diye anılır."
+      },
+      {
+       "id": "ed-milli-13",
+       "f": "Mehmet Emin Yurdakul'un eserlerinden bazıları nelerdir?",
+       "b": "Türkçe Şiirler, Cenge Giderken, Ey Türk Uyan"
+      },
+      {
+       "id": "ed-milli-14",
+       "f": "Yahya Kemal Beyatlı hangi akımın etkisindedir ve hangi ölçüyü kullanır?",
+       "b": "Parnasizm; aruz ölçüsünü kullanır."
+      },
+      {
+       "id": "ed-milli-15",
+       "f": "Yahya Kemal'in şiir kitapları nelerdir?",
+       "b": "Kendi Gök Kubbemiz (1961), Eski Şiirin Rüzgârıyla (1962), Rubailer ve Hayyam Rubailerini Türkçe Söyleyiş"
+      },
+      {
+       "id": "ed-milli-16",
+       "f": "Yahya Kemal'in düzyazı eserleri nelerdir?",
+       "b": "Aziz İstanbul, Edebiyata Dair, Çocukluğum Gençliğim Siyasi ve Edebi Hatıralarım"
+      },
+      {
+       "id": "ed-milli-17",
+       "f": "Yahya Kemal'in tanınmış şiirleri nelerdir?",
+       "b": "Sessiz Gemi, Erenlerin Bağından, Itri, Rindlerin Ölümü, Kaybolan Şehir"
+      },
+      {
+       "id": "ed-milli-18",
+       "f": "Mehmet Akif Ersoy'un şiir kitabı ve içerdiği bölümler nelerdir?",
+       "b": "Safahat (7 kitap): Safahat, Süleymaniye Kürsüsünde, Hakkın Sesleri, Fatih Kürsüsünde, Hatıralar, Asım, Gölgeler."
+      },
+      {
+       "id": "ed-milli-19",
+       "f": "İstiklal Marşı hangi yıl kabul edilmiştir ve şairi kimdir?",
+       "b": "1921, Mehmet Akif Ersoy (Burdur milletvekiliydi)."
+      },
+      {
+       "id": "ed-milli-20",
+       "f": "Mehmet Akif Ersoy hangi dergilerle ilişkilidir?",
+       "b": "Sırat-ı Müstakim / Sebilürreşad"
+      },
+      {
+       "id": "ed-milli-21",
+       "f": "Beş Hececiler kimlerdir?",
+       "b": "Faruk Nafiz Çamlıbel, Orhan Seyfi Orhon, Yusuf Ziya Ortaç, Halit Fahri Ozansoy, Enis Behiç Koryürek"
+      },
+      {
+       "id": "ed-milli-22",
+       "f": "Faruk Nafiz Çamlıbel'in ünlü şiiri hangisidir?",
+       "b": "Han Duvarları (1926) ve Sanat"
+      },
+      {
+       "id": "ed-milli-23",
+       "f": "Beş Hececiler'in şiir anlayışı nasıldır?",
+       "b": "Hece ölçüsü, sade dil; memleket (Anadolu) sevgisi, aşk ve doğa temaları."
+      },
+      {
+       "id": "ed-milli-24",
+       "f": "Millî Edebiyat romanında öne çıkan yazarlar kimlerdir?",
+       "b": "Halide Edip Adıvar, Yakup Kadri Karaosmanoğlu, Reşat Nuri Güntekin, Refik Halit Karay"
+      },
+      {
+       "id": "ed-milli-25",
+       "f": "Halide Edip Adıvar'ın ünlü romanları hangileridir?",
+       "b": "Sinekli Bakkal, Ateşten Gömlek, Vurun Kahpeye, Yeni Turan"
+      },
+      {
+       "id": "ed-milli-26",
+       "f": "Halide Edip Adıvar'ın Ateşten Gömlek romanının konusu nedir?",
+       "b": "Millî Mücadele (Kurtuluş Savaşı); baş kişileri Ayşe, Peyami ve İhsan."
+      },
+      {
+       "id": "ed-milli-27",
+       "f": "Yakup Kadri Karaosmanoğlu'nun Kiralık Konak romanı neyi anlatır?",
+       "b": "Eski kuşak ile alafranga yeni kuşak arasındaki çatışmayı anlatır; kişiler: Servet Bey, Naim Efendi, Seniha."
+      },
+      {
+       "id": "ed-milli-28",
+       "f": "Yakup Kadri Karaosmanoğlu'nun Yaban romanı neyi anlatır?",
+       "b": "Millî Mücadele sırasında aydın ile köylü arasındaki uçurumu; baş kişisi Ahmet Celal."
+      },
+      {
+       "id": "ed-milli-29",
+       "f": "Reşat Nuri Güntekin'in Çalıkuşu romanının baş kişisi kimdir?",
+       "b": "Feride (Kâmran'a âşık bir öğretmen)"
+      },
+      {
+       "id": "ed-milli-30",
+       "f": "Reşat Nuri Güntekin'in diğer eserleri nelerdir?",
+       "b": "Yaprak Dökümü, Acımak, Dudaktan Kalbe, Yeşil Gece, Kızılcık Dalları, Anadolu Notları, Damga"
+      },
+      {
+       "id": "ed-milli-31",
+       "f": "Refik Halit Karay'ın hikâye ve roman eserleri nelerdir?",
+       "b": "Memleket Hikâyeleri, Gurbet Hikâyeleri, İstanbul'un Bir Yüzü, Sürgün, Yezid'in Kızı"
+      },
+      {
+       "id": "ed-milli-32",
+       "f": "Millî Edebiyat döneminde çıkan başlıca dergiler nelerdir?",
+       "b": "Genç Kalemler, Türk Yurdu, Yeni Mecmua, Dergâh"
+      }
+     ]
+    },
+    {
+     "id": "cumhuriyet",
+     "title": "Cumhuriyet Dönemi",
+     "cards": [
+      {
+       "id": "ed-cumhuriyet-01",
+       "f": "Cumhuriyet dönemi şiirinde 1923-1940 arasında öne çıkan eğilimler nelerdir?",
+       "b": "Beş Hececiler (hece), Yedi Meşale (özgür ve yenilikçi şiir), Nazım Hikmet (serbest şiir ve toplumcu gerçekçilik), Yahya Kemal (aruz)."
+      },
+      {
+       "id": "ed-cumhuriyet-02",
+       "f": "Yedi Meşale topluluğu hangi yılda kurulmuştur ve üyeleri kimlerdir?",
+       "b": "1928; Ziya Osman Saba, Sabri Esat Siyavuşgil, Vâ-Nû (Vâlâ Nureddin), Kenan Hulusi Koray, Yaşar Nabi Nayır, Muammer Lütfi Bahşı, Cevdet Kudret Solok"
+      },
+      {
+       "id": "ed-cumhuriyet-03",
+       "f": "Nazım Hikmet Türk şiirine ne getirmiştir?",
+       "b": "Serbest nazım ve toplumcu gerçekçi şiir anlayışını"
+      },
+      {
+       "id": "ed-cumhuriyet-04",
+       "f": "Nazım Hikmet'in ünlü eserleri nelerdir?",
+       "b": "Kuvayi Milliye Destanı, Memleketimden İnsan Manzaraları, Simavne Kadısı Oğlu Şeyh Bedreddin Destanı, Sesini Kaybeden Şehir"
+      },
+      {
+       "id": "ed-cumhuriyet-05",
+       "f": "Nazım Hikmet nerede ölmüştür?",
+       "b": "Moskova (1963)"
+      },
+      {
+       "id": "ed-cumhuriyet-06",
+       "f": "Garip akımı hangi yıl başlamıştır ve kurucuları kimlerdir?",
+       "b": "1941; Orhan Veli Kanık, Oktay Rifat, Melih Cevdet Anday"
+      },
+      {
+       "id": "ed-cumhuriyet-07",
+       "f": "Garip akımının şiir anlayışı nedir?",
+       "b": "Ölçü, uyak, söz sanatı ve benzetmeye karşı çıkar; günlük konuşma diliyle, sıradan insanın yaşamını anlatır; şiiri halka indirmeyi amaçlar."
+      },
+      {
+       "id": "ed-cumhuriyet-08",
+       "f": "Orhan Veli'nin şiir kitapları nelerdir?",
+       "b": "Garip, Vazgeçemediğim, Destan Gibi, Yenisi, Karşı"
+      },
+      {
+       "id": "ed-cumhuriyet-09",
+       "f": "Cahit Sıtkı Tarancı'nın ünlü şiiri hangisidir?",
+       "b": "Otuz Beş Yaş"
+      },
+      {
+       "id": "ed-cumhuriyet-10",
+       "f": "Ahmet Hamdi Tanpınar'ın romanları nelerdir?",
+       "b": "Huzur (1949), Saatleri Ayarlama Enstitüsü (1954), Sahnenin Dışındakiler, Mahur Beste"
+      },
+      {
+       "id": "ed-cumhuriyet-11",
+       "f": "Ahmet Hamdi Tanpınar'ın Beş Şehir kitabında hangi şehirler vardır?",
+       "b": "Ankara, Erzurum, Konya, Bursa, İstanbul"
+      },
+      {
+       "id": "ed-cumhuriyet-12",
+       "f": "İkinci Yeni şiir akımı hangi yıllarda etkili olmuştur ve neye tepki olarak doğmuştur?",
+       "b": "1950'li yıllar; Garip akımının sade, mantıklı şiirine tepki olarak. İmge, kapalılık ve çağrışım önem kazanır."
+      },
+      {
+       "id": "ed-cumhuriyet-13",
+       "f": "İkinci Yeni'nin şairleri kimlerdir?",
+       "b": "Cemal Süreya, İlhan Berk, Edip Cansever, Turgut Uyar, Ece Ayhan, Sezai Karakoç, Ülkü Tamer"
+      },
+      {
+       "id": "ed-cumhuriyet-14",
+       "f": "Cemal Süreya'nın şiir kitabı hangisidir?",
+       "b": "Üvercinka (1958)"
+      },
+      {
+       "id": "ed-cumhuriyet-15",
+       "f": "Edip Cansever'in şiir kitapları nelerdir?",
+       "b": "Yerçekimli Karanfil (1957), Dirlik Düzenlik"
+      },
+      {
+       "id": "ed-cumhuriyet-16",
+       "f": "Turgut Uyar'ın şiir kitapları nelerdir?",
+       "b": "Arz-ı Hal, Dünyanın En Güzel Arabistanı, Divan, Büyük Saat"
+      },
+      {
+       "id": "ed-cumhuriyet-17",
+       "f": "Ahmed Arif'in şiir kitabı hangisidir?",
+       "b": "Hasretinden Prangalar Eskittim (1968)"
+      },
+      {
+       "id": "ed-cumhuriyet-18",
+       "f": "Sabahattin Ali'nin romanları nelerdir?",
+       "b": "Kuyucaklı Yusuf, Kürk Mantolu Madonna, İçimizdeki Şeytan"
+      },
+      {
+       "id": "ed-cumhuriyet-19",
+       "f": "Sabahattin Ali'nin hikâye kitapları nelerdir?",
+       "b": "Değirmen, Kağnı, Ses, Sırça Köşk"
+      },
+      {
+       "id": "ed-cumhuriyet-20",
+       "f": "Sait Faik Abasıyanık'ın hikâyeciliğinin özelliği nedir?",
+       "b": "Çehov tarzı durum hikâyesi; deniz, balıkçılar ve sıradan insanlar; Burgazada."
+      },
+      {
+       "id": "ed-cumhuriyet-21",
+       "f": "Sait Faik'in hikâye kitaplarından bazıları nelerdir?",
+       "b": "Semaver, Sarnıç, Şahmerdan, Lüzumsuz Adam, Mahalle Kahvesi, Alemdağ'da Var Bir Yılan"
+      },
+      {
+       "id": "ed-cumhuriyet-22",
+       "f": "Memduh Şevket Esendal'ın romanı hangisidir?",
+       "b": "Ayaşlı ve Kiracıları"
+      },
+      {
+       "id": "ed-cumhuriyet-23",
+       "f": "Peyami Safa'nın romanları nelerdir?",
+       "b": "Dokuzuncu Hariciye Koğuşu, Fatih-Harbiye, Yalnızız, Mahşer"
+      },
+      {
+       "id": "ed-cumhuriyet-24",
+       "f": "Köy Enstitüleri ürünü yazarlardan bazıları kimlerdir?",
+       "b": "Mahmut Makal (Bizim Köy), Fakir Baykurt (Yılanların Öcü), Talip Apaydın (Sarı Traktör)"
+      },
+      {
+       "id": "ed-cumhuriyet-25",
+       "f": "Orhan Kemal'in romanları nelerdir?",
+       "b": "Bereketli Topraklar Üzerinde, Murtaza, Baba Evi, Eskici ve Oğulları"
+      },
+      {
+       "id": "ed-cumhuriyet-26",
+       "f": "Kemal Tahir'in romanları nelerdir?",
+       "b": "Devlet Ana, Esir Şehrin İnsanları, Yorgun Savaşçı, Rahmet Yolları Kesti, Kelleci Memet"
+      },
+      {
+       "id": "ed-cumhuriyet-27",
+       "f": "Yaşar Kemal'in İnce Memed romanı ne zaman yayımlanmıştır?",
+       "b": "1955"
+      },
+      {
+       "id": "ed-cumhuriyet-28",
+       "f": "Yaşar Kemal'in diğer eserleri nelerdir?",
+       "b": "Yer Demir Gök Bakır, Ölmez Otu, Orta Direk, Teneke, Binboğalar Efsanesi"
+      },
+      {
+       "id": "ed-cumhuriyet-29",
+       "f": "Yusuf Atılgan'ın romanları nelerdir?",
+       "b": "Aylak Adam (1959), Anayurt Oteli (1973)"
+      },
+      {
+       "id": "ed-cumhuriyet-30",
+       "f": "Oğuz Atay'ın en ünlü romanı hangisidir?",
+       "b": "Tutunamayanlar (1971-72); diğer eserleri Tehlikeli Oyunlar, Bir Bilim Adamının Romanı"
+      },
+      {
+       "id": "ed-cumhuriyet-31",
+       "f": "Orhan Pamuk hangi yıl Nobel Edebiyat Ödülü almıştır?",
+       "b": "2006"
+      },
+      {
+       "id": "ed-cumhuriyet-32",
+       "f": "Orhan Pamuk'un romanları nelerdir?",
+       "b": "Cevdet Bey ve Oğulları, Kara Kitap, Benim Adım Kırmızı, Kar, Masumiyet Müzesi"
+      },
+      {
+       "id": "ed-cumhuriyet-33",
+       "f": "Necip Fazıl Kısakürek'in şiir kitapları ve dergisi nelerdir?",
+       "b": "Kaldırımlar, Çile, Sakarya; Büyük Doğu dergisi. Tiyatro eseri: Bir Adam Yaratmak."
+      },
+      {
+       "id": "ed-cumhuriyet-34",
+       "f": "Haldun Taner'in tiyatro anlayışı ve ünlü eseri nedir?",
+       "b": "Epik tiyatro anlayışı; Keşanlı Ali Destanı"
+      },
+      {
+       "id": "ed-cumhuriyet-35",
+       "f": "Cumhuriyet dönemi tiyatrosunda önemli yazarlar kimlerdir?",
+       "b": "Necati Cumalı (Susuz Yaz), Orhan Asena (Hürrem Sultan), Turan Oflazoğlu (Kösem Sultan), Güngör Dilmen (Kurban), Cevat Fehmi Başkut (Paydos), Haldun Taner"
+      }
+     ]
     }
-  ]
+   ]
+  }
+ ]
 }

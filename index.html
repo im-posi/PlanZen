@@ -413,11 +413,11 @@ body{padding-top:env(safe-area-inset-top,0px)}
 .sess-row .wtime{min-width:84px}.sess-row .grow{flex:1;min-width:0}
 .sw-warn{flex-basis:100%;font-size:12px;line-height:1.6;color:#facc15}
 @media(max-width:650px){
-  .mobile-nav{left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom,0px));display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:end;padding:8px 6px;border-radius:26px;border:1px solid var(--glass-edge);box-shadow:0 12px 34px var(--glass-sh)}
+  .mobile-nav{left:12px;right:12px;bottom:max(8px,calc(env(safe-area-inset-bottom,0px) - 16px));display:grid;grid-template-columns:repeat(5,minmax(0,1fr));align-items:end;padding:8px 6px;border-radius:26px;border:1px solid var(--glass-edge);box-shadow:0 12px 34px var(--glass-sh)}
   .mobile-nav button{width:100%;padding:0;gap:3px;align-content:end;line-height:1.2;white-space:nowrap}
   .mobile-nav span{display:grid;place-items:center;height:24px;line-height:24px}
   .mobile-nav button.plus span{height:46px;margin-top:-22px}
-  main{padding-bottom:calc(108px + env(safe-area-inset-bottom,0px))}
+  main{padding-bottom:calc(98px + env(safe-area-inset-bottom,0px))}
 }
 .shake{animation:pzShake .75s}
 .hap-wrap{position:relative;display:inline-flex}
@@ -679,7 +679,18 @@ body{padding-top:env(safe-area-inset-top,0px)}
       <div class="small" id="pushDiag" style="margin-top:8px;white-space:pre-wrap;line-height:1.7"></div>
       <p class="small" style="opacity:.8;line-height:1.6;margin-top:10px">Kişisel mesajlar için sunucu çalışma serini ve sürelerini okur, başka bir amaçla kullanmaz.</p>
     </div>
-    <div class="card"><h2>Hesap</h2><p>Giriş yaptığın e-posta: <b id="setEmail">–</b></p><button class="btn" id="setLogout">Çıkış yap</button></div>
+    <div class="card"><h2>Hesap</h2><p>Giriş yaptığın e-posta: <b id="setEmail">–</b></p>
+      <div class="add-row"><input id="pwNew" type="password" minlength="6" placeholder="Yeni şifre" autocomplete="new-password"><button class="btn" id="pwSave">Şifreyi değiştir</button></div>
+      <div class="small" id="pwMsg" style="margin:8px 0 0"></div>
+      <button class="btn" id="setLogout" style="margin-top:14px">Çıkış yap</button>
+      <h3 style="margin:22px 0 4px">Verilerim</h3>
+      <p class="small" style="line-height:1.6;margin:0 0 10px">Verilerin hesabında güvenle saklanır. İstersen bir kopyasını indirebilir ya da hesabını tamamen silebilirsin.</p>
+      <button class="btn" id="dataExport">Verilerimi indir</button>
+      <div style="margin-top:18px">
+        <label class="small" for="delConfirm" style="line-height:1.6">Hesabı silmek için kutuya <b>SİL</b> yaz. Hesabın, çalışma verilerin, arkadaşlıkların ve yedeklerin kalıcı olarak silinir, geri alınamaz.</label>
+        <div class="add-row" style="margin-top:8px"><input id="delConfirm" type="text" placeholder="SİL" autocomplete="off" autocapitalize="characters"><button class="btn" id="delAccount" style="color:var(--danger)">Hesabımı sil</button></div>
+        <div class="small" id="delMsg" style="margin-top:8px"></div>
+      </div></div>
   </section>
 
   <section class="section" id="announcements">
@@ -1651,6 +1662,8 @@ function renderWkBanner(){
 $("wkBannerBtn").addEventListener("click",()=>{wkTab=new Date().getDay()===0?0:-1;setSection("goals");renderWeeklyReport()});
 // ---- iki cihazın verisini birleştirme (çakışma durumunda) ----
 function mergeStates(L,R){
+  // bir cihazda yedekten geri yükleme yapıldıysa o sürüm aynen kazanır (eski veri geri gelmesin)
+  const lrv=L.restoreRev||0,rrv=R.restoreRev||0;if(lrv!==rrv)return {...(lrv>rrv?L:R)};
   const M={...R,...L};
   const maxMap=(a,b)=>{const o={...(b||{})};Object.keys(a||{}).forEach(k=>{o[k]=Math.max(Number(a[k])||0,Number(o[k])||0)});return o};
   M.log=maxMap(L.log,R.log);
@@ -2153,6 +2166,8 @@ $("examDate").value=fmtDate(dayKey(new Date()));
 }
 #pz-auth .pz-primary { background: #8066e9; color: white; }
 #pz-auth .pz-secondary { background: #f0edfa; color: #5745a5; }
+#pz-auth .pz-link { background: none; color: #5745a5; font-size: 13px; padding: 9px; margin-top: 2px; }
+#pz-auth form[hidden] { display: none; }
 #pz-auth #pz-message,
 #pz-auth #pz-connection-status { overflow-wrap: anywhere; }
 #pz-userbar {
@@ -2182,6 +2197,14 @@ $("examDate").value=fmtDate(dayKey(new Date()));
       <button class="pz-secondary" type="button" id="pz-signup">
         Yeni hesap oluştur
       </button>
+      <button class="pz-link" type="button" id="pz-forgot">Şifremi unuttum</button>
+    </form>
+    <form id="pz-reset" hidden>
+      <h3 style="margin:6px 0 2px;font-size:19px">Yeni şifre belirle</h3>
+      <input id="pz-new1" type="password" placeholder="Yeni şifre (en az 6 karakter)" autocomplete="new-password" minlength="6" required>
+      <input id="pz-new2" type="password" placeholder="Yeni şifre (tekrar)" autocomplete="new-password" minlength="6" required>
+      <button class="pz-primary" type="submit" id="pz-resetsave">Şifreyi kaydet</button>
+      <button class="pz-secondary" type="button" id="pz-resetcancel">Vazgeç</button>
     </form>
     <p id="pz-message" role="status"></p>
     <p id="pz-connection-status" role="status">Supabase bağlantısı kontrol ediliyor...</p>
@@ -2195,6 +2218,9 @@ $("examDate").value=fmtDate(dayKey(new Date()));
   const SUPABASE_URL = "https://pdlgokdassgeknchxipe.supabase.co";
   const SUPABASE_KEY = "sb_publishable_0EMJqcehAX4vlFPs_RakfA_3aYJvHCW";
 
+  // Şifre sıfırlama e-postasındaki bağlantıyla gelindiyse (type=recovery) uygulamayı açmadan önce yeni şifre sorulur.
+  let recovering = /(^|[#&?])type=recovery/.test(location.hash + location.search);
+  const linkBad = /error_code=|error=access_denied/.test(location.hash);
   const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   const overlay = document.getElementById("pz-auth");
   const message = document.getElementById("pz-message");
@@ -2272,7 +2298,53 @@ $("examDate").value=fmtDate(dayKey(new Date()));
     showMessage("Çıkış yapıldı.");
   });
 
+  const resetForm = document.getElementById("pz-reset");
+  function cleanUrl() { try { history.replaceState(null, "", location.pathname); } catch (_) {} }
+  function showRecovery() {
+    overlay.style.display = "flex";
+    document.getElementById("pz-userbar").style.display = "none";
+    form.hidden = true; resetForm.hidden = false;
+    showMessage("Yeni şifreni yaz.");
+  }
+  function endRecovery() { recovering = false; resetForm.hidden = true; form.hidden = false; resetForm.reset(); cleanUrl(); }
+  if (recovering && linkBad) { recovering = false; cleanUrl(); showMessage("Bu bağlantının süresi dolmuş ya da daha önce kullanılmış. 'Şifremi unuttum'a basıp yeni bağlantı iste."); }
+  if (recovering) setTimeout(() => { if (recovering && resetForm.hidden) { endRecovery(); showLogin(); showMessage("Bağlantı doğrulanamadı. 'Şifremi unuttum'a basıp yeni bağlantı iste."); } }, 8000);
+
+  document.getElementById("pz-forgot").addEventListener("click", async () => {
+    if (busy) return;
+    const email = document.getElementById("pz-email").value.trim();
+    if (!email) { showMessage("Önce yukarıya e-posta adresini yaz, sonra tekrar 'Şifremi unuttum'a bas."); document.getElementById("pz-email").focus(); return; }
+    busy = true; showMessage("Gönderiliyor...");
+    try {
+      const { error } = await client.auth.resetPasswordForEmail(email, { redirectTo: location.origin + location.pathname });
+      if (error) throw error;
+      showMessage("Bu e-postayla kayıtlı bir hesap varsa şifre sıfırlama bağlantısı gönderildi. Gelen kutunu ve spam klasörünü kontrol et.");
+    } catch (err) {
+      showMessage(/rate limit|security purposes/i.test(err.message || "") ? "Çok sık denedin, birkaç dakika bekleyip tekrar dene." : "Gönderilemedi: " + (err.message || "Bilinmeyen hata"));
+    } finally { busy = false; }
+  });
+
+  resetForm.addEventListener("submit", async event => {
+    event.preventDefault();
+    const a = document.getElementById("pz-new1").value, b = document.getElementById("pz-new2").value;
+    if (a.length < 6) { showMessage("Şifre en az 6 karakter olmalı."); return; }
+    if (a !== b) { showMessage("İki şifre aynı değil."); return; }
+    showMessage("Kaydediliyor...");
+    const { data, error } = await client.auth.updateUser({ password: a });
+    if (error) { showMessage(/different from the old/i.test(error.message || "") ? "Yeni şifre eskisiyle aynı olamaz." : "Şifre değiştirilemedi: " + error.message); return; }
+    endRecovery();
+    showMessage("");
+    if (data && data.user) showUser(data.user);
+  });
+  document.getElementById("pz-resetcancel").addEventListener("click", async () => {
+    endRecovery();
+    await client.auth.signOut();
+    showLogin();
+    showMessage("Şifre değiştirilmedi.");
+  });
+
   client.auth.onAuthStateChange((_event, session) => {
+    if (recovering) { if (session) showRecovery(); return; }
     if (session?.user) showUser(session.user);
     else showLogin();
   });
@@ -2577,6 +2649,40 @@ $("examDate").value=fmtDate(dayKey(new Date()));
     $("friendBoard").innerHTML = '<div class="empty">Giriş yapınca arkadaşların burada görünür.</div>';
     $("friendRequests").innerHTML = ""; $("myUsername").textContent = "Giriş yap"; $("profHandle").textContent = "Kullanıcı adı yok";
     setSync("");
+  });
+
+  // ---- Veri indirme, hesap silme, şifre değiştirme ----
+  $("dataExport").addEventListener("click", async () => {
+    if (!uid) return;
+    const name = "planzen-verilerim-" + dayKey(new Date()) + ".json";
+    const blob = new Blob([JSON.stringify({ app: "PlanZen", exported: new Date().toISOString(), email: ($("pz-user-email") || {}).textContent || "", profile: profile ? { username: profile.username } : null, data: state }, null, 1)], { type: "application/json" });
+    try {
+      const f = new File([blob], name, { type: "application/json" });
+      if (navigator.canShare && navigator.canShare({ files: [f] })) { await navigator.share({ files: [f] }); return; }
+    } catch (e) { if (e && e.name === "AbortError") return; }
+    const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click();
+    setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 1500);
+  });
+  $("delAccount").addEventListener("click", async () => {
+    if (!uid) return;
+    if ($("delConfirm").value.trim().toLocaleUpperCase("tr-TR") !== "SİL") { $("delMsg").textContent = "Onay için kutuya SİL yazmalısın."; return; }
+    if (!(await askConfirm("Hesap silinsin mi?", "Tüm verilerin kalıcı olarak silinecek. Bu işlem geri alınamaz.", "Evet, sil"))) return;
+    $("delAccount").disabled = true; $("delMsg").textContent = "Siliniyor…";
+    const { error } = await db.rpc("delete_my_account");
+    if (error) { $("delAccount").disabled = false; $("delMsg").textContent = "Silinemedi: " + error.message; return; }
+    try { localStorage.removeItem("planzen_" + uid); localStorage.removeItem("pz_dirty_" + uid); } catch (_) {}
+    clearTimeout(saveTimer); saveTimer = null; loaded = false;
+    await db.auth.signOut().catch(() => {});
+    $("delConfirm").value = ""; $("delMsg").textContent = ""; $("delAccount").disabled = false;
+    const m = document.getElementById("pz-message"); if (m) m.textContent = "Hesabın ve tüm verilerin silindi.";
+  });
+  $("pwSave").addEventListener("click", async () => {
+    const p = $("pwNew").value;
+    if (p.length < 6) { $("pwMsg").textContent = "Şifre en az 6 karakter olmalı."; return; }
+    $("pwMsg").textContent = "Kaydediliyor…";
+    const { error } = await db.auth.updateUser({ password: p });
+    $("pwMsg").textContent = error ? (/different from the old/i.test(error.message || "") ? "Yeni şifre eskisiyle aynı olamaz." : "Değiştirilemedi: " + error.message) : "Şifren değişti ✓";
+    if (!error) $("pwNew").value = "";
   });
 })();
 </script>
