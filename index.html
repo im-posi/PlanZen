@@ -424,6 +424,58 @@ body{padding-top:env(safe-area-inset-top,0px)}
 .hap-switch{position:absolute;inset:0;width:100%;height:100%;margin:0;padding:0;opacity:0;z-index:2;cursor:pointer;-webkit-appearance:auto;appearance:auto}
 @keyframes pzShake{0%,9%,18%,27%,100%{transform:none}4%{transform:translateX(-5px)}13%{transform:translateX(5px)}22%{transform:translateX(-5px)}34%,50%,66%,82%{transform:translateX(-8px)}42%,58%,74%,90%{transform:translateX(8px)}}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+
+/* ---- Özetler ---- */
+:root{--sm-bg:#0b1020;--sm-card:#141c36;--sm-line:#232e52;--sm-text:#f2f5ff;--sm-muted:#8f9bbd;--sm-coral:#ff7f70;--sm-green:#45d9a2;--sm-amber:#f5c04a;--sm-blue:#8ba5ff;--sm-track:#232e5a;--sm-bar:#33426b}
+.bell-btn{position:relative;background:none;border:0;padding:6px;cursor:pointer;line-height:0;color:var(--muted)}
+.bell-btn:hover{color:var(--text)}
+.bell-dot{position:absolute;top:3px;right:3px;width:11px;height:11px;border-radius:50%;background:#fb7185;border:2px solid var(--bg)}
+.sum-banner{display:flex;align-items:center;gap:12px;margin:0 0 16px;padding:13px 14px;border-radius:16px;border:1px solid var(--glass-edge,var(--line));background:linear-gradient(135deg,rgba(139,165,255,.18),rgba(167,139,250,.10))}
+.sum-banner[hidden]{display:none}
+.sum-banner .sb-txt{flex:1;min-width:0}.sum-banner .sb-t{font-weight:800;font-size:14px}.sum-banner .sb-s{font-size:12px;color:var(--muted);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sum-banner .sb-x{background:none;border:0;color:var(--muted);font-size:20px;line-height:1;cursor:pointer;padding:4px 6px}
+.sum-row{display:flex;align-items:center;gap:10px;width:100%;padding:12px 6px;border:0;border-bottom:1px solid var(--line);background:none;color:var(--text);font:inherit;text-align:left;cursor:pointer}
+.sum-row .dot{width:9px;height:9px;border-radius:50%;background:#fb7185;flex-shrink:0}.sum-row.read .dot{background:transparent}
+.sum-ic{font-size:20px}
+.tone-row{display:grid;gap:8px;margin-top:8px}
+.tone-opt{display:flex;gap:10px;align-items:flex-start;padding:12px;border:1px solid var(--line);border-radius:12px;cursor:pointer;background:var(--panel2)}
+.tone-opt input{margin-top:3px}.tone-opt b{display:block;font-size:13px}.tone-opt small{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+.modal-card.wide{width:min(1000px,100%);padding:14px;background:var(--sm-bg)}
+.sm-wrap{color:var(--sm-text);padding:4px}
+.sm-head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap}
+.sm-head h2{margin:0;font-size:24px;display:inline}.sm-head span{color:var(--sm-muted);font-size:14px;margin-left:10px}
+.sm-head em{font-style:normal;background:#243a68;color:#b8c6ee;border-radius:8px;padding:6px 12px;font-size:12px}
+.sm-kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0}
+.sm-kpi,.sm-panel,.sm-notes{background:var(--sm-card);border:1px solid var(--sm-line);border-radius:16px}
+.sm-kpi{padding:14px}.sm-l{font-size:12px;color:var(--sm-muted)}.sm-v{font-size:22px;font-weight:800;margin:4px 0}.sm-s{font-size:11px;color:var(--sm-muted);line-height:1.4}
+.sm-panels{display:grid;gap:12px}
+.sm-panel{padding:16px}.sm-panel h3{margin:0 0 12px;font-size:16px;color:var(--sm-text)}
+.sm-ring-row{display:flex;align-items:center;gap:16px;margin-bottom:14px}
+.sm-ring{width:92px;height:92px;border-radius:50%;background:conic-gradient(var(--sm-blue) calc(var(--p)*1%),var(--sm-track) 0);display:grid;place-items:center;flex-shrink:0}
+.sm-ring span{width:70px;height:70px;border-radius:50%;background:var(--sm-card);display:grid;place-items:center;font-weight:800;font-size:18px}
+.sm-side-big{font-size:20px;font-weight:800}.sm-side{font-size:14px}
+.sm-hb{margin:10px 0}.sm-hb-h{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px}
+.sm-track{height:8px;border-radius:99px;background:var(--sm-track)}.sm-track i{display:block;height:100%;border-radius:99px;background:var(--sm-blue)}
+.sm-hint{font-size:11px;color:var(--sm-muted);line-height:1.5;margin-top:10px}
+.sm-bars{position:relative;display:flex;align-items:flex-end;gap:6px;height:170px;margin:6px 0 4px;padding-bottom:20px}
+.sm-bars.thin{gap:2px}
+.sm-bcol{flex:1;height:100%;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;position:relative}
+.sm-bar{width:70%;min-height:2px;background:var(--sm-bar);border-radius:6px 6px 3px 3px}.sm-bar.hi{background:var(--sm-blue)}
+.sm-bars.thin .sm-bar{width:80%;border-radius:3px}
+.sm-bval{font-size:11px;color:var(--sm-muted);margin-bottom:3px}.sm-blab{position:absolute;bottom:-20px;font-size:11px;color:var(--sm-muted);white-space:nowrap}
+.sm-goal{position:absolute;left:0;right:0;border-top:2px dashed var(--sm-green);z-index:2;margin-bottom:20px;pointer-events:none}
+.sm-goal em{position:absolute;right:0;top:-18px;font-style:normal;font-size:11px;color:var(--sm-green)}
+.sm-line{font-size:13px;margin-top:8px}.sm-line b{font-weight:800}
+.sm-tr{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--sm-line)}
+.sm-tt{font-size:15px;min-width:46px}.sm-tn{flex:1;min-width:0;font-size:14px}.sm-tn small,.sm-li small{display:block;color:var(--sm-muted);font-size:11px;margin-top:2px}
+.sm-pill{font-size:11px;font-weight:700;padding:5px 10px;border-radius:99px;white-space:nowrap}.sm-pill.ok{background:#173a35;color:var(--sm-green)}.sm-pill.no{background:#43241f;color:var(--sm-coral)}
+.sm-gh{font-size:13px;font-weight:700;color:var(--sm-blue);margin:12px 0 6px}.sm-gh:first-child{margin-top:0}
+.sm-li{display:flex;gap:10px;align-items:flex-start;font-size:14px;padding:6px 0}
+.sm-n{width:24px;height:24px;border-radius:50%;background:var(--sm-track);display:grid;place-items:center;font-size:12px;font-weight:700;flex-shrink:0}
+.sm-notes{display:grid;gap:14px;padding:16px;margin-top:12px;border-left:4px solid var(--sm-blue)}
+.sm-notes b{font-size:15px}.sm-notes p{margin:6px 0 0;font-size:14px;line-height:1.55;color:var(--sm-text)}
+@media(min-width:760px){.sm-kpis{grid-template-columns:repeat(4,1fr)}.sm-notes{grid-template-columns:repeat(3,1fr)}}
+@media(min-width:900px){.sm-panels{grid-template-columns:1fr 1.15fr 1.25fr}}
 </style>
 </head>
 <body>
@@ -452,9 +504,19 @@ body{padding-top:env(safe-area-inset-top,0px)}
 <main>
   <header class="topbar">
     <div><div class="eyebrow" id="todayLabel">BUGÜNÜN PLANI</div><h1 id="pageTitle">Çalışma alanın. 🌱</h1><p style="margin:8px 0 0">Küçük adımlar, sağlam ilerleme.</p></div>
-    <div class="top-actions"><button class="sync-dot" id="syncDot" hidden aria-label="Kaydetme durumu"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10a6 6 0 0 0-11.6-1.5A4.5 4.5 0 0 0 7 18h11a4 4 0 0 0 0-8z"/></svg></button><button class="avatar-btn" id="profileTop" aria-label="Profil menüsü" aria-haspopup="menu" aria-expanded="false"><div class="avatar" id="topAvatar">?</div><span class="unread-dot" id="unreadDot" hidden></span></button></div>
+    <div class="top-actions"><button class="bell-btn" id="sumBell" aria-label="Özetlerim"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg><span class="bell-dot" id="sumDot" hidden></span></button><button class="sync-dot" id="syncDot" hidden aria-label="Kaydetme durumu"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 10a6 6 0 0 0-11.6-1.5A4.5 4.5 0 0 0 7 18h11a4 4 0 0 0 0-8z"/></svg></button><button class="avatar-btn" id="profileTop" aria-label="Profil menüsü" aria-haspopup="menu" aria-expanded="false"><div class="avatar" id="topAvatar">?</div><span class="unread-dot" id="unreadDot" hidden></span></button></div>
   </header>
   <div class="sync-pop" id="syncPop" hidden></div>
+  <div class="modal" id="sumListModal" hidden role="dialog" aria-modal="true" aria-labelledby="sumListTitle"><div class="modal-card">
+    <div class="card-head"><div><h2 id="sumListTitle">Özetlerim</h2><div class="card-sub">Günlük, haftalık ve aylık özetlerin</div></div><button class="btn" id="sumListClose">Kapat</button></div>
+    <div id="sumListBody"></div>
+  </div></div>
+  <div class="modal top2" id="sumModal" hidden role="dialog" aria-modal="true" aria-label="Özet"><div class="modal-card wide">
+    <div id="sumBody"></div>
+    <div class="modal-actions"><button class="btn primary" id="sumPng">PNG olarak kaydet</button><button class="btn" id="sumClose">Kapat</button></div>
+    <div class="small" id="sumMsg" style="margin-top:8px"></div>
+  </div></div>
+
   <div class="modal" id="dayModal" hidden role="dialog" aria-modal="true" aria-labelledby="dmTitle"><div class="modal-card">
     <div class="card-head"><div><h2 id="dmTitle"></h2><div class="card-sub" id="dmSub"></div></div><button class="btn" id="dmClose">Kapat</button></div>
     <div id="dmSubjects"></div>
@@ -512,6 +574,7 @@ body{padding-top:env(safe-area-inset-top,0px)}
   </div>
 
   <section class="section active" id="dashboard">
+    <div class="sum-banner" id="sumBanner" hidden><div class="sb-txt"><div class="sb-t"></div><div class="sb-s"></div></div><button class="btn primary" id="sumBannerOpen">Aç</button><button class="sb-x" id="sumBannerX" aria-label="Kapat">×</button></div>
     <div class="card yks">
       <div><div class="eyebrow">YKS 2027 · TYT 19 HAZİRAN</div><div class="yks-days"><span id="yksDays">–</span><small id="yksUnit">gün kaldı</small></div><div class="card-sub">TYT 19 Haziran 2027 Cumartesi, AYT 20 Haziran 2027 Pazar (ÖSYM takvimi)</div></div>
       <span class="tag" id="yksWeeks"></span>
@@ -665,12 +728,22 @@ body{padding-top:env(safe-area-inset-top,0px)}
         <div class="notice">İyi bir plan seni desteklemeli, cezalandırmamalı. Dinlenme de planın bir parçası.</div>
       </div>
       </div>
+    <div class="card" style="margin-bottom:16px" id="sumCard">
+      <div class="card-head"><div><h2>Özetler</h2><div class="card-sub">Günlük, haftalık ve aylık çalışma özetin</div></div><button class="btn" id="sumOpenList">Özetlerim</button></div>
+      <p class="small" style="line-height:1.6">Her gece 00:00'da, o günün çalışma verinden otomatik bir özet hazırlanır. Pazartesi günleri haftalık, ayın ilk günü aylık özet de gelir. Özetler yalnızca senin verinden üretilir ve kimseyle paylaşılmaz.</p>
+      <div class="small" style="margin-top:12px">Yorum tonu</div>
+      <div class="tone-row">
+        <label class="tone-opt"><input type="radio" name="sumTone" value="resmi"><span><b>Resmî</b><small>Sakin, düz ve saygılı. Kızmaz, abartmaz.</small></span></label>
+        <label class="tone-opt"><input type="radio" name="sumTone" value="sert"><span><b>Sert</b><small>Dobra. Hak edince över, hak edince kızar.</small></span></label>
+      </div>
+    </div>
     <div class="card" style="margin-bottom:16px" id="pushCard">
       <div class="card-head"><div><h2>Bildirim ayarları</h2><div class="card-sub">Sabah mesajları ve haberler</div></div><span class="tag" id="pushTag">–</span></div>
       <p class="small" id="pushNote" style="line-height:1.6"></p>
       <div id="pushOn" hidden>
         <label class="small" style="display:flex;gap:8px;align-items:center;margin:10px 0"><input type="checkbox" id="prefMorning"> Sabah motivasyon mesajları</label>
         <label class="small" style="display:flex;gap:8px;align-items:center;margin:10px 0"><input type="checkbox" id="prefAnnounce"> Haberler ve güncellemeler</label>
+        <label class="small" style="display:flex;gap:8px;align-items:center;margin:10px 0"><input type="checkbox" id="prefSummary"> Özet bildirimi (sabah 08:00)</label>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px"><button class="btn" id="pushTest">Test bildirimi gönder</button><button class="btn" id="pushOff">Bildirimleri kapat</button></div>
       </div>
       <button class="btn primary" id="pushEnable" hidden style="margin-top:8px">Bildirimleri aç</button>
@@ -2132,6 +2205,7 @@ function refreshAll(){
   renderExamSubjects(document.querySelector(".exam-tab.active").dataset.exam);
   $("dailyNote").value=state.note||"";$("goalInput").value=state.goal;
   applyTheme();renderThemeSettings();
+  if(window.planZenSummaryUi)window.planZenSummaryUi();
 }
 refreshAll();
 $("weekDay").value=String(todayIdx());
@@ -2753,7 +2827,7 @@ $("examDate").value=fmtDate(dayKey(new Date()));
     if (sub && granted && !row) { await registerSub(sub); row = await serverRow(sub.endpoint); }
     if (row) {
       tag.textContent = "Açık"; note.textContent = "Bu cihaz bildirim alıyor."; $("pushOn").hidden = false;
-      const p = row.prefs || {}; $("prefMorning").checked = p.morning !== false; $("prefAnnounce").checked = p.announce !== false;
+      const p = row.prefs || {}; $("prefMorning").checked = p.morning !== false; $("prefAnnounce").checked = p.announce !== false; $("prefSummary").checked = p.summary !== false;
     } else {
       tag.textContent = "Kapalı";
       note.textContent = sub && granted ? "Bu cihazda izin var ama sunucuya kaydedilemedi. Bildirimleri aç'a basıp tekrar dene; olmazsa Durumu kontrol et'e bas." : "Sabah motivasyon mesajları ve haberler için bildirimleri aç.";
@@ -2805,9 +2879,9 @@ $("examDate").value=fmtDate(dayKey(new Date()));
     if (sub) { await db.from("push_subscriptions").delete().eq("endpoint", sub.endpoint); try { await sub.unsubscribe(); } catch (_) {} }
     $("pushMsg").textContent = "Bildirimler kapatıldı."; renderPush();
   });
-  ["prefMorning", "prefAnnounce"].forEach(id => $(id).addEventListener("change", async () => {
+  ["prefMorning", "prefAnnounce", "prefSummary"].forEach(id => $(id).addEventListener("change", async () => {
     const sub = await currentSub(); if (!sub) return;
-    const { error } = await db.from("push_subscriptions").update({ prefs: { morning: $("prefMorning").checked, announce: $("prefAnnounce").checked } }).eq("endpoint", sub.endpoint);
+    const { error } = await db.from("push_subscriptions").update({ prefs: { morning: $("prefMorning").checked, announce: $("prefAnnounce").checked, summary: $("prefSummary").checked } }).eq("endpoint", sub.endpoint);
     $("pushMsg").textContent = error ? "Kaydedilemedi: " + error.message : "Tercih kaydedildi.";
   }));
 
@@ -2953,6 +3027,289 @@ $("examDate").value=fmtDate(dayKey(new Date()));
   db.auth.getSession().then(({ data }) => { if (data && data.session && data.session.user) onUser(data.session.user); });
   window.addEventListener("pz-logout", () => { uid = null; window.__in = false; updateTimerChip(); window.__isAdmin = false; $("pmAdmin").hidden = true; annList = []; reads = new Set(); updateBadge(); renderInbox(); });
   window.__notif = { renderRich, parseMsgs, fillVars, myVars };
+})();
+</script>
+
+<script>
+// ---- Özetler: banner, zil, görüntüleyici, PNG ----
+(() => {
+  const db = window.planZenSupabase;
+  if (!db) return;
+  let uid = null, list = [], pendingS = new URLSearchParams(location.search).get("s");
+  const KIND = { day: "Günlük Özet", week: "Haftalık Özet", month: "Aylık Özet" };
+  const ICON = { day: "📑", week: "📆", month: "🗓️" };
+  const TAG = { day: "Gün tamamlandı", week: "Hafta tamamlandı", month: "Ay tamamlandı" };
+  const tone = () => (state.summaryTone === "sert" ? "sert" : "resmi");
+  const fm = m => { m = Math.round(m || 0); return m < 60 ? m + " dk" : Math.floor(m / 60) + " sa " + (m % 60) + " dk"; };
+  const lvl = (p, hi) => (p >= (hi || 80) ? "good" : p >= 60 ? "mid" : "bad");
+  const ckey = () => "pz_sum_" + uid;
+  const addD = (ds, n) => { const [y, m, d] = ds.split("-").map(Number); return new Date(Date.UTC(y, m - 1, d + n)).toISOString().slice(0, 10); };
+  const untilOf = s => Date.parse(addD(s.period_end, 1) + "T14:00:00+03:00");
+  const unread = s => !s.read_at;
+
+  // ---------- veri ----------
+  async function load() {
+    if (!uid) return;
+    try {
+      const { data, error } = await db.from("user_summaries").select("id,kind,period_start,period_end,payload,created_at,read_at").eq("user_id", uid).order("created_at", { ascending: false }).limit(40);
+      if (error) throw error;
+      list = data || [];
+      try { localStorage.setItem(ckey(), JSON.stringify(list)); } catch (_) {}
+    } catch (_) {
+      try { list = JSON.parse(localStorage.getItem(ckey()) || "[]"); } catch (__) { list = []; }
+    }
+    paint();
+  }
+  async function markRead(ids) {
+    const now = new Date().toISOString();
+    list.forEach(s => { if (ids.includes(s.id) && !s.read_at) s.read_at = now; });
+    try { localStorage.setItem(ckey(), JSON.stringify(list)); } catch (_) {}
+    paint();
+    try { await db.rpc("mark_summaries_read", { p_ids: ids }); } catch (_) {}
+  }
+
+  // ---------- spec: tek kaynak, iki çizici (HTML + tuval) ----------
+  function spec(p) {
+    const t = tone(), notes = (p.comments && (p.comments[t] || p.comments.resmi)) || { good: "", bad: "", general: "" };
+    const S = { kind: p.kind, title: KIND[p.kind], sub: p.label, tag: TAG[p.kind], notes, kpis: [], panels: [] };
+    const goalTxt = m => fm(m).replace(/ 0 dk$/, "");
+    if (p.kind === "day") {
+      S.kpis = [
+        { l: "Çalışma süresi", v: fm(p.minutes), s: "hedef " + goalTxt(p.goalMin) + " · %" + p.pct, c: lvl(p.pct) },
+        { l: "Program", v: p.blocks.total ? p.blocks.done + " / " + p.blocks.total + " blok" : "–", s: p.blocks.total ? "%" + p.blocks.pct + " yapıldı" : "plan yoktu", c: p.blocks.total ? lvl(p.blocks.pct) : "" },
+        { l: "Çözülen soru", v: String(p.q.n), s: p.q.d + " doğru · " + p.q.y + " yanlış · " + p.q.b + " boş", c: "" },
+        { l: "Doğru oranı", v: p.q.n ? "%" + p.q.rate : "–", s: p.q.d + " doğru / " + p.q.n + " soru", c: p.q.n ? lvl(p.q.rate, 75) : "" }
+      ];
+      S.panels.push({ type: "ring", title: "Hedef ve dersler", pct: p.pct, big: "%" + p.pct, side: [{ t: p.short > 0 ? fm(p.short) + " eksik" : "Hedef tamam", c: p.short > 0 ? "bad" : "good", big: true }, { t: p.minutes + " dk / " + p.goalMin + " dk" }], bars: p.subs, scale: 60, hint: "Çubuk: 60 dk = tam." + (p.idle && p.idle.length ? " Hiç çalışılmayan (son 14 gün baz): " + p.idle.join(", ") + "." : "") });
+      const dd = n => (n > 0 ? "+" + n : n < 0 ? "−" + Math.abs(n) : "0");
+      S.panels.push({ type: "bars", title: "Son 7 gün (dakika)", items: p.week7.map((b, i) => ({ l: b.l, m: b.m, hi: i === p.week7.length - 1 })), goal: p.goalMin, lines: [
+        { t: "Dünden: ", v: dd(p.diffPrev) + " dk", c: p.diffPrev < 0 ? "bad" : "good", r: " (" + p.prev + " → " + p.minutes + ")" },
+        { t: "7 gün ortalaması " + p.avg7 + " dk: ", v: dd(p.diffAvg) + " dk", c: p.diffAvg < 0 ? "bad" : "good" },
+        { t: "Hedefi tutturduğun gün: 7'de " + p.hit }] });
+      S.panels.push({ type: "table", title: "Günün programı", head: ["Saat", "Ders · Konu"], rows: (p.sched || []).map(r => ({ a: r.t || "–", b: [r.s, r.tp].filter(Boolean).join(" · ") || "Blok", c: r.has ? r.n + " soru · " + r.c + " D · " + r.y + " Y · " + r.b + " B" : (r.q ? "hedef " + r.q + " soru · kayıt yok" : ""), ok: !!r.done })), empty: "Bu gün için planlı blok yoktu." });
+    } else if (p.kind === "week") {
+      S.kpis = [
+        { l: "Çalışma süresi", v: fm(p.minutes), s: "hedef " + goalTxt(p.weekGoal) + " · %" + p.pct, c: lvl(p.pct) },
+        { l: "Program", v: p.blocks.total ? p.blocks.done + " / " + p.blocks.total + " blok" : "–", s: p.blocks.total ? "%" + p.blocks.pct + " yapıldı" : "plan yoktu", c: p.blocks.total ? lvl(p.blocks.pct) : "" },
+        { l: "Çözülen soru", v: String(p.q.n), s: p.q.d + " doğru · " + p.q.y + " yanlış · " + p.q.b + " boş", c: "" },
+        { l: "Doğru oranı", v: p.q.n ? "%" + p.q.rate : "–", s: p.q.d + " doğru / " + p.q.n + " soru", c: p.q.n ? lvl(p.q.rate, 75) : "" }
+      ];
+      S.panels.push({ type: "ring", title: "Hedef ve dersler", pct: p.pct, big: "%" + p.pct, side: [{ t: p.pct < 100 ? fm(Math.max(0, p.weekGoal - p.minutes)) + " eksik" : "Hedef tamam", c: p.pct < 100 ? "bad" : "good", big: true }, { t: fm(p.minutes) + " / " + goalTxt(p.weekGoal) }], bars: p.subs, scale: Math.max(60, ...(p.subs || []).map(s => s.m)), hint: "Çubuk: en çok çalışılan ders = tam." + (p.idle && p.idle.length ? " Bu hafta hiç çalışılmayan: " + p.idle.join(", ") + "." : "") });
+      const dd = n => (n > 0 ? "+" + n : n < 0 ? "−" + Math.abs(n) : "0");
+      S.panels.push({ type: "bars", title: "Hafta (dakika)", items: p.bars.map(b => ({ l: b.l, m: b.m, hi: b.k === (p.bestDay && p.bestDay.k) })), goal: p.goalMin, lines: [
+        { t: "Önceki haftaya göre: ", v: dd(p.diffPrev) + " dk", c: p.diffPrev < 0 ? "bad" : "good", r: " (" + p.prevMin + " → " + p.minutes + ")" },
+        { t: "Günlük ortalama " + p.avgDay + " dk · aktif gün " + p.activeDays + " / 7" },
+        { t: "Hedefi tutturduğun gün: 7'de " + p.hit }] });
+      S.panels.push({ type: "lists", title: "Zayıf konular ve öncelikler", groups: [
+        { h: "Zayıf 3 konu", items: p.weak.length ? p.weak.map(w => ({ a: [w.s, w.tp].filter(Boolean).join(" · "), b: "%" + w.rate + " doğru · " + w.n + " soru" })) : [{ a: "Yeterli soru verisi yok", b: "" }] },
+        { h: "Önümüzdeki hafta", num: true, items: p.priorities.map(x => ({ a: x, b: "" })) }] });
+    } else {
+      S.kpis = [
+        { l: "Çalışma süresi", v: fm(p.minutes), s: p.diffPrev === 0 || !p.prevMin ? "önceki ay yok" : (p.diffPrev > 0 ? "+" : "−") + fm(Math.abs(p.diffPrev)) + " önceki aya göre", c: p.prevMin ? (p.diffPrev >= 0 ? "good" : "bad") : "" },
+        { l: "Aktif gün", v: p.activeDays + " / " + p.daysIn, s: "hedefi tutturduğun gün: " + p.hit, c: lvl(Math.round(p.activeDays / p.daysIn * 100)) },
+        { l: "Çözülen soru", v: String(p.q.n), s: p.q.d + " doğru · " + p.q.y + " yanlış · " + p.q.b + " boş", c: "" },
+        { l: "Doğru oranı", v: p.q.n ? "%" + p.q.rate : "–", s: p.q.d + " doğru / " + p.q.n + " soru", c: p.q.n ? lvl(p.q.rate, 75) : "" }
+      ];
+      const hp = Math.round(p.hit / p.daysIn * 100);
+      S.panels.push({ type: "ring", title: "Hedef ve dersler", pct: hp, big: "%" + hp, side: [{ t: p.hit + " / " + p.daysIn + " gün", c: lvl(hp, 70), big: true }, { t: "günlük hedef tutturuldu" }], bars: p.subs.slice(0, 6), scale: Math.max(60, ...(p.subs || []).map(s => s.m)), hint: "Çubuk: en çok çalışılan ders = tam." });
+      S.panels.push({ type: "bars", title: "Günler (dakika)", items: p.days.map((d, i) => ({ l: (i === 0 || (i + 1) % 5 === 0) ? String(i + 1) : "", m: d.m, hi: false })), goal: p.goalMin, thin: true, lines: [
+        { t: "Çalışılan günlerin ortalaması: " + p.avgActive + " dk" },
+        { t: "En uzun seri: " + p.bestStreak + " gün" },
+        { t: "Bu ay kazanılan rozet: " + (p.badges ? p.badges.length : 0) }] });
+      S.panels.push({ type: "lists", title: "Denemeler ve hedefler", groups: [
+        { h: "Denemeler", items: p.exams.length ? p.exams.slice(-4).map(e => ({ a: (e.name || e.type || "Deneme") + (e.type ? " · " + e.type : ""), b: e.total + " net" })) : [{ a: "Bu ay deneme girilmedi", b: "" }] },
+        { h: "Yeni ay hedefleri", num: true, items: p.goals.map(x => ({ a: x, b: "" })) }] });
+    }
+    return S;
+  }
+
+  // ---------- HTML çizici ----------
+  const esc = safeText;
+  const CL = { good: "var(--sm-green)", bad: "var(--sm-coral)", mid: "var(--sm-amber)", "": "var(--sm-text)" };
+  function html(S) {
+    const kp = S.kpis.map(k => `<div class="sm-kpi"><div class="sm-l">${esc(k.l)}</div><div class="sm-v" style="color:${CL[k.c || ""]}">${esc(k.v)}</div><div class="sm-s">${esc(k.s)}</div></div>`).join("");
+    const panels = S.panels.map(pn => {
+      let b = "";
+      if (pn.type === "ring") {
+        b = `<div class="sm-ring-row"><div class="sm-ring" style="--p:${Math.min(100, pn.pct)}"><span>${esc(pn.big)}</span></div><div>${pn.side.map(s => `<div class="${s.big ? "sm-side-big" : "sm-side"}" style="color:${CL[s.c || ""]}">${esc(s.t)}</div>`).join("")}</div></div>`
+          + (pn.bars || []).map(r => `<div class="sm-hb"><div class="sm-hb-h"><span>${esc(r.n)}</span><span>${r.m} dk</span></div><div class="sm-track"><i style="width:${Math.min(100, r.m / pn.scale * 100)}%"></i></div></div>`).join("")
+          + (pn.hint ? `<div class="sm-hint">${esc(pn.hint)}</div>` : "");
+      } else if (pn.type === "bars") {
+        const mx = Math.max(pn.goal, ...pn.items.map(i => i.m), 1) * 1.12;
+        b = `<div class="sm-bars ${pn.thin ? "thin" : ""}"><div class="sm-goal" style="bottom:${pn.goal / mx * 100}%"><em>hedef ${pn.goal}</em></div>${pn.items.map(i => `<div class="sm-bcol"><span class="sm-bval">${pn.thin ? "" : i.m}</span><div class="sm-bar ${i.hi ? "hi" : ""}" style="height:${i.m / mx * 100}%"></div><span class="sm-blab">${esc(i.l)}</span></div>`).join("")}</div>`
+          + pn.lines.map(l => `<div class="sm-line">${esc(l.t)}${l.v ? `<b style="color:${CL[l.c || ""]}">${esc(l.v)}</b>` : ""}${l.r ? esc(l.r) : ""}</div>`).join("");
+      } else if (pn.type === "table") {
+        b = pn.rows.length ? pn.rows.map(r => `<div class="sm-tr"><span class="sm-tt">${esc(r.a)}</span><div class="sm-tn"><div>${esc(r.b)}</div>${r.c ? `<small>${esc(r.c)}</small>` : ""}</div><span class="sm-pill ${r.ok ? "ok" : "no"}">${r.ok ? "Yapıldı" : "Yapılmadı"}</span></div>`).join("") : `<div class="sm-hint">${esc(pn.empty)}</div>`;
+      } else {
+        b = pn.groups.map(g => `<div class="sm-gh">${esc(g.h)}</div>` + g.items.map((it, i) => `<div class="sm-li">${g.num ? `<span class="sm-n">${i + 1}</span>` : ""}<div><div>${esc(it.a)}</div>${it.b ? `<small>${esc(it.b)}</small>` : ""}</div></div>`).join("")).join("");
+      }
+      return `<section class="sm-panel"><h3>${esc(pn.title)}</h3>${b}</section>`;
+    }).join("");
+    const n = S.notes;
+    return `<div class="sm-wrap"><div class="sm-head"><div><h2>${esc(S.title)}</h2><span>${esc(S.sub)}</span></div><em>${esc(S.tag)}</em></div><div class="sm-kpis">${kp}</div><div class="sm-panels">${panels}</div><div class="sm-notes"><div><b style="color:var(--sm-green)">İyi olan</b><p>${esc(n.good)}</p></div><div><b style="color:var(--sm-coral)">Kötü olan</b><p>${esc(n.bad)}</p></div><div><b>Genel</b><p>${esc(n.general)}</p></div></div></div>`;
+  }
+
+  // ---------- Tuval çizici (1920x1080, PNG için) ----------
+  const C = { bg: "#0b1020", card: "#141c36", line: "#232e52", text: "#f2f5ff", muted: "#8f9bbd", coral: "#ff7f70", green: "#45d9a2", amber: "#f5c04a", blue: "#8ba5ff", track: "#232e5a", bar: "#33426b" };
+  const cc = k => ({ good: C.green, bad: C.coral, mid: C.amber, "": C.text }[k || ""]);
+  function canvas(S) {
+    const W = 1920, H = 1080, cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+    const x = cv.getContext("2d"), F = (getComputedStyle(document.body).fontFamily || "system-ui, sans-serif");
+    const font = (w, s) => { x.font = w + " " + s + "px " + F; };
+    const T = (s, px, py, o) => { o = o || {}; font(o.w || 400, o.s || 22); x.fillStyle = o.c || C.text; x.textAlign = o.a || "left"; x.textBaseline = o.b || "alphabetic"; x.fillText(s, px, py); };
+    const rr = (px, py, w, h, r, fill, stroke) => { x.beginPath(); x.roundRect(px, py, w, h, r); if (fill) { x.fillStyle = fill; x.fill(); } if (stroke) { x.strokeStyle = stroke; x.lineWidth = 2; x.stroke(); } };
+    const wrap = (s, px, py, mw, lh, o, maxL) => {
+      font(o.w || 400, o.s); const words = String(s).split(" "); let line = "", yy = py, n = 0;
+      for (const w of words) { const t = line ? line + " " + w : w; if (x.measureText(t).width > mw && line) { if (n + 1 >= maxL) { line += "…"; break; } T(line, px, yy, o); yy += lh; n++; line = w; } else line = t; }
+      if (line) { T(line, px, yy, o); yy += lh; } return yy;
+    };
+    const g = x.createLinearGradient(0, 0, 0, H); g.addColorStop(0, "#0b1020"); g.addColorStop(1, "#0e1530"); x.fillStyle = g; x.fillRect(0, 0, W, H);
+    // başlık
+    T(S.title, 48, 92, { w: 800, s: 60 }); font(800, 60); const tw = x.measureText(S.title).width;
+    T(S.sub, 48 + tw + 22, 92, { w: 500, s: 30, c: C.muted });
+    font(500, 22); const gw = x.measureText(S.tag).width + 44; rr(W - 48 - gw, 48, gw, 52, 10, "#243a68"); T(S.tag, W - 48 - gw / 2, 82, { s: 22, c: "#b8c6ee", a: "center" });
+    // KPI
+    const kw = (W - 96 - 60) / 4;
+    S.kpis.forEach((k, i) => {
+      const kx = 48 + i * (kw + 20); rr(kx, 122, kw, 140, 22, C.card, C.line);
+      T(k.l, kx + 28, 164, { s: 22, c: C.muted }); T(k.v, kx + 28, 222, { w: 800, s: 54, c: cc(k.c) }); T(k.s, kx + 28, 250, { s: 21, c: C.muted });
+    });
+    // paneller
+    const PY = 282, PH = 520, xs = [[48, 520], [588, 620], [1228, 644]];
+    S.panels.forEach((pn, i) => {
+      const [px, pw] = xs[i]; rr(px, PY, pw, PH, 22, C.card, C.line); T(pn.title, px + 28, PY + 52, { w: 700, s: 28 });
+      if (pn.type === "ring") {
+        const cx = px + 28 + 74, cy = PY + 150, r = 66;
+        x.lineWidth = 20; x.strokeStyle = C.track; x.beginPath(); x.arc(cx, cy, r, 0, 7); x.stroke();
+        x.strokeStyle = C.blue; x.lineCap = "round"; x.beginPath(); x.arc(cx, cy, r, -Math.PI / 2, -Math.PI / 2 + Math.min(1, pn.pct / 100) * Math.PI * 2); x.stroke(); x.lineCap = "butt";
+        T(pn.big, cx, cy + 14, { w: 800, s: 38, a: "center" });
+        let sy = cy - 22; pn.side.forEach(s => { T(s.t, px + 28 + 180, sy + (s.big ? 22 : 0), { w: s.big ? 800 : 400, s: s.big ? 38 : 26, c: s.big ? cc(s.c) : C.text }); sy += 44; });
+        let by = PY + 262; (pn.bars || []).slice(0, 5).forEach(r2 => {
+          T(r2.n, px + 28, by, { s: 24 }); T(r2.m + " dk", px + pw - 28, by, { s: 24, a: "right" });
+          rr(px + 28, by + 14, pw - 56, 12, 6, C.track); rr(px + 28, by + 14, Math.max(12, (pw - 56) * Math.min(1, r2.m / pn.scale)), 12, 6, C.blue); by += 62;
+        });
+        if (pn.hint) wrap(pn.hint, px + 28, Math.max(by + 6, PY + 262 + 5 * 62 > by ? by + 6 : by), pw - 56, 26, { s: 19, c: C.muted }, 3);
+      } else if (pn.type === "bars") {
+        const ax = px + 28, aw = pw - 56, ay = PY + 86, ah = 240, mx = Math.max(pn.goal, ...pn.items.map(b2 => b2.m), 1) * 1.12, n = pn.items.length, slot = aw / n, bw = pn.thin ? Math.max(6, slot * 0.6) : slot * 0.62;
+        pn.items.forEach((b2, j) => {
+          const bh = b2.m / mx * ah, bx = ax + j * slot + (slot - bw) / 2;
+          rr(bx, ay + ah - bh, bw, Math.max(bh, 2), pn.thin ? 3 : 8, b2.hi ? C.blue : C.bar);
+          if (!pn.thin) T(String(b2.m), bx + bw / 2, ay + ah - bh - 10, { s: 22, c: b2.hi ? C.text : C.muted, a: "center", w: b2.hi ? 700 : 400 });
+          if (b2.l) T(b2.l, bx + bw / 2, ay + ah + 34, { s: 22, c: C.muted, a: "center" });
+        });
+        const gy = ay + ah - pn.goal / mx * ah; x.setLineDash([7, 6]); x.strokeStyle = C.green; x.lineWidth = 2.5; x.beginPath(); x.moveTo(ax, gy); x.lineTo(ax + aw, gy); x.stroke(); x.setLineDash([]);
+        T("hedef " + pn.goal, ax + aw, gy - 10, { s: 21, c: C.green, a: "right" });
+        let ly = ay + ah + 84; pn.lines.forEach(l => {
+          let lx = ax; T(l.t, lx, ly, { s: 26 }); font(400, 26); lx += x.measureText(l.t).width;
+          if (l.v) { T(l.v, lx, ly, { w: 800, s: 26, c: cc(l.c) }); font(800, 26); lx += x.measureText(l.v).width; }
+          if (l.r) T(l.r, lx, ly, { s: 26 }); ly += 38;
+        });
+      } else if (pn.type === "table") {
+        T(pn.head[0], px + 28, PY + 92, { w: 700, s: 20, c: C.muted }); T(pn.head[1], px + 150, PY + 92, { w: 700, s: 20, c: C.muted });
+        x.strokeStyle = C.line; x.lineWidth = 1; x.beginPath(); x.moveTo(px + 28, PY + 106); x.lineTo(px + pw - 28, PY + 106); x.stroke();
+        const rows = pn.rows.slice(0, 6); let ry = PY + 106;
+        if (!rows.length) T(pn.empty, px + 28, ry + 50, { s: 22, c: C.muted });
+        rows.forEach(r2 => {
+          T(r2.a, px + 28, ry + 46, { s: 27 }); T(r2.b, px + 150, ry + 36, { s: 25 }); if (r2.c) T(r2.c, px + 150, ry + 62, { s: 20, c: C.muted });
+          const lab = r2.ok ? "Yapıldı" : "Yapılmadı"; font(700, 20); const lw = x.measureText(lab).width + 36;
+          rr(px + pw - 28 - lw, ry + 24, lw, 38, 19, r2.ok ? "#173a35" : "#43241f"); T(lab, px + pw - 28 - lw / 2, ry + 50, { w: 700, s: 20, c: r2.ok ? C.green : C.coral, a: "center" });
+          x.strokeStyle = C.line; x.beginPath(); x.moveTo(px + 28, ry + 76); x.lineTo(px + pw - 28, ry + 76); x.stroke(); ry += 76;
+        });
+        if (pn.rows.length > 6) T("+" + (pn.rows.length - 6) + " blok daha", px + 28, ry + 34, { s: 20, c: C.muted });
+      } else {
+        let ly = PY + 100;
+        pn.groups.forEach(gp => {
+          T(gp.h, px + 28, ly, { w: 700, s: 22, c: C.blue }); ly += 14;
+          gp.items.slice(0, 3).forEach((it, k) => {
+            ly += 36; const tx = px + 28 + (gp.num ? 44 : 0);
+            if (gp.num) { x.beginPath(); x.arc(px + 28 + 17, ly - 8, 17, 0, 7); x.fillStyle = C.track; x.fill(); T(String(k + 1), px + 28 + 17, ly, { w: 700, s: 20, a: "center" }); }
+            ly = wrap(it.a, tx, ly, pw - 56 - (gp.num ? 44 : 0), 30, { s: 24 }, 2) - 30;
+            if (it.b) { ly += 28; T(it.b, tx, ly, { s: 20, c: C.muted }); }
+          });
+          ly += 40;
+        });
+      }
+    });
+    // yorumlar
+    const NY = 822, NH = 210; rr(48, NY, W - 96, NH, 22, C.card, C.line); rr(48, NY, 8, NH, 4, C.blue);
+    const nw = (W - 96 - 60) / 3;
+    [["İyi olan", S.notes.good, C.green], ["Kötü olan", S.notes.bad, C.coral], ["Genel", S.notes.general, C.text]].forEach((n, i) => {
+      const nx = 84 + i * (nw + 10); T(n[0], nx, NY + 50, { w: 700, s: 28, c: n[2] });
+      wrap(n[1], nx, NY + 92, nw - 24, 34, { s: 23 }, 4);
+    });
+    return cv;
+  }
+
+  // ---------- arayüz ----------
+  const CSS_ID = "sum-style";
+  let cur = null, curCanvas = null;
+  function paint() {
+    const un = list.filter(unread);
+    const dot = $("sumDot"); if (dot) dot.hidden = !un.length;
+    // banner: okunmamış, süresi dolmamış en yeni (ay > hafta > gün)
+    const rank = { month: 3, week: 2, day: 1 };
+    const cand = un.filter(s => Date.now() < untilOf(s)).sort((a, b) => rank[b.kind] - rank[a.kind] || b.period_end.localeCompare(a.period_end))[0];
+    const bn = $("sumBanner");
+    if (!bn) return;
+    if (!cand) { bn.hidden = true; bn.removeAttribute("data-id"); }
+    else {
+      const p = cand.payload || {}, t = tone();
+      const head = cand.kind === "day" ? "Dünün özeti hazır" : cand.kind === "week" ? "Haftalık özet hazır" : "Aylık özet hazır";
+      const line = cand.kind === "month" ? (p.label + " · " + fm(p.minutes)) : cand.kind === "week" ? (p.label + " · " + fm(p.minutes) + " · hedefin %" + p.pct) : (fm(p.minutes) + " · hedefin %" + p.pct + (p.blocks && p.blocks.total ? " · " + p.blocks.done + "/" + p.blocks.total + " blok" : ""));
+      bn.dataset.id = cand.id; bn.hidden = false;
+      bn.querySelector(".sb-t").textContent = ICON[cand.kind] + " " + head; bn.querySelector(".sb-s").textContent = line;
+    }
+    renderList();
+  }
+  function renderList() {
+    const el = $("sumListBody"); if (!el) return;
+    el.innerHTML = list.length ? list.map(s => {
+      const p = s.payload || {};
+      return `<button class="sum-row ${s.read_at ? "read" : ""}" data-sid="${s.id}"><span class="dot"></span><span class="sum-ic">${ICON[s.kind]}</span><span style="flex:1;min-width:0"><strong style="font-size:13px;display:block">${esc(KIND[s.kind])} · ${esc(p.label || s.period_start)}</strong><span class="small" style="margin:0">${esc(fm(p.minutes))}${p.pct != null ? " · %" + p.pct : ""}</span></span></button>`;
+    }).join("") : `<div class="empty">Henüz özet yok. İlk özet bir gece çalışma kaydı girdikten sonra, ertesi gün 00:00'da hazırlanır.</div>`;
+  }
+  function openView(id) {
+    const s = list.find(x => x.id === id); if (!s) return;
+    cur = s; const S = spec(s.payload || {});
+    $("sumBody").innerHTML = html(S); $("sumModal").hidden = false; $("sumListModal").hidden = true;
+    if (unread(s)) markRead([s.id]);
+  }
+  function closeView() { $("sumModal").hidden = true; cur = null; }
+  async function savePng() {
+    if (!cur) return;
+    const msg = $("sumMsg"); msg.textContent = "Görsel hazırlanıyor…";
+    try {
+      const cv = canvas(spec(cur.payload || {}));
+      const blob = await new Promise(r => cv.toBlob(r, "image/png"));
+      const name = "planzen-" + ({ day: "gunluk", week: "haftalik", month: "aylik" }[cur.kind]) + "-ozet-" + cur.period_start + ".png";
+      const file = new File([blob], name, { type: "image/png" });
+      if (navigator.canShare && navigator.canShare({ files: [file] })) { try { await navigator.share({ files: [file] }); msg.textContent = ""; return; } catch (e) { if (e && e.name === "AbortError") { msg.textContent = ""; return; } } }
+      const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+      msg.textContent = "Görsel indirildi.";
+    } catch (e) { msg.textContent = "Görsel oluşturulamadı: " + (e.message || e); }
+  }
+
+  // ---------- bağlantılar ----------
+  $("sumBell").addEventListener("click", () => { renderList(); $("sumListModal").hidden = false; });
+  $("sumListClose").addEventListener("click", () => { $("sumListModal").hidden = true; });
+  $("sumOpenList").addEventListener("click", () => { renderList(); $("sumListModal").hidden = false; });
+  $("sumListBody").addEventListener("click", e => { const b = e.target.closest("[data-sid]"); if (b) openView(b.dataset.sid); });
+  $("sumBannerOpen").addEventListener("click", () => { const id = $("sumBanner").dataset.id; if (id) openView(id); });
+  $("sumBannerX").addEventListener("click", () => { const id = $("sumBanner").dataset.id; if (id) markRead([id]); });
+  $("sumClose").addEventListener("click", closeView);
+  $("sumPng").addEventListener("click", savePng);
+  document.querySelectorAll('input[name="sumTone"]').forEach(r => r.addEventListener("change", () => {
+    if (!r.checked) return; state.summaryTone = r.value; persist(); paint(); if (cur && !$("sumModal").hidden) $("sumBody").innerHTML = html(spec(cur.payload || {}));
+  }));
+  function syncToneUi() { const t = tone(); document.querySelectorAll('input[name="sumTone"]').forEach(r => { r.checked = r.value === t; }); }
+  window.planZenSummaryUi = syncToneUi;
+  if (navigator.serviceWorker) navigator.serviceWorker.addEventListener("message", e => { if (e.data && e.data.type === "open-summary" && e.data.sid) { pendingS = e.data.sid; load().then(openPending); } });
+  function openPending() { if (pendingS && list.some(s => s.id === pendingS)) { const id = pendingS; pendingS = null; try { history.replaceState(null, "", location.pathname); } catch (_) {} openView(id); } }
+  document.addEventListener("visibilitychange", () => { if (!document.hidden && uid) load(); });
+  window.addEventListener("pz-login", e => { uid = e.detail && e.detail.id; syncToneUi(); load().then(openPending); });
+  window.addEventListener("pz-logout", () => { uid = null; list = []; paint(); });
+  db.auth.getSession().then(({ data }) => { if (data && data.session && data.session.user && !uid) { uid = data.session.user.id; syncToneUi(); load().then(openPending); } });
+  window.__sum = { spec, html, canvas, tone };
 })();
 </script>
 

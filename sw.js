@@ -1,6 +1,6 @@
 // PlanZen: bildirimler + çevrimdışı açılış
 // Dosyalar "önce internet, yoksa kayıtlı kopya" yöntemiyle sunulur: internet varken hep en yeni sürüm gelir.
-const CACHE = "planzen-v2";
+const CACHE = "planzen-v3";
 const SHELL = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png"];
 
 self.addEventListener("install", (e) => {
@@ -56,20 +56,21 @@ self.addEventListener("push", (e) => {
     icon: "icon-192.png",
     badge: "icon-192.png",
     tag: d.id || undefined,
-    data: { id: d.id || null, k: d.k || null }
+    data: { id: d.id || null, k: d.k || null, sid: d.sid || null }
   }));
 });
 
 self.addEventListener("notificationclick", (e) => {
   e.notification.close();
-  const id = (e.notification.data || {}).id || null;
-  const url = self.registration.scope + (id ? "?n=" + id : "");
+  const nd = e.notification.data || {};
+  const id = nd.id || null, sid = nd.k === "summary" ? nd.sid : null;
+  const url = self.registration.scope + (sid ? "?s=" + sid : id ? "?n=" + id : "");
   e.waitUntil((async () => {
     const all = await self.clients.matchAll({ type: "window", includeUncontrolled: true });
     for (const c of all) {
       if (c.url.startsWith(self.registration.scope)) {
         await c.focus();
-        c.postMessage({ type: "open-notification", id });
+        c.postMessage(sid ? { type: "open-summary", sid } : { type: "open-notification", id });
         return;
       }
     }
