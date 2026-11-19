@@ -11,7 +11,7 @@
 ![Supabase](https://img.shields.io/badge/Supabase-Auth%20%C2%B7%20Postgres-3ecf8e?style=for-the-badge)
 ![Dil](https://img.shields.io/badge/aray%C3%BCz-T%C3%BCrk%C3%A7e-e11d48?style=for-the-badge)
 
-**[🌐 Canlı demo](https://KULLANICIADIN.github.io/PlanZen/)** · **[✨ Özellikler](#-özellikler)**
+**[🌐 Canlı demo](https://im-posi.github.io/PlanZen/)** · **[✨ Özellikler](#-özellikler)**
 
 </div>
 
@@ -56,7 +56,7 @@
 
 ## 📁 Dosyalar
 
-| Meraklısına Dosya İçerikleri | Ne işe yarar |
+| Dosya | Ne işe yarar |
 |---|---|
 | `index.html` | Uygulamanın tamamı (HTML, CSS, JS) |
 | `sw.js` | Service worker: çevrimdışı açılış ve push bildirimleri |
@@ -64,8 +64,11 @@
 | `kartlar.json` | Hafıza kartlarının içeriği |
 | `supabase_*.sql` | Veritabanı kurulum ve güncelleme dosyaları |
 
-> `planzen-onizleme.html` yalnızca bilgisayarda deneme içindir (giriş ekranı kapalı, sahte veri). Depoya yüklenmemelidir. (Repoda yer almaz.)
+> `planzen-onizleme.html` yalnızca bilgisayarda deneme içindir (giriş ekranı kapalı, sahte veri). Depoya yüklenmemelidir.
 
+## 🧱 Teknoloji
+
+Framework yok: saf HTML / CSS / JS tek sayfa. Arka uç Supabase (Auth, Postgres, Edge Functions, pg_cron), yayın GitHub Pages.
 
 <div align="center">
 <sub>Kendi hızında, sağlam adımlarla. · 2026</sub>
