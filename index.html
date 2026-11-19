@@ -3207,15 +3207,18 @@ $("examDate").value=fmtDate(dayKey(new Date()));
       } else if (pn.type === "table") {
         T(pn.head[0], px + 28, PY + 92, { w: 700, s: 20, c: C.muted }); T(pn.head[1], px + 150, PY + 92, { w: 700, s: 20, c: C.muted });
         x.strokeStyle = C.line; x.lineWidth = 1; x.beginPath(); x.moveTo(px + 28, PY + 106); x.lineTo(px + pw - 28, PY + 106); x.stroke();
-        const rows = pn.rows.slice(0, 6); let ry = PY + 106;
+        const MAXR = 6, avail = 396, shown = Math.min(pn.rows.length, MAXR) + (pn.rows.length > MAXR ? 0.6 : 0), rh = Math.max(58, Math.min(76, Math.floor(avail / Math.max(shown, 1)))), cmp = rh < 72, sz = cmp ? 22 : 25, cs = cmp ? 17 : 20;
+        const rows = pn.rows.slice(0, MAXR); let ry = PY + 106;
+        const fit = (t, mw, s, w) => { font(w || 400, s); if (x.measureText(t).width <= mw) return t; while (t.length > 1 && x.measureText(t + "…").width > mw) t = t.slice(0, -1); return t.trimEnd() + "…"; };
         if (!rows.length) T(pn.empty, px + 28, ry + 50, { s: 22, c: C.muted });
         rows.forEach(r2 => {
-          T(r2.a, px + 28, ry + 46, { s: 27 }); T(r2.b, px + 150, ry + 36, { s: 25 }); if (r2.c) T(r2.c, px + 150, ry + 62, { s: 20, c: C.muted });
-          const lab = r2.ok ? "Yapıldı" : "Yapılmadı"; font(700, 20); const lw = x.measureText(lab).width + 36;
-          rr(px + pw - 28 - lw, ry + 24, lw, 38, 19, r2.ok ? "#173a35" : "#43241f"); T(lab, px + pw - 28 - lw / 2, ry + 50, { w: 700, s: 20, c: r2.ok ? C.green : C.coral, a: "center" });
-          x.strokeStyle = C.line; x.beginPath(); x.moveTo(px + 28, ry + 76); x.lineTo(px + pw - 28, ry + 76); x.stroke(); ry += 76;
+          const lab = r2.ok ? "Yapıldı" : "Yapılmadı"; font(700, cmp ? 18 : 20); const lw = x.measureText(lab).width + 32, tw = pw - 28 - 150 - lw - 52;
+          T(r2.a, px + 28, ry + rh / 2 + 9, { s: cmp ? 24 : 27 });
+          if (r2.c) { T(fit(r2.b, tw, sz), px + 150, ry + rh / 2 - 4, { s: sz }); T(fit(r2.c, tw, cs), px + 150, ry + rh / 2 + (cmp ? 22 : 26), { s: cs, c: C.muted }); } else T(fit(r2.b, tw, sz), px + 150, ry + rh / 2 + 8, { s: sz });
+          const bh = cmp ? 32 : 38; rr(px + pw - 28 - lw, ry + rh / 2 - bh / 2, lw, bh, bh / 2, r2.ok ? "#173a35" : "#43241f"); T(lab, px + pw - 28 - lw / 2, ry + rh / 2 + 7, { w: 700, s: cmp ? 18 : 20, c: r2.ok ? C.green : C.coral, a: "center" });
+          x.strokeStyle = C.line; x.beginPath(); x.moveTo(px + 28, ry + rh); x.lineTo(px + pw - 28, ry + rh); x.stroke(); ry += rh;
         });
-        if (pn.rows.length > 6) T("+" + (pn.rows.length - 6) + " blok daha", px + 28, ry + 34, { s: 20, c: C.muted });
+        if (pn.rows.length > MAXR) T("+" + (pn.rows.length - MAXR) + " blok daha", px + 28, ry + 30, { s: 20, c: C.muted });
       } else {
         let ly = PY + 100;
         pn.groups.forEach(gp => {
