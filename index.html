@@ -476,6 +476,13 @@ body{padding-top:env(safe-area-inset-top,0px)}
 .sm-notes b{font-size:15px}.sm-notes p{margin:6px 0 0;font-size:14px;line-height:1.55;color:var(--sm-text)}
 @media(min-width:760px){.sm-kpis{grid-template-columns:repeat(4,1fr)}.sm-notes{grid-template-columns:repeat(3,1fr)}}
 @media(min-width:900px){.sm-panels{grid-template-columns:1fr 1.15fr 1.25fr}}
+
+/* sırayla belirme + yerine oturma */
+@keyframes pzIn{0%{opacity:0;transform:translateY(8px)}70%{opacity:1;transform:translateY(-1.5px)}100%{opacity:1;transform:none}}
+@keyframes pzSettle{0%{transform:scale(1)}40%{transform:scale(1.025)}75%{transform:scale(.995)}100%{transform:scale(1)}}
+.pz-st{animation:pzIn .32s cubic-bezier(.2,.8,.3,1) both}
+.pz-settle{animation:pzSettle .38s cubic-bezier(.3,.9,.3,1.1)}
+@media(prefers-reduced-motion:reduce){.pz-st,.pz-settle{animation:none!important}}
 </style>
 </head>
 <body>
@@ -1127,7 +1134,22 @@ function setSection(id){
   if(id==="cards")cardsOpen();
   if(id==="work")cardsTeaser();
   updateTimerChip();
+  pzStagger($(id));
   window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function pzStagger(root){
+  if(!root||(window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches))return;
+  const items=[...root.querySelectorAll(".wslot,.sum-row,.cd-row")].slice(0,12);
+  items.forEach((el,i)=>{
+    el.style.animationDelay=(i*45)+"ms";el.classList.add("pz-st");
+    el.addEventListener("animationend",()=>{el.classList.remove("pz-st");el.style.animationDelay=""},{once:true});
+  });
+}
+function pzSettle(el){
+  if(!el||(window.matchMedia&&matchMedia("(prefers-reduced-motion:reduce)").matches))return;
+  el.classList.remove("pz-settle");void el.offsetWidth;el.classList.add("pz-settle");
+  el.addEventListener("animationend",()=>el.classList.remove("pz-settle"),{once:true});
 }
 document.querySelectorAll("[data-section]").forEach(b=>b.addEventListener("click",()=>setSection(b.dataset.section)));
 document.querySelectorAll("[data-goto]").forEach(b=>b.addEventListener("click",()=>setSection(b.dataset.goto)));
@@ -1540,7 +1562,7 @@ function weekClick(e){
 }
 ["weekGrid","taskList"].forEach(id=>{
   $(id).addEventListener("click",weekClick);
-  $(id).addEventListener("change",e=>{const c=e.target.closest("[data-wdone]");if(c){state.week[Number(c.dataset.wdone)].done=c.checked;weekChanged()}});
+  $(id).addEventListener("change",e=>{const c=e.target.closest("[data-wdone]");if(c){state.week[Number(c.dataset.wdone)].done=c.checked;weekChanged();if(c.checked){const n=document.querySelector("#"+id+" [data-slot=\""+c.dataset.wdone+"\"]");pzSettle(n)}}});
 });
 let dnd=null,lp=null,tpt=null;
 const NOT_DRAG="input,button,select,textarea,a,.wres,.wlink";
@@ -2213,7 +2235,7 @@ $("examDate").value=fmtDate(dayKey(new Date()));
 </script>
 
 <!-- PlanZen Supabase giriş sistemi -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.js"></script>
 
 <style>
 #pz-auth {
@@ -3293,7 +3315,7 @@ $("examDate").value=fmtDate(dayKey(new Date()));
   }
 
   // ---------- bağlantılar ----------
-  $("sumBell").addEventListener("click", () => { renderList(); $("sumListModal").hidden = false; });
+  $("sumBell").addEventListener("click", () => { renderList(); $("sumListModal").hidden = false; pzStagger($("sumListBody")); });
   $("sumListClose").addEventListener("click", () => { $("sumListModal").hidden = true; });
   $("sumOpenList").addEventListener("click", () => { renderList(); $("sumListModal").hidden = false; });
   $("sumListBody").addEventListener("click", e => { const b = e.target.closest("[data-sid]"); if (b) openView(b.dataset.sid); });
